@@ -16,6 +16,7 @@ const { listBanHandler } = require('../lib/commands/listban');
 const User = require('../database/models/User');
 const { stickertextHandler } = require('../lib/commands/stickertext');
 const { quoteChatHandler } = require('../lib/commands/quotechat');
+const { mathHandler, handleMathAnswer, hasMathGame } = require('../lib/commands/math');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -134,6 +135,9 @@ async function handleMessages(sock) {
                     case 'qc':
                         await quoteChatHandler(sock, msg);
                         break;
+                    case 'math':
+                        await mathHandler(sock, msg);
+                        break;
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {
@@ -152,6 +156,11 @@ async function handleMessages(sock) {
             // Handle suit choices (G/B/K)
             if (['G', 'B', 'K'].includes(body.toUpperCase())) {
                 await handleSuitChoice(sock, msg);
+            }
+
+            // Handle math game answers (numbers only)
+            if (!isNaN(body) && hasMathGame(msg.key.remoteJid)) {
+                await handleMathAnswer(sock, msg);
             }
 
         } catch (error) {
