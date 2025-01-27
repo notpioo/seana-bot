@@ -1,0 +1,41 @@
+{
+  "6285179833987@s.whatsapp.net": {
+    "name": "User",
+    "username": "User",
+    "number": "6285179833987",
+    "status": "premium",
+    "limit": null,
+    "balance": 0,
+    "memberSince": "2025-01-26T11:02:08.127Z",
+    "lastLimitReset": "2025-01-27T07:35:36.896Z",
+    "premiumExpiry": 1738063598617,
+    "isBanned": false,
+    "banExpiry": null
+  },
+  "6285709557572@s.whatsapp.net": {
+    "name": "Ada",
+    "username": "pioo",
+    "number": "6285709557572",
+    "status": "basic",
+    "limit": 25,
+    "balance": 0,
+    "memberSince": "2025-01-26T11:02:16.191Z",
+    "lastLimitReset": "2025-01-27T07:35:36.896Z",
+    "premiumExpiry": null,
+    "isBanned": false,
+    "banExpiry": null
+  },
+  "6281271575236@s.whatsapp.net": {
+    "name": ".",
+    "username": ".",
+    "number": "6281271575236",
+    "status": "basic",
+    "limit": 25,
+    "balance": 0,
+    "memberSince": "2025-01-26T11:34:43.326Z",
+    "lastLimitReset": "2025-01-27T07:35:36.896Z",
+    "premiumExpiry": null,
+    "isBanned": false,
+    "banExpiry": null
+  }
+}
