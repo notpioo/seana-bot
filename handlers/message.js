@@ -21,6 +21,7 @@ const { confessHandler, handleConfessReply } = require('../lib/commands/confess'
 const { tiktokHandler } = require('../lib/commands/tiktok');
 const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
 const { topGlobalHandler } = require('../lib/commands/topglobal');
+const { createRedeemHandler, handleCreateRedeem, redeemHandler } = require('../lib/commands/redeem');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -66,6 +67,11 @@ async function handleMessages(sock) {
                         limit: 25 
                     });
                 }
+            }
+
+            // Handle template response for createredeem
+            if (body.includes('code:') && body.includes('expired:')) {
+                await handleCreateRedeem(sock, msg);
             }
 
             // Handle commands
@@ -154,6 +160,12 @@ async function handleMessages(sock) {
                     case 'topglobal':
                         await topGlobalHandler(sock, msg);
                         break;
+                    case 'createredeem':
+                        await createRedeemHandler(sock, msg);
+                        break;
+                    case 'redeem':
+                        await redeemHandler(sock, msg);
+                        break;
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {
@@ -165,9 +177,9 @@ async function handleMessages(sock) {
             }
 
             const moveNumber = parseInt(body);
-                    if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
-                        await handleTicTacToeMove(sock, msg);
-                    }
+            if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
+                await handleTicTacToeMove(sock, msg);
+            }
 
             // Handle suit responses (Y/T)
             if (body.toUpperCase() === 'Y' || body.toUpperCase() === 'T') {
