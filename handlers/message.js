@@ -17,7 +17,9 @@ const User = require('../database/models/User');
 const { stickertextHandler } = require('../lib/commands/stickertext');
 const { quoteChatHandler } = require('../lib/commands/quotechat');
 const { mathHandler, handleMathAnswer, hasMathGame } = require('../lib/commands/math');
+const { confessHandler, handleConfessReply } = require('../lib/commands/confess');
 const { tiktokHandler } = require('../lib/commands/tiktok');
+const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -139,9 +141,14 @@ async function handleMessages(sock) {
                     case 'math':
                         await mathHandler(sock, msg);
                         break;
+                    case 'confess':
+                        await confessHandler(sock, msg);
+                        break;
                     case 'ttnowm':
-                    case 'tiktoknowm':
                         await tiktokHandler(sock, msg);
+                        break;
+                    case 'ttt':
+                        await tictactoeHandler(sock, msg);
                         break;
                     default:
                         // Handle unknown commands
@@ -152,6 +159,11 @@ async function handleMessages(sock) {
                         break;
                 }
             }
+
+            const moveNumber = parseInt(body);
+                    if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
+                        await handleTicTacToeMove(sock, msg);
+                    }
 
             // Handle suit responses (Y/T)
             if (body.toUpperCase() === 'Y' || body.toUpperCase() === 'T') {
@@ -167,6 +179,8 @@ async function handleMessages(sock) {
             if (!isNaN(body) && hasMathGame(msg.key.remoteJid)) {
                 await handleMathAnswer(sock, msg);
             }
+
+            await handleConfessReply(sock, msg);
 
         } catch (error) {
             console.error('Error handling message:', error);
