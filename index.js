@@ -4,30 +4,29 @@ const { handleMessages } = require('./handlers/message')
 const logger = require('./lib/utils/logger')
 const fs = require('fs')
 const path = require('path')
-const readline = require('readline')
 
-// Fungsi untuk membaca input dari terminal
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
-
+// Tambahkan fungsi untuk memastikan direktori ada
 function ensureDirectoryExists(directory) {
     if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true })
     }
 }
 
+// Fungsi untuk menangani reconnect
 let reconnectAttempts = 0
 const maxReconnectAttempts = 5
-const reconnectInterval = 3000
+const reconnectInterval = 3000 // 3 detik
 
 async function connectToWhatsApp() {
     try {
+        // Gunakan path absolut untuk sessions
         const sessionDir = path.join(process.cwd(), 'sessions')
         const authPath = path.join(sessionDir, 'auth_info')
         
+        // Pastikan direktori sessions ada
         ensureDirectoryExists(sessionDir)
+
+        // Tambahkan logging untuk debug
         logger.info(`Using session directory: ${sessionDir}`)
         
         const { state, saveCreds } = await useMultiFileAuthState(authPath)
@@ -36,15 +35,21 @@ async function connectToWhatsApp() {
             printQRInTerminal: true,
             auth: state,
             browser: ['SeaBot', 'Chrome', '5.0'],
+            // Tambahkan signal key store yang bisa di-cache
             keys: makeCacheableSignalKeyStore(state.keys, logger),
+            // Tambahkan retry ketika disconnect
             retryRequestDelayMs: 2000,
+            // Tambahkan timeout yang lebih lama
             connectTimeoutMs: 60000,
+            // Tambahkan keep-alive
             keepAliveIntervalMs: 10000,
+            // Tambahkan max retries
             maxRetries: 5,
+            // Generate session ID yang konsisten
             generateHighQualityLinkPreview: true,
         })
 
-        // Handle connection updates with pairing code
+        // Handle connection updates
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect } = update
 
@@ -63,6 +68,7 @@ async function connectToWhatsApp() {
                     }, reconnectInterval)
                 } else {
                     logger.info('Connection closed permanently')
+                    // Reset session jika logout
                     if (statusCode === DisconnectReason.loggedOut) {
                         try {
                             fs.rmSync(authPath, { recursive: true, force: true })
@@ -73,27 +79,15 @@ async function connectToWhatsApp() {
                     }
                 }
             } else if (connection === 'open') {
-                reconnectAttempts = 0
+                reconnectAttempts = 0 // Reset attempts on successful connection
                 logger.info('Connected to WhatsApp')
                 
+                // Verify connection by sending presence update
                 try {
                     await sock.sendPresenceUpdate('available')
                     logger.info('Presence update sent successfully')
                 } catch (err) {
                     logger.error('Failed to send presence update:', err)
-                }
-            } else if (update.qr) {
-                // Jika tidak ada session yang tersimpan, minta nomor telepon
-                if (!fs.existsSync(path.join(authPath, 'creds.json'))) {
-                    rl.question('Masukkan nomor WhatsApp (contoh: 628123456789): ', async (number) => {
-                        try {
-                            const code = await sock.requestPairingCode(number)
-                            logger.info(`Kode pairing Anda adalah: ${code}`)
-                            logger.info('Masukkan kode ini di WhatsApp di perangkat Anda')
-                        } catch (error) {
-                            logger.error('Gagal mendapatkan kode pairing:', error)
-                        }
-                    })
                 }
             }
         })
@@ -114,6 +108,7 @@ async function connectToWhatsApp() {
         return sock
     } catch (err) {
         logger.error('Failed to connect:', err)
+        // Retry connection if failed
         if (reconnectAttempts < maxReconnectAttempts) {
             reconnectAttempts++
             logger.info(`Retrying connection in ${reconnectInterval}ms... Attempt: ${reconnectAttempts}/${maxReconnectAttempts}`)
