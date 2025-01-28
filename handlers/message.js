@@ -17,6 +17,7 @@ const User = require('../database/models/User');
 const { stickertextHandler } = require('../lib/commands/stickertext');
 const { quoteChatHandler } = require('../lib/commands/quotechat');
 const { mathHandler, handleMathAnswer, hasMathGame } = require('../lib/commands/math');
+const { tiktokHandler } = require('../lib/commands/tiktok');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -137,6 +138,10 @@ async function handleMessages(sock) {
                         break;
                     case 'math':
                         await mathHandler(sock, msg);
+                        break;
+                    case 'ttnowm':
+                    case 'tiktoknowm':
+                        await tiktokHandler(sock, msg);
                         break;
                     default:
                         // Handle unknown commands
