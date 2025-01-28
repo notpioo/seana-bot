@@ -20,6 +20,7 @@ const { mathHandler, handleMathAnswer, hasMathGame } = require('../lib/commands/
 const { confessHandler, handleConfessReply } = require('../lib/commands/confess');
 const { tiktokHandler } = require('../lib/commands/tiktok');
 const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
+const { topGlobalHandler } = require('../lib/commands/topglobal');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -149,6 +150,9 @@ async function handleMessages(sock) {
                         break;
                     case 'ttt':
                         await tictactoeHandler(sock, msg);
+                        break;
+                    case 'topglobal':
+                        await topGlobalHandler(sock, msg);
                         break;
                     default:
                         // Handle unknown commands
