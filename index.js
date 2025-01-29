@@ -4,6 +4,8 @@ const { handleMessages } = require('./handlers/message')
 const logger = require('./lib/utils/logger')
 const fs = require('fs')
 const path = require('path')
+const connectDB = require('./database/config/mongoose');
+require('dotenv').config();
 
 // Gunakan environment variable untuk auth path
 const AUTH_PATH = process.env.AUTH_PATH || path.join(process.cwd(), 'sessions', 'auth_info')
@@ -42,7 +44,6 @@ async function connectToWhatsApp() {
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update
 
-            // Tambahkan logging untuk QR code
             if (qr) {
                 logger.info('QR Code received, please scan with WhatsApp')
             }
@@ -108,8 +109,13 @@ async function connectToWhatsApp() {
     }
 }
 
-// Langsung jalankan fungsi
-connectToWhatsApp().catch((err) => {
-    logger.error('Fatal error:', err)
-    process.exit(1)
-})
+// Bungkus dalam IIFE untuk menggunakan await
+(async () => {
+    try {
+        await connectDB();
+        await connectToWhatsApp();
+    } catch (err) {
+        logger.error('Fatal error:', err);
+        process.exit(1);
+    }
+})();

@@ -21,7 +21,6 @@ const { confessHandler, handleConfessReply } = require('../lib/commands/confess'
 const { tiktokHandler } = require('../lib/commands/tiktok');
 const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
 const { topGlobalHandler } = require('../lib/commands/topglobal');
-const { createRedeemHandler, handleCreateRedeem, redeemHandler } = require('../lib/commands/redeem');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 
 async function handleMessages(sock) {
@@ -68,11 +67,6 @@ async function handleMessages(sock) {
                         limit: 25 
                     });
                 }
-            }
-
-            // Handle template response for createredeem
-            if (body.includes('code:') && body.includes('expired:')) {
-                await handleCreateRedeem(sock, msg);
             }
 
             // Handle commands
@@ -160,12 +154,6 @@ async function handleMessages(sock) {
                         break;
                     case 'topglobal':
                         await topGlobalHandler(sock, msg);
-                        break;
-                    case 'createredeem':
-                        await createRedeemHandler(sock, msg);
-                        break;
-                    case 'redeem':
-                        await redeemHandler(sock, msg);
                         break;
                   case 'add':
                         await addHandler(sock, msg);
