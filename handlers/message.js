@@ -21,6 +21,7 @@ const { tiktokHandler } = require('../lib/commands/tiktok');
 const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
 const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
+const { seaHandler } = require('../lib/commands/sea');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -156,6 +157,9 @@ async function handleMessages(sock) {
                         break;
                     case 'kick':
                         await kickHandler(sock, msg);
+                        break;
+                    case 'sea':
+                        await seaHandler(sock, msg);
                         break;
                     default:
                         // Handle unknown commands
