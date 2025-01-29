@@ -22,6 +22,7 @@ const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/ticta
 const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
+const { setApikeyHandler } = require('../lib/commands/setapikey');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -160,6 +161,9 @@ async function handleMessages(sock) {
                         break;
                     case 'sea':
                         await seaHandler(sock, msg);
+                        break;
+                    case 'setapikey':
+                        await setApikeyHandler(sock, msg);
                         break;
                     default:
                         // Handle unknown commands
