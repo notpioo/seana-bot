@@ -8,7 +8,6 @@ const {
     limitHandler, 
     premiumHandler, 
     banHandler, 
-    setppHandler 
 } = require('../lib/commands/owner');
 const { cekPremHandler } = require('../lib/commands/cekprem');
 const { listPremHandler } = require('../lib/commands/listprem');
@@ -117,9 +116,6 @@ async function handleMessages(sock) {
                         break;
                     case 'unban':
                         await banHandler(sock, msg, 'unban');
-                        break;
-                    case 'setpp':
-                        await setppHandler(sock, msg);
                         break;
                     case 'cekprem':
                         await cekPremHandler(sock, msg);
