@@ -34,6 +34,8 @@ const { diceHandler,
     handleDiceChoice,
     diceStatsHandler  
  } = require('../lib/commands/dice');
+ // Pertama, tambahkan import handler di bagian atas file message.js
+const { inventoryHandler } = require('../lib/commands/inventory');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -193,6 +195,31 @@ async function handleMessages(sock) {
                         break;
                     case 'dicestats':
                         await diceStatsHandler(sock, msg);
+                        break;
+                    case 'inventory':
+                        await inventoryHandler(sock, msg);
+                        break;
+                    case 'use':
+                        const boostNumber = parseInt(args[1]);
+                        if (isNaN(boostNumber)) {
+                            await sock.sendMessage(msg.key.remoteJid, {
+                                text: '❌ Silakan masukkan nomor boost yang ingin digunakan. Contoh: .use 1',
+                                quoted: msg
+                            });
+                            return;
+                        }
+                        await useBoostHandler(sock, msg, boostNumber);
+                        break;
+                    case 'boostinfo':
+                        const infoNumber = parseInt(args[1]);
+                        if (isNaN(infoNumber)) {
+                            await sock.sendMessage(msg.key.remoteJid, {
+                                text: '❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1',
+                                quoted: msg
+                            });
+                            return;
+                        }
+                        await boostInfoHandler(sock, msg, infoNumber);
                         break;
                     default:
                         // Handle unknown commands
