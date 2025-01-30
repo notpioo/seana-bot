@@ -169,6 +169,9 @@ async function handleMessages(sock) {
                     case 'susunkata':
                         await susunKataHandler(sock, msg);
                         break;
+                        case 'lbsusun':
+                            await leaderboardSusunHandler(sock, msg);
+                            break;
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {

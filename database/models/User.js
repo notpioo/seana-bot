@@ -49,6 +49,10 @@ const userSchema = new mongoose.Schema({
     banExpiry: { 
         type: Date, 
         default: null 
+    },
+    susunkata: {
+        wins: { type: Number, default: 0 },
+        profit: { type: Number, default: 0 }
     }
 });
 
