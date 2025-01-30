@@ -1,4 +1,4 @@
-// models/Inventory.js
+// database/models/Inventory.js
 const mongoose = require('mongoose');
 
 const boostSchema = new mongoose.Schema({
@@ -13,14 +13,14 @@ const boostSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['limit', 'balance', 'exp']  // tipe boost yang tersedia
+        enum: ['limit', 'balance', 'exp']
     },
     multiplier: {
         type: Number,
         required: true
     },
     duration: {
-        type: Number,  // dalam menit
+        type: Number,
         required: true
     },
     quantity: {
@@ -44,4 +44,4 @@ const inventorySchema = new mongoose.Schema({
     }]
 });
 
-const Inventory = mongoose.model('Inventory', inventorySchema);
+module.exports = mongoose.model('Inventory', inventorySchema);
