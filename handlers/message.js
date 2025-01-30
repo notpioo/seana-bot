@@ -23,6 +23,8 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
+// Tambahkan import di bagian atas file
+const { susunKataHandler, handleSusunKataAnswer } = require('../commands/susunkata');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -165,6 +167,9 @@ async function handleMessages(sock) {
                     case 'setapikey':
                         await setApikeyHandler(sock, msg);
                         break;
+                    case 'susunkata':
+                        await susunKataHandler(sock, msg);
+                        break;
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {
@@ -178,6 +183,11 @@ async function handleMessages(sock) {
             const moveNumber = parseInt(body);
             if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
                 await handleTicTacToeMove(sock, msg);
+            }
+
+            // Handle susun kata answers
+            if (gameState[msg.key.remoteJid]?.isActive) {
+                await handleSusunKataAnswer(sock, msg);
             }
 
             // Handle suit responses (Y/T)
