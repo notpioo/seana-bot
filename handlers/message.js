@@ -33,6 +33,9 @@ const { cryptoHandler,
     mineHandler,
     buyRamHandler
 } = require('../lib/commands/crypto');
+const { marketHandler,
+    sellCryptoHandler
+} = require('../lib/commands/market');
 const { diceHandler,
     joinDiceHandler,
     startDiceHandler,
@@ -59,7 +62,7 @@ async function handleMessages(sock) {
 
             // Check if user is banned
             const senderJid = msg.key.participant || msg.key.remoteJid;
-            const user = User.getUser(senderJid);
+            const user = await User.getUser(senderJid);
 
             if (user?.isBanned) {
                 if (user.banExpiry && user.banExpiry > Date.now()) {
@@ -69,7 +72,7 @@ async function handleMessages(sock) {
                     });
                     return;
                 } else {
-                    User.updateUser(senderJid, { 
+                    await User.updateUser(senderJid, { 
                         isBanned: false, 
                         banExpiry: null 
                     });
@@ -79,7 +82,7 @@ async function handleMessages(sock) {
             // Check premium expiry
             if (user?.status === 'premium' && user.premiumExpiry) {
                 if (new Date(user.premiumExpiry).getTime() < Date.now()) {
-                    User.updateUser(senderJid, { 
+                    await User.updateUser(senderJid, { 
                         status: 'basic', 
                         premiumExpiry: null, 
                         limit: 25 
@@ -170,7 +173,7 @@ async function handleMessages(sock) {
                     case 'topglobal':
                         await topGlobalHandler(sock, msg);
                         break;
-                  case 'add':
+                    case 'add':
                         await addHandler(sock, msg);
                         break;
                     case 'kick':
@@ -212,25 +215,20 @@ async function handleMessages(sock) {
                     case 'buyram':
                         await buyRamHandler(sock, msg);
                         break;
+                    case 'market':
+                        await marketHandler(sock, msg);
+                        break;
+                    case 'sellcrypto':
+                        await sellCryptoHandler(sock, msg);
+                        break;
                     case 'addcdcrypto':
                         await addCdCryptoHandler(sock, msg);
                         break;
                     case 'use':
                         await useBoostHandler(sock, msg);
                         break;
-                    case 'use':
-                        const boostNumber = parseInt(args[1]);
-                        if (isNaN(boostNumber)) {
-                            await sock.sendMessage(msg.key.remoteJid, {
-                                text: '❌ Silakan masukkan nomor boost yang ingin digunakan. Contoh: .use 1',
-                                quoted: msg
-                            });
-                            return;
-                        }
-                        await useBoostHandler(sock, msg, boostNumber);
-                        break;
                     case 'boostinfo':
-                        const infoNumber = parseInt(args[1]);
+                        const infoNumber = parseInt(body.split(' ')[1]);
                         if (isNaN(infoNumber)) {
                             await sock.sendMessage(msg.key.remoteJid, {
                                 text: '❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1',
@@ -250,6 +248,7 @@ async function handleMessages(sock) {
                 }
             }
 
+            // Handle game moves
             const moveNumber = parseInt(body);
             if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
                 await handleTicTacToeMove(sock, msg);
@@ -275,11 +274,12 @@ async function handleMessages(sock) {
                 await handleSuitChoice(sock, msg);
             }
 
-            // Handle math game answers (numbers only)
+            // Handle math game answers
             if (!isNaN(body) && hasMathGame(msg.key.remoteJid)) {
                 await handleMathAnswer(sock, msg);
             }
 
+            // Handle confess replies
             await handleConfessReply(sock, msg);
 
         } catch (error) {

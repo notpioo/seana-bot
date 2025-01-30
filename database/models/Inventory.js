@@ -13,7 +13,7 @@ const boostSchema = new mongoose.Schema({
     type: {
         type: String,
         required: true,
-        enum: ['limit', 'balance', 'exp']
+        enum: ['limit', 'balance', 'exp', 'cdcrypto']
     },
     multiplier: {
         type: Number,
