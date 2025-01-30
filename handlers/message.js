@@ -7,7 +7,8 @@ const {
     balanceHandler, 
     limitHandler, 
     premiumHandler, 
-    banHandler, 
+    banHandler,
+    addCdCryptoHandler
 } = require('../lib/commands/owner');
 const { cekPremHandler } = require('../lib/commands/cekprem');
 const { listPremHandler } = require('../lib/commands/listprem');
@@ -38,8 +39,7 @@ const { diceHandler,
     handleDiceChoice,
     diceStatsHandler  
  } = require('../lib/commands/dice');
- // Pertama, tambahkan import handler di bagian atas file message.js
-const { inventoryHandler } = require('../lib/commands/inventory');
+const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -211,6 +211,12 @@ async function handleMessages(sock) {
                         break;
                     case 'buyram':
                         await buyRamHandler(sock, msg);
+                        break;
+                    case 'addcdcrypto':
+                        await addCdCryptoHandler(sock, msg);
+                        break;
+                    case 'use':
+                        await useBoostHandler(sock, msg);
                         break;
                     case 'use':
                         const boostNumber = parseInt(args[1]);
