@@ -53,7 +53,12 @@ const userSchema = new mongoose.Schema({
     susunkata: {
         wins: { type: Number, default: 0 },
         profit: { type: Number, default: 0 }
-    }
+    },
+    dice: {
+        games: { type: Number, default: 0 },
+        wins: { type: Number, default: 0 },
+        profit: { type: Number, default: 0 }
+    },
 });
 
 const UserModel = mongoose.model('User', userSchema);

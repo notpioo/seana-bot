@@ -23,7 +23,17 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
-const { susunKataHandler, handleSusunKataAnswer, gameState, leaderboardSusunHandler } = require('../lib/commands/susunkata');
+const { susunKataHandler,
+    handleSusunKataAnswer, 
+    gameState, 
+    leaderboardSusunHandler 
+} = require('../lib/commands/susunkata');
+const { diceHandler,
+    joinDiceHandler,
+    startDiceHandler,
+    handleDiceChoice,
+    diceStatsHandler  
+ } = require('../lib/commands/dice');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -169,9 +179,21 @@ async function handleMessages(sock) {
                     case 'susunkata':
                         await susunKataHandler(sock, msg);
                         break;
-                        case 'lbsusun':
-                            await leaderboardSusunHandler(sock, msg);
-                            break;
+                    case 'lbsusun':
+                        await leaderboardSusunHandler(sock, msg);
+                        break;
+                    case 'dice':
+                        await diceHandler(sock, msg);
+                        break;
+                    case 'joindice':
+                        await joinDiceHandler(sock, msg);
+                        break;
+                    case 'startdice':
+                        await startDiceHandler(sock, msg);
+                        break;
+                    case 'dicestats':
+                        await diceStatsHandler(sock, msg);
+                        break;
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {
@@ -185,6 +207,11 @@ async function handleMessages(sock) {
             const moveNumber = parseInt(body);
             if (!isNaN(moveNumber) && moveNumber >= 1 && moveNumber <= 9) {
                 await handleTicTacToeMove(sock, msg);
+            }
+
+            // Handle dice choices (K/B)
+            if (['K', 'B'].includes(body.toUpperCase())) {
+                await handleDiceChoice(sock, msg);
             }
 
             // Handle susun kata answers
