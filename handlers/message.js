@@ -28,6 +28,10 @@ const { susunKataHandler,
     gameState, 
     leaderboardSusunHandler 
 } = require('../lib/commands/susunkata');
+const { cryptoHandler,
+    mineHandler,
+    buyRamHandler
+} = require('../lib/commands/crypto');
 const { diceHandler,
     joinDiceHandler,
     startDiceHandler,
@@ -198,6 +202,15 @@ async function handleMessages(sock) {
                         break;
                     case 'inventory':
                         await inventoryHandler(sock, msg);
+                        break;
+                    case 'crypto':
+                        await cryptoHandler(sock, msg);
+                        break;
+                    case 'mine':
+                        await mineHandler(sock, msg);
+                        break;
+                    case 'buyram':
+                        await buyRamHandler(sock, msg);
                         break;
                     case 'use':
                         const boostNumber = parseInt(args[1]);
