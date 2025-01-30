@@ -23,7 +23,7 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
-const { susunKataHandler, handleSusunKataAnswer, gameState } = require('../lib/commands/susunkata');
+const { susunKataHandler, handleSusunKataAnswer, gameState, leaderboardSusunHandler } = require('../lib/commands/susunkata');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
