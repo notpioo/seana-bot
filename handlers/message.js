@@ -49,7 +49,6 @@ const { diceHandler,
     handleVote, 
     handleWerewolfAction, 
     handleSeerAction, 
-    handleCancelWerewolf,
     handleCancelWerewolf
 } = require('../lib/commands/newwerewolf');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
