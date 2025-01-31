@@ -42,6 +42,16 @@ const { diceHandler,
     handleDiceChoice,
     diceStatsHandler  
  } = require('../lib/commands/dice');
+ const { 
+    werewolfHandler, 
+    joinWerewolfHandler, 
+    startWerewolfHandler, 
+    handleVote, 
+    handleWerewolfAction, 
+    handleSeerAction, 
+    handleCancelWerewolf,
+    handleCancelWerewolf
+} = require('../lib/commands/newwerewolf');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 
@@ -245,6 +255,19 @@ async function handleMessages(sock) {
                     case 'tf':
                         await transferHandler(sock, msg);
                         break;
+                    case 'werewolf':
+                    case 'ww':
+                        await werewolfHandler(sock, msg);
+                        break;
+                    case 'joinww':
+                        await joinWerewolfHandler(sock, msg);
+                        break;
+                    case 'startww':
+                        await startWerewolfHandler(sock, msg);
+                        break;
+                    case 'cancelww':
+                        await handleCancelWerewolf(sock, msg);
+                        break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
                         if (isNaN(infoNumber)) {
@@ -264,6 +287,33 @@ async function handleMessages(sock) {
                         });
                         break;
                 }
+            }
+
+                        // Handle Werewolf night actions (Werewolf and Seer)
+            if (msg.message?.conversation) {
+                const body = msg.message.conversation;
+                const game = activeGames.get(msg.key.remoteJid);
+
+                if (game && game.phase === 'NIGHT') {
+                    if (game.roles.get(msg.key.participant || msg.key.remoteJid) === roles.WEREWOLF) {
+                        await handleWerewolfAction(sock, msg);
+                    } else if (game.roles.get(msg.key.participant || msg.key.remoteJid) === roles.SEER) {
+                        await handleSeerAction(sock, msg);
+                    }
+                }
+            }
+
+            // Handle Werewolf voting
+            if (msg.message?.extendedTextMessage?.contextInfo?.mentionedJid) {
+                const game = activeGames.get(msg.key.remoteJid);
+                if (game && game.phase === 'DAY') {
+                    await handleVote(sock, msg);
+                }
+            }
+
+            // Handle Werewolf cancel
+            if (body.startsWith('.cancelww')) {
+                await handleCancelWerewolf(sock, msg);
             }
 
             // Handle game moves
