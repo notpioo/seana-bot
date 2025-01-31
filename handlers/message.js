@@ -43,6 +43,7 @@ const { diceHandler,
     diceStatsHandler  
  } = require('../lib/commands/dice');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
+const { transferHandler } = require('../lib/commands/transfer');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -240,6 +241,9 @@ async function handleMessages(sock) {
                         break;
                     case 'use':
                         await useBoostHandler(sock, msg);
+                        break;
+                    case 'tf':
+                        await transferHandler(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);

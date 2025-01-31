@@ -1,18 +1,17 @@
-// database/models/Market.js
 const mongoose = require('mongoose');
 
 const marketSchema = new mongoose.Schema({
     currentRate: {
         type: Number,
-        default: 10000 // Base rate: 0.005000 COIN = 10000 balance
+        default: 40000000 // Base rate: 1 COIN = 40,000,000 balance
     },
     baseRate: {
         type: Number,
-        default: 10000
+        default: 40000000
     },
     volatility: {
         type: Number,
-        default: 0.15 // 15% max price movement
+        default: 0.08 // 8% max price movement per update (more realistic)
     },
     lastUpdate: {
         type: Date,
@@ -26,6 +25,19 @@ const marketSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    marketTrend: {
+        type: String,
+        enum: ['bullish', 'bearish', 'sideways'],
+        default: 'sideways'
+    },
+    trendStrength: {
+        type: Number,
+        default: 0.5 // 0-1 scale
+    },
+    trendDuration: {
+        type: Number,
+        default: 0 // Number of intervals the trend has persisted
+    },
     priceHistory: [{
         rate: Number,
         timestamp: {
@@ -35,23 +47,65 @@ const marketSchema = new mongoose.Schema({
     }]
 });
 
+// Method to update market trend
+marketSchema.methods.updateMarketTrend = function() {
+    // 10% chance to change trend each update
+    if (Math.random() < 0.10) {
+        const trends = ['bullish', 'bearish', 'sideways'];
+        this.marketTrend = trends[Math.floor(Math.random() * trends.length)];
+        this.trendStrength = 0.3 + Math.random() * 0.7; // Random strength between 0.3-1.0
+        this.trendDuration = 0;
+    } else {
+        this.trendDuration++;
+        // Gradually decrease trend strength over time
+        if (this.trendDuration > 12) { // After 1 hour (12 * 5 minutes)
+            this.trendStrength *= 0.95;
+        }
+    }
+};
+
 // Method to update rate based on market conditions
 marketSchema.methods.updateRate = async function() {
     const now = new Date();
     const timeDiff = (now - this.lastUpdate) / (1000 * 60); // minutes
     
     if (timeDiff >= 5) { // Update every 5 minutes
-        // Calculate new rate based on supply and demand
-        const randomFactor = 1 + (Math.random() * 2 - 1) * this.volatility;
-        const supplyFactor = Math.max(0.8, Math.min(1.2, 1 + (this.totalSupply / 1000000))); // Supply impact
+        // Update market trend first
+        this.updateMarketTrend();
         
-        let newRate = this.currentRate * randomFactor * supplyFactor;
+        // Base volatility adjusted by trend
+        let effectiveVolatility = this.volatility;
+        if (this.marketTrend === 'bullish' || this.marketTrend === 'bearish') {
+            effectiveVolatility *= (1 + this.trendStrength);
+        }
         
-        // Ensure rate stays within reasonable bounds
-        newRate = Math.max(this.baseRate * 0.5, Math.min(this.baseRate * 2, newRate));
+        // Calculate trend bias (-1 to 1)
+        let trendBias = 0;
+        switch(this.marketTrend) {
+            case 'bullish':
+                trendBias = this.trendStrength * 0.5;
+                break;
+            case 'bearish':
+                trendBias = -this.trendStrength * 0.5;
+                break;
+            default: // sideways
+                trendBias = 0;
+        }
         
-        // Update rate and history
-        this.currentRate = Math.round(newRate);
+        // Calculate price movement
+        const randomFactor = (Math.random() * 2 - 1) * effectiveVolatility;
+        const supplyFactor = Math.max(0.9, Math.min(1.1, 1 + (this.totalSupply / 10000000))); // Supply impact
+        const marketSentiment = randomFactor + trendBias;
+        
+        let newRate = this.currentRate * (1 + marketSentiment) * supplyFactor;
+        
+        // Ensure rate stays within reasonable bounds (20M - 80M)
+        newRate = Math.max(20000000, Math.min(80000000, newRate));
+        
+        // Round to nearest 1000 for cleaner numbers
+        this.currentRate = Math.round(newRate / 1000) * 1000;
+        
+        // Update price history
         this.priceHistory.push({
             rate: this.currentRate,
             timestamp: now
