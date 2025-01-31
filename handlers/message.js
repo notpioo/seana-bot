@@ -81,12 +81,26 @@ async function handleMessages(sock) {
 
             // Check premium expiry
             if (user?.status === 'premium' && user.premiumExpiry) {
-                if (new Date(user.premiumExpiry).getTime() < Date.now()) {
-                    await User.updateUser(senderJid, { 
-                        status: 'basic', 
-                        premiumExpiry: null, 
-                        limit: 25 
-                    });
+                const now = new Date();
+                const expiry = new Date(user.premiumExpiry);
+                
+                if (expiry < now) {
+                    try {
+                        const updated = await User.updateUser(senderJid, { 
+                            status: 'basic', 
+                            premiumExpiry: null, 
+                            limit: 25 
+                        });
+                        
+                        if (updated) {
+                            await sock.sendMessage(msg.key.remoteJid, { 
+                                text: '⚠️ Status premium Anda telah berakhir. Status diubah menjadi basic.',
+                                quoted: msg 
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error updating expired premium status:', error);
+                    }
                 }
             }
 

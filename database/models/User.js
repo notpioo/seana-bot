@@ -148,11 +148,34 @@ class User {
             const users = await this.model.find();
             
             for (const user of users) {
+                let shouldUpdate = false;
+                const updates = {};
+    
+                // Check daily limit reset
                 const lastReset = new Date(user.lastLimitReset);
                 if (now.getDate() !== lastReset.getDate()) {
-                    user.limit = user.status === 'premium' ? Infinity : 25;
-                    user.lastLimitReset = now;
-                    await user.save();
+                    updates.limit = user.status === 'premium' ? Infinity : 25;
+                    updates.lastLimitReset = now;
+                    shouldUpdate = true;
+                }
+    
+                // Check premium expiry
+                if (user.status === 'premium' && user.premiumExpiry) {
+                    if (new Date(user.premiumExpiry).getTime() < now.getTime()) {
+                        updates.status = 'basic';
+                        updates.premiumExpiry = null;
+                        updates.limit = 25;
+                        shouldUpdate = true;
+                    }
+                }
+    
+                // Apply updates if needed
+                if (shouldUpdate) {
+                    await this.model.findOneAndUpdate(
+                        { _id: user._id },
+                        { $set: updates },
+                        { new: true }
+                    );
                 }
             }
         } catch (error) {
