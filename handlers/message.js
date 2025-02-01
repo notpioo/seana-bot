@@ -35,11 +35,16 @@ const { diceHandler,
     handleDiceChoice,
     diceStatsHandler  
  } = require('../lib/commands/dice');
- const { balanceHandler,
+const { balanceHandler,
     limitHandler,
     premiumHandler,
     banHandler,
     addCdCryptoHandler } = require('../lib/commands/owner');
+const { startFishing,
+    viewFishBag,
+    sellFish,
+    fishShop,
+    fishStats } = require('../lib/commands/fishing');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 const { slotHandler } = require('../lib/commands/slot');
@@ -246,6 +251,18 @@ async function handleMessages(sock) {
                         break;
                     case 'slot':
                         await slotHandler(sock, msg);
+                        break;
+                    case 'fishbag':
+                        await viewFishBag(sock, msg);
+                        break;
+                    case 'sellfish':
+                        await sellFish(sock, msg);
+                        break;
+                    case 'fishshop':
+                        await fishShop(sock, msg);
+                        break;
+                    case 'fishstats':
+                        await fishStats(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
