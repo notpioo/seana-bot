@@ -42,6 +42,7 @@ const { diceHandler,
     addCdCryptoHandler } = require('../lib/commands/owner');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
+const { slotHandler } = require('../lib/commands/slot');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -242,6 +243,9 @@ async function handleMessages(sock) {
                         break;
                     case 'tf':
                         await transferHandler(sock, msg);
+                        break;
+                    case 'slot':
+                        await slotHandler(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
