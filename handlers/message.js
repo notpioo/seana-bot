@@ -1,6 +1,7 @@
 const { profileHandler } = require('../lib/commands/profile');
 const { setUsernameHandler } = require('../lib/commands/username');
 const { menuHandler } = require('../lib/commands/menu');
+const { updateHandler } = require('../lib/commands/update');
 const { suitHandler, handleSuitResponse, handleSuitChoice } = require('../lib/commands/suit');
 const { stickerHandler } = require('../lib/commands/sticker');
 const { cekPremHandler } = require('../lib/commands/cekprem');
@@ -40,9 +41,24 @@ const { balanceHandler,
     premiumHandler,
     banHandler,
     addCdCryptoHandler } = require('../lib/commands/owner');
+const { 
+    fishingHandler,
+    dashboardHandler,
+    areaHandler,
+    switchRodHandler,
+    fishBagHandler,
+    sellFishHandler,
+    fishShopHandler,
+    fishStatsHandler,
+    switchBaitHandler,
+    baitShopHandler,
+    buyBaitHandler,
+    buyRodHandler
+} = require('../lib/commands/fish');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 const { slotHandler } = require('../lib/commands/slot');
+const Fish = require('../database/models/Fish');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -247,6 +263,45 @@ async function handleMessages(sock) {
                     case 'slot':
                         await slotHandler(sock, msg);
                         break;
+                    case 'fish':
+                        await fishingHandler(sock, msg);
+                        break;
+                    case 'fishing':
+                        await dashboardHandler(sock, msg);
+                        break;
+                    case 'area':
+                        await areaHandler(sock, msg);
+                        break;
+                    case 'switchrod':
+                        await switchRodHandler(sock, msg);
+                        break;
+                    case 'fishbag':
+                        await fishBagHandler(sock, msg);
+                        break;
+                    case 'sellfish':
+                        await sellFishHandler(sock, msg);
+                        break;
+                    case 'fishshop':
+                        await fishShopHandler(sock, msg);
+                        break;
+                    case 'fishstats':
+                        await fishStatsHandler(sock, msg);
+                        break;
+                    case 'buyrod':
+                        await buyRodHandler(sock, msg);
+                        break;
+                    case 'switchbait':
+                        await switchBaitHandler(sock, msg);
+                        break;
+                    case 'baitshop':
+                        await baitShopHandler(sock, msg);
+                        break;
+                    case 'buybait':
+                        await buyBaitHandler(sock, msg);
+                        break;
+                    case 'update':
+                        await updateHandler(sock, msg);
+                        break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
                         if (isNaN(infoNumber)) {
@@ -267,6 +322,8 @@ async function handleMessages(sock) {
                         break;
                 }
             }
+
+
 
             // Handle game moves
             const moveNumber = parseInt(body);
