@@ -44,7 +44,10 @@ const { startFishing,
     viewFishBag,
     sellFish,
     fishShop,
-    fishStats } = require('../lib/commands/fishing');
+    fishStats,
+    switchRod,
+    fishingDashboard,
+    handleLocation } = require('../lib/commands/fishing');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 const { slotHandler } = require('../lib/commands/slot');
@@ -252,6 +255,10 @@ async function handleMessages(sock) {
                     case 'slot':
                         await slotHandler(sock, msg);
                         break;
+                    case 'fish':
+                    case 'mancing':
+                        await startFishing(sock, msg);
+                        break;
                     case 'fishbag':
                         await viewFishBag(sock, msg);
                         break;
@@ -263,6 +270,15 @@ async function handleMessages(sock) {
                         break;
                     case 'fishstats':
                         await fishStats(sock, msg);
+                        break;
+                    case 'switchrod':
+                        await switchRod(sock, msg);
+                        break;
+                    case 'fishing':
+                        await fishingDashboard(sock, msg);
+                        break;
+                    case 'location':
+                        await handleLocation(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
