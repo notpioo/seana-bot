@@ -35,6 +35,11 @@ const { diceHandler,
     handleDiceChoice,
     diceStatsHandler  
  } = require('../lib/commands/dice');
+ const { balanceHandler,
+    limitHandler,
+    premiumHandler,
+    banHandler,
+    addCdCryptoHandler } = require('../lib/commands/owner');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 
