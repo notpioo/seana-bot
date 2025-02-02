@@ -56,6 +56,8 @@ const fishSchema = new mongoose.Schema({
         rareCatch: { type: Number, default: 0 },
         epicCatch: { type: Number, default: 0 },
         legendaryCatch: { type: Number, default: 0 },
+        mythicCatch: { type: Number, default: 0 },
+        secretCatch: { type: Number, default: 0 },
         totalProfit: { type: Number, default: 0 }
     }
 });
