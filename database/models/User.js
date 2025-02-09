@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         type: Number, 
         default: 0 
     },
+    chips: {  // Added chips field
+        type: Number,
+        default: 1000  // Starting chips amount
+    },
     memberSince: { 
         type: Date, 
         default: Date.now 
