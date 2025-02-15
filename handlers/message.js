@@ -18,6 +18,7 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
+const { craftingHandler, craftHandler } = require('../lib/commands/crafting');
 const { susunKataHandler,
     handleSusunKataAnswer, 
     gameState, 
@@ -45,7 +46,10 @@ const { balanceHandler,
 const { 
     fishingHandler,
     dashboardHandler,
+    startBonanzaHandler,
+    endBonanzaHandler,
     areaHandler,
+    areaEventHandler,
     switchRodHandler,
     fishBagHandler,
     sellFishHandler,
@@ -58,8 +62,8 @@ const {
     lockFishHandler,
     unlockFishHandler,
     specialShopHandler,
-    addStockHandler
-    
+    addStockHandler,
+    fishEventHandler
 } = require('../lib/commands/fish');
 const { 
     tradeHandler, 
@@ -296,6 +300,9 @@ async function handleMessages(sock) {
                     case 'area':
                         await areaHandler(sock, msg);
                         break;
+                    case 'areaevent':
+                        await areaEventHandler(sock, msg);
+                        break;
                     case 'switchrod':
                         await switchRodHandler(sock, msg);
                         break;
@@ -335,6 +342,15 @@ async function handleMessages(sock) {
                     case 'addstock':
                         await addStockHandler(sock, msg);
                         break;
+                    case 'startbonanza':
+                        await startBonanzaHandler(sock, msg);
+                        break;
+                    case 'endbonanza':
+                        await endBonanzaHandler(sock, msg);
+                        break;
+                    case 'fishevent':
+                        await fishEventHandler(sock, msg);
+                        break;
                     case 'trade':
                         await tradeHandler(sock, msg);
                         break;
@@ -371,6 +387,12 @@ async function handleMessages(sock) {
                         break;
                     case 'tebakbom':
                         await tebakBomHandler(sock, msg);
+                        break;
+                    case 'crafting':
+                        await craftingHandler(sock, msg);
+                        break;
+                    case 'craft':
+                        await craftHandler(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);

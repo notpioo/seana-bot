@@ -53,6 +53,11 @@ const fishSchema = new mongoose.Schema({
     event: {
         isActive: { type: Boolean, default: false },
         endTime: { type: Date, default: null }
+    },
+    bonanzaEvent: {
+        isActive: { type: Boolean, default: false },
+        endTime: { type: Date, default: null },
+        lunarBait: { type: Number, default: 0 }
     }
 });
 
