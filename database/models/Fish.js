@@ -21,17 +21,6 @@ const fishSchema = new mongoose.Schema({
         type: [String],
         default: ['indonesia']
     },
-    inventory: {
-        rods: [{
-            name: String,
-            durability: Number
-        }],
-        fish: [{
-            name: String,
-            rarity: String,
-            quantity: Number
-        }]
-    },
     currentBait: {
         type: String,
         default: 'normal'
@@ -44,7 +33,8 @@ const fishSchema = new mongoose.Schema({
         fish: [{
             name: String,
             rarity: String,
-            quantity: Number
+            quantity: Number,
+            isLocked: { type: Boolean, default: false } // Ubah dari 'locked' ke 'isLocked'
         }],
         baits: [{
             name: String,
@@ -59,6 +49,10 @@ const fishSchema = new mongoose.Schema({
         mythicCatch: { type: Number, default: 0 },
         secretCatch: { type: Number, default: 0 },
         totalProfit: { type: Number, default: 0 }
+    },
+    event: {
+        isActive: { type: Boolean, default: false },
+        endTime: { type: Date, default: null }
     }
 });
 

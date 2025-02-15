@@ -34,7 +34,8 @@ const { diceHandler,
     joinDiceHandler,
     startDiceHandler,
     handleDiceChoice,
-    diceStatsHandler  
+    diceStatsHandler,
+    resetDiceStatsHandler
  } = require('../lib/commands/dice');
 const { balanceHandler,
     limitHandler,
@@ -53,12 +54,35 @@ const {
     switchBaitHandler,
     baitShopHandler,
     buyBaitHandler,
-    buyRodHandler
+    buyRodHandler,
+    lockFishHandler,
+    unlockFishHandler,
+    specialShopHandler,
+    addStockHandler
+    
 } = require('../lib/commands/fish');
+const { 
+    tradeHandler, 
+    handleTradeResponse,
+    putTradeHandler, 
+    acceptTradeHandler, 
+    cancelTradeHandler 
+} = require('../lib/commands/trade');
+const Pokemon = require('../database/models/Pokemon');
+const { 
+    startMonHandler,
+    exploreHandler,
+    catchHandler,
+    monsHandler,
+    trainHandler,
+    evolveHandler,
+    encounters
+} = require('../lib/commands/pokemon');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
 const { slotHandler } = require('../lib/commands/slot');
 const Fish = require('../database/models/Fish');
+const { tebakBomHandler, handleBombGuess } = require('../lib/commands/tebakbom');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -233,6 +257,9 @@ async function handleMessages(sock) {
                     case 'dicestats':
                         await diceStatsHandler(sock, msg);
                         break;
+                    case 'resetdice':
+                        await resetDiceStatsHandler(sock, msg);
+                        break;
                     case 'inventory':
                         await inventoryHandler(sock, msg);
                         break;
@@ -247,9 +274,6 @@ async function handleMessages(sock) {
                         break;
                     case 'market':
                         await marketHandler(sock, msg);
-                        break;
-                    case 'sellcrypto':
-                        await sellCryptoHandler(sock, msg);
                         break;
                     case 'addcdcrypto':
                         await addCdCryptoHandler(sock, msg);
@@ -299,8 +323,54 @@ async function handleMessages(sock) {
                     case 'buybait':
                         await buyBaitHandler(sock, msg);
                         break;
+                    case 'lockfish':
+                        await lockFishHandler(sock, msg);
+                        break;
+                    case 'unlockfish':
+                        await unlockFishHandler(sock, msg);
+                        break;
+                    case 'specialshop':
+                        await specialShopHandler(sock, msg);
+                        break;
+                    case 'addstock':
+                        await addStockHandler(sock, msg);
+                        break;
+                    case 'trade':
+                        await tradeHandler(sock, msg);
+                        break;
+                    case 'puttrade':
+                        await putTradeHandler(sock, msg);
+                        break;
+                    case 'atrade':
+                        await acceptTradeHandler(sock, msg);
+                        break;
+                    case 'ctrade':
+                        await cancelTradeHandler(sock, msg);
+                        break;
                     case 'update':
                         await updateHandler(sock, msg);
+                        break;
+                    case 'startmon':
+                        await startMonHandler(sock, msg);
+                        break;
+                    case 'explore':
+                    case 'exp':
+                        await exploreHandler(sock, msg);
+                        break;
+                    case 'catch':
+                        await catchHandler(sock, msg);
+                        break;
+                    case 'mons':
+                        await monsHandler(sock, msg);
+                        break;
+                    case 'train':
+                        await trainHandler(sock, msg);
+                        break;
+                    case 'evolve':
+                        await evolveHandler(sock, msg);
+                        break;
+                    case 'tebakbom':
+                        await tebakBomHandler(sock, msg);
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
@@ -331,6 +401,12 @@ async function handleMessages(sock) {
                 await handleTicTacToeMove(sock, msg);
             }
 
+            // Handle bomb guesses (1-9)
+            const guess = parseInt(body);
+            if (!isNaN(guess) && guess >= 1 && guess <= 9) {
+                await handleBombGuess(sock, msg);
+            }
+
             // Handle dice choices (K/B)
             if (['K', 'B'].includes(body.toUpperCase())) {
                 await handleDiceChoice(sock, msg);
@@ -341,9 +417,15 @@ async function handleMessages(sock) {
                 await handleSusunKataAnswer(sock, msg);
             }
 
-            // Handle suit responses (Y/T)
+            // Handle suit/trade responses (Y/T)
             if (body.toUpperCase() === 'Y' || body.toUpperCase() === 'T') {
-                await handleSuitResponse(sock, msg);
+                // Cek apakah ada suit response handler dulu
+                const isSuitResponse = await handleSuitResponse(sock, msg);
+                
+                // Jika bukan suit response, cek apakah trade response
+                if (!isSuitResponse) {
+                    await handleTradeResponse(sock, msg);
+                }
             }
 
             // Handle suit choices (G/B/K)
@@ -359,12 +441,60 @@ async function handleMessages(sock) {
             // Handle confess replies
             await handleConfessReply(sock, msg);
 
+            // Handle starter Pokemon selection (1-3)
+            const starterChoice = parseInt(body);
+            if (!isNaN(starterChoice) && starterChoice >= 1 && starterChoice <= 3) {
+                const encounter = encounters[msg.key.remoteJid];
+                if (encounter?.type === 'starter' && encounter.userId === senderJid) {
+                    const pokemon = encounter.options[starterChoice - 1];
+                    try {
+                        // Create the chosen starter Pokemon using createPokemon method
+                        const newPokemon = await Pokemon.createPokemon(senderJid, {
+                            name: pokemon.name,
+                            type: pokemon.type,
+                            rarity: pokemon.rarity,
+                            stats: pokemon.stats,
+                            moves: pokemon.moves,
+                            level: 0,
+                            xp: 0,
+                            isActive: true
+                        });
+
+                        if (newPokemon) {
+                            await sock.sendMessage(msg.key.remoteJid, {
+                                text: `🎉 Selamat! Kamu memilih ${pokemon.name} 
+                                sebagai Pokemon pertamamu!\n\nStats:\n❤️: ${pokemon.stats.hp}\n⚔️: ${pokemon.stats.attack}
+                                \n🛡️: ${pokemon.stats.defense}\n💨: ${pokemon.stats.speed}
+                                \n\nGunakan .mons untuk melihat Pokemonmu dan .explore untuk mencari Pokemon liar!`,
+                                quoted: msg
+                            });
+                            
+                            // Clear the encounter
+                            delete encounters[msg.key.remoteJid];
+                        } else {
+                            await sock.sendMessage(msg.key.remoteJid, {
+                                text: '❌ Terjadi kesalahan saat memilih Pokemon starter',
+                                quoted: msg
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error in starter selection:', error);
+                        await sock.sendMessage(msg.key.remoteJid, {
+                            text: '❌ Terjadi kesalahan saat memproses pemilihan Pokemon',
+                            quoted: msg
+                        });
+                    }
+                }
+            }
+
         } catch (error) {
             console.error('Error handling message:', error);
-            await sock.sendMessage(msg.key.remoteJid, {
-                text: '❌ Terjadi kesalahan saat memproses command',
-                quoted: msg
-            });
+            if (msg && msg.key && msg.key.remoteJid) {  // Add null check
+                await sock.sendMessage(msg.key.remoteJid, {
+                    text: '❌ Terjadi kesalahan saat memproses command',
+                    quoted: msg
+                });
+            }
         }
     });
 }
