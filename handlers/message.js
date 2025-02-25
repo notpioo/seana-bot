@@ -18,7 +18,6 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
-const { craftingHandler, craftHandler } = require('../lib/commands/crafting');
 const { susunKataHandler,
     handleSusunKataAnswer, 
     gameState, 
@@ -72,21 +71,16 @@ const {
     acceptTradeHandler, 
     cancelTradeHandler 
 } = require('../lib/commands/trade');
-const Pokemon = require('../database/models/Pokemon');
-const { 
-    startMonHandler,
-    exploreHandler,
-    catchHandler,
-    monsHandler,
-    trainHandler,
-    evolveHandler,
-    encounters
-} = require('../lib/commands/pokemon');
+const {
+    fastTypeHandler,
+    handleAnswer
+} = require('../lib/commands/fasttype');
 const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
 const { transferHandler } = require('../lib/commands/transfer');
-const { slotHandler } = require('../lib/commands/slot');
+const { afkHandler, checkAfkStatus } = require('../lib/commands/afk');
 const Fish = require('../database/models/Fish');
 const { tebakBomHandler, handleBombGuess } = require('../lib/commands/tebakbom');
+const { tebakAngkaHandler, handleGuess, hasActiveGame } = require('../lib/commands/tebakangka');
 
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
@@ -127,7 +121,7 @@ async function handleMessages(sock) {
             if (user?.status === 'premium' && user.premiumExpiry) {
                 const now = new Date();
                 const expiry = new Date(user.premiumExpiry);
-                
+
                 if (expiry < now) {
                     try {
                         const updated = await User.updateUser(senderJid, { 
@@ -135,7 +129,7 @@ async function handleMessages(sock) {
                             premiumExpiry: null, 
                             limit: 25 
                         });
-                        
+
                         if (updated) {
                             await sock.sendMessage(msg.key.remoteJid, { 
                                 text: '⚠️ Status premium Anda telah berakhir. Status diubah menjadi basic.',
@@ -288,9 +282,6 @@ async function handleMessages(sock) {
                     case 'tf':
                         await transferHandler(sock, msg);
                         break;
-                    case 'slot':
-                        await slotHandler(sock, msg);
-                        break;
                     case 'fish':
                         await fishingHandler(sock, msg);
                         break;
@@ -366,33 +357,26 @@ async function handleMessages(sock) {
                     case 'update':
                         await updateHandler(sock, msg);
                         break;
-                    case 'startmon':
-                        await startMonHandler(sock, msg);
-                        break;
-                    case 'explore':
-                    case 'exp':
-                        await exploreHandler(sock, msg);
-                        break;
-                    case 'catch':
-                        await catchHandler(sock, msg);
-                        break;
-                    case 'mons':
-                        await monsHandler(sock, msg);
-                        break;
-                    case 'train':
-                        await trainHandler(sock, msg);
-                        break;
-                    case 'evolve':
-                        await evolveHandler(sock, msg);
-                        break;
                     case 'tebakbom':
                         await tebakBomHandler(sock, msg);
                         break;
-                    case 'crafting':
-                        await craftingHandler(sock, msg);
+                    case 'tebakangka':
+                        await tebakAngkaHandler(sock, msg);
                         break;
-                    case 'craft':
-                        await craftHandler(sock, msg);
+                    case 'fasttype':
+                        await fastTypeHandler(sock, msg);
+                        break;
+                    case 'afk':
+                        await afkHandler(sock, msg);
+                        break;
+                    case 'ping':
+                        const start = performance.now();
+                        await sock.sendMessage(msg.key.remoteJid, { react: { text: "🏓", key: msg.key } });
+                        const latency = (performance.now() - start).toFixed(4);
+                        await sock.sendMessage(msg.key.remoteJid, {
+                            text: `🏓 Pong! Latency: ${latency}ms`,
+                            quoted: msg
+                        });
                         break;
                     case 'boostinfo':
                         const infoNumber = parseInt(body.split(' ')[1]);
@@ -425,8 +409,14 @@ async function handleMessages(sock) {
 
             // Handle bomb guesses (1-9)
             const guess = parseInt(body);
-            if (!isNaN(guess) && guess >= 1 && guess <= 9) {
-                await handleBombGuess(sock, msg);
+            if (!isNaN(guess)) {
+                if (guess >= 1 && guess <= 9) {
+                    await handleBombGuess(sock, msg);
+                }
+                // Handle number guessing game
+                if (hasActiveGame(msg.key.remoteJid)) {
+                    await handleGuess(sock, msg);
+                }
             }
 
             // Handle dice choices (K/B)
@@ -443,7 +433,7 @@ async function handleMessages(sock) {
             if (body.toUpperCase() === 'Y' || body.toUpperCase() === 'T') {
                 // Cek apakah ada suit response handler dulu
                 const isSuitResponse = await handleSuitResponse(sock, msg);
-                
+
                 // Jika bukan suit response, cek apakah trade response
                 if (!isSuitResponse) {
                     await handleTradeResponse(sock, msg);
@@ -460,54 +450,15 @@ async function handleMessages(sock) {
                 await handleMathAnswer(sock, msg);
             }
 
+            // Handle fast type answers
+            await handleAnswer(sock, msg);
+
             // Handle confess replies
             await handleConfessReply(sock, msg);
 
-            // Handle starter Pokemon selection (1-3)
-            const starterChoice = parseInt(body);
-            if (!isNaN(starterChoice) && starterChoice >= 1 && starterChoice <= 3) {
-                const encounter = encounters[msg.key.remoteJid];
-                if (encounter?.type === 'starter' && encounter.userId === senderJid) {
-                    const pokemon = encounter.options[starterChoice - 1];
-                    try {
-                        // Create the chosen starter Pokemon using createPokemon method
-                        const newPokemon = await Pokemon.createPokemon(senderJid, {
-                            name: pokemon.name,
-                            type: pokemon.type,
-                            rarity: pokemon.rarity,
-                            stats: pokemon.stats,
-                            moves: pokemon.moves,
-                            level: 0,
-                            xp: 0,
-                            isActive: true
-                        });
+            // Check AFK status
+            await checkAfkStatus(sock, msg);
 
-                        if (newPokemon) {
-                            await sock.sendMessage(msg.key.remoteJid, {
-                                text: `🎉 Selamat! Kamu memilih ${pokemon.name} 
-                                sebagai Pokemon pertamamu!\n\nStats:\n❤️: ${pokemon.stats.hp}\n⚔️: ${pokemon.stats.attack}
-                                \n🛡️: ${pokemon.stats.defense}\n💨: ${pokemon.stats.speed}
-                                \n\nGunakan .mons untuk melihat Pokemonmu dan .explore untuk mencari Pokemon liar!`,
-                                quoted: msg
-                            });
-                            
-                            // Clear the encounter
-                            delete encounters[msg.key.remoteJid];
-                        } else {
-                            await sock.sendMessage(msg.key.remoteJid, {
-                                text: '❌ Terjadi kesalahan saat memilih Pokemon starter',
-                                quoted: msg
-                            });
-                        }
-                    } catch (error) {
-                        console.error('Error in starter selection:', error);
-                        await sock.sendMessage(msg.key.remoteJid, {
-                            text: '❌ Terjadi kesalahan saat memproses pemilihan Pokemon',
-                            quoted: msg
-                        });
-                    }
-                }
-            }
 
         } catch (error) {
             console.error('Error handling message:', error);
