@@ -18,6 +18,7 @@ const { topGlobalHandler } = require('../lib/commands/topglobal');
 const { addHandler, kickHandler } = require('../lib/commands/group');
 const { seaHandler } = require('../lib/commands/sea');
 const { setApikeyHandler } = require('../lib/commands/setapikey');
+const {quotesHandler} = require('../lib/commands/quotes');
 const { susunKataHandler,
     handleSusunKataAnswer, 
     gameState, 
@@ -368,6 +369,9 @@ async function handleMessages(sock) {
                         break;
                     case 'afk':
                         await afkHandler(sock, msg);
+                        break;
+                    case 'quotes':
+                        await quotesHandler(sock, msg);
                         break;
                     case 'ping':
                         const start = performance.now();
