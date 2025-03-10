@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await loginUser(email, password);
             
             if (result.success) {
+                // Save auth token to localStorage for API requests
+                localStorage.setItem('authToken', result.user.uid);
                 window.location.href = 'index.html';
             } else {
                 errorMessage.textContent = result.error || 'Login failed. Please try again.';

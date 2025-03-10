@@ -39,6 +39,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await registerUser(username, email, password);
             
             if (result.success) {
+                // Save auth token to localStorage for API requests
+                localStorage.setItem('authToken', result.user.uid);
                 window.location.href = 'index.html';
             } else {
                 errorMessage.textContent = result.error || 'Registration failed. Please try again.';

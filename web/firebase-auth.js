@@ -62,8 +62,12 @@ export async function loginUser(email, password) {
 export async function logoutUser() {
   try {
     await signOut(auth);
+    // Clear local storage auth token
+    localStorage.removeItem('authToken');
+    console.log("User logged out successfully");
     return { success: true };
   } catch (error) {
+    console.error("Logout error:", error);
     return { success: false, error: error.message };
   }
 }

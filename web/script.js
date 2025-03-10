@@ -22,17 +22,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Logout button
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async function(e) {
+    // Logout buttons (handle all logout buttons on the page)
+    const logoutBtns = document.querySelectorAll('#logoutBtn, #sidebarLogoutBtn, .user-info .dropdown-menu a#logoutBtn');
+    
+    logoutBtns.forEach(btn => {
+        btn.addEventListener('click', async function(e) {
             e.preventDefault();
+            console.log("Logout clicked");
             const result = await logoutUser();
             if (result.success) {
                 window.location.href = 'login.html';
+            } else {
+                alert("Logout failed: " + (result.error || "Unknown error"));
             }
         });
-    }
+    });
     
     // Connect to WebSocket for real-time logs
     const socket = io();
@@ -136,7 +140,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Check bot status on load as fallback
-    fetch('/api/bot/status')
+    fetch('/api/bot/status', {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+    })
         .then(response => response.json())
         .then(data => {
             if (data.status === 'online') {
@@ -183,7 +191,10 @@ document.addEventListener('DOMContentLoaded', function() {
         addLog('Starting bot...');
         
         fetch('/api/bot/start', {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
         })
         .then(response => response.json())
         .then(data => {
@@ -207,7 +218,10 @@ document.addEventListener('DOMContentLoaded', function() {
         addLog('Stopping bot...');
         
         fetch('/api/bot/stop', {
-            method: 'POST'
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
         })
         .then(response => response.json())
         .then(data => {
@@ -238,7 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
         addLog('Deleting session...');
         
         fetch('/api/bot/session', {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+            }
         })
         .then(response => response.json())
         .then(data => {

@@ -171,7 +171,36 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, 'web', 'register.html'));
 });
 
-// Auth middleware for protected routes
+// Authentication middleware to protect routes
+const authenticateMiddleware = (req, res, next) => {
+    // For API routes, check authentication header
+    const authHeader = req.headers.authorization;
+    
+    if (req.path === '/login.html' || req.path === '/register.html' || 
+        req.path === '/login' || req.path === '/register' || 
+        req.path.startsWith('/firebase-auth.js') || 
+        req.path.startsWith('/login.js') || 
+        req.path.startsWith('/register.js') ||
+        req.path.startsWith('/style.css')) {
+        // Allow access to auth pages without authentication
+        return next();
+    }
+    
+    // If accessing main page or dashboard, redirect to login
+    if (!authHeader && (req.path === '/' || req.path === '/index.html')) {
+        return res.redirect('/login.html');
+    }
+    
+    // For API calls, return 401 if not authenticated
+    if (!authHeader && req.path.startsWith('/api/')) {
+        return res.status(401).json({ success: false, message: 'Authentication required' });
+    }
+    
+    next();
+};
+
+// Apply authentication middleware
+app.use(authenticateMiddleware);ted routes
 const checkAuth = (req, res, next) => {
     // Firebase auth will be handled client-side
     // This is just to ensure direct URL access is redirected to login
