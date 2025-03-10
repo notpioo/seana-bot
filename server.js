@@ -2,14 +2,18 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
-const { exec } = require('child_process');
+const { exec, spawn } = require('child_process');
 const bodyParser = require('body-parser');
 const { promisify } = require('util');
+const http = require('http');
+const { Server } = require('socket.io');
 
 const execAsync = promisify(exec);
 require('dotenv').config();
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 
 // Middleware
@@ -22,6 +26,30 @@ let botState = {
     status: 'offline',
     startTime: null
 };
+
+// Socket connection for real-time logs
+io.on('connection', (socket) => {
+    console.log('Client connected to websocket');
+    
+    // Send current bot status on connection
+    socket.emit('botStatus', {
+        status: botState.status,
+        startTime: botState.startTime
+    });
+    
+    socket.on('disconnect', () => {
+        console.log('Client disconnected from websocket');
+    });
+});
+
+// Function to send logs to all connected clients
+function sendLogToClients(message, type = 'info') {
+    io.emit('botLog', {
+        time: new Date().toLocaleTimeString(),
+        message,
+        type
+    });
+}
 
 // API Routes
 app.get('/api/bot/status', (req, res) => {
@@ -42,18 +70,34 @@ app.post('/api/bot/start', async (req, res) => {
             botProcess = null;
         }
 
-        botProcess = exec('node index.js');
+        sendLogToClients('Starting bot...');
+        
+        // Use spawn instead of exec for better output handling
+        botProcess = spawn('node', ['index.js'], {
+            stdio: ['ignore', 'pipe', 'pipe']
+        });
         
         botProcess.stdout.on('data', (data) => {
-            console.log(`Bot stdout: ${data}`);
+            const output = data.toString();
+            console.log(`Bot stdout: ${output}`);
+            sendLogToClients(output);
+            
+            // Check if the output contains a QR code
+            if (output.includes('scan QR code') || output.includes('QR Code received')) {
+                sendLogToClients('QR Code ready for scanning! Check terminal or continue monitoring logs.', 'qr');
+            }
         });
         
         botProcess.stderr.on('data', (data) => {
-            console.error(`Bot stderr: ${data}`);
+            const error = data.toString();
+            console.error(`Bot stderr: ${error}`);
+            sendLogToClients(error, 'error');
         });
         
         botProcess.on('close', (code) => {
-            console.log(`Bot process exited with code ${code}`);
+            const message = `Bot process exited with code ${code}`;
+            console.log(message);
+            sendLogToClients(message);
             botState.status = 'offline';
             botState.startTime = null;
             botProcess = null;
@@ -65,6 +109,7 @@ app.post('/api/bot/start', async (req, res) => {
         res.json({ success: true });
     } catch (error) {
         console.error('Failed to start bot:', error);
+        sendLogToClients(`Failed to start bot: ${error.message}`, 'error');
         res.json({ success: false, message: error.message });
     }
 });
@@ -117,6 +162,6 @@ app.get('*', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', () => {
     console.log(`Dashboard web server running on port ${PORT}`);
 });

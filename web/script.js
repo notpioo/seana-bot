@@ -1,6 +1,9 @@
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Status simulasi
+    // Connect to WebSocket for real-time logs
+    const socket = io();
+    
+    // Status elements
     const statusEl = document.getElementById('botStatus');
     const runtimeEl = document.getElementById('runtime');
     const connectionStatusEl = document.getElementById('connection-status');
@@ -48,15 +51,51 @@ document.addEventListener('DOMContentLoaded', function() {
         runtimeEl.textContent = `${hours}h ${minutes}m ${seconds}s`;
     }
 
-    function addLog(message) {
+    function addLog(message, type = 'info') {
         const logEntry = document.createElement('div');
-        logEntry.className = 'log-entry';
+        logEntry.className = `log-entry ${type}`;
         logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        
+        // Special styling for QR code message
+        if (type === 'qr') {
+            logEntry.style.color = '#ff9800';
+            logEntry.style.fontWeight = 'bold';
+        } else if (type === 'error') {
+            logEntry.style.color = '#f44336';
+        }
+        
         logsContainer.appendChild(logEntry);
         logsContainer.scrollTop = logsContainer.scrollHeight;
     }
 
-    // Check bot status on load
+    // Socket event handlers
+    socket.on('connect', () => {
+        console.log('Connected to server websocket');
+        connectionStatusEl.textContent = 'Connected';
+        connectionStatusEl.classList.add('connected');
+    });
+    
+    socket.on('disconnect', () => {
+        console.log('Disconnected from server websocket');
+        connectionStatusEl.textContent = 'Disconnected';
+        connectionStatusEl.classList.remove('connected');
+    });
+    
+    socket.on('botLog', (data) => {
+        addLog(data.message, data.type);
+    });
+    
+    socket.on('botStatus', (data) => {
+        if (data.status === 'online') {
+            setBotOnline();
+            startTime = new Date(data.startTime);
+        } else {
+            setBotOffline();
+        }
+        addLog(`Bot status: ${data.status}`);
+    });
+
+    // Check bot status on load as fallback
     fetch('/api/bot/status')
         .then(response => response.json())
         .then(data => {
@@ -69,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            addLog('Error fetching bot status');
+            addLog('Error fetching bot status', 'error');
         });
 
     function setBotOnline() {
