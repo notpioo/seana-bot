@@ -88,7 +88,7 @@ app.post('/api/bot/start', async (req, res) => {
             }
             
             // Deteksi tampilan QR code di terminal
-            if (output.includes('█') || output.includes('▄') || output.includes('▀')) {
+            if (output.includes('█') || output.includes('▄') || output.includes('▀') || output.includes('▓') || output.includes('▒')) {
                 // Ini adalah baris QR code
                 sendLogToClients(output, 'qrcode');
             }
