@@ -9,6 +9,12 @@
     --success-color: #4CAF50;
     --danger-color: #f44336;
     --warning-color: #ff9800;
+    --primary-bg: #f4f5f8; /* Added for auth pages */
+    --accent-color: #3c85ee; /* Added for auth pages */
+    --accent-hover: #2a75d6; /* Added for auth pages */
+    --input-bg: #f9fafb; /* Added for auth pages */
+    --hover-bg: #f0f5ff; /* Added for auth pages */
+
 }
 
 .dark-mode {
@@ -19,6 +25,11 @@
     --card-bg: #2a2a2a;
     --sidebar-bg: #252525;
     --border-color: #333;
+    --primary-bg: #2a2a2a; /* Added for auth pages */
+    --accent-color: #4e8ef1; /* Added for auth pages */
+    --accent-hover: #3a75e6; /* Added for auth pages */
+    --input-bg: #3a3a3a; /* Added for auth pages */
+    --hover-bg: #4a4a4a; /* Added for auth pages */
 }
 
 * {
@@ -345,4 +356,129 @@ body {
     .buttons {
         flex-direction: column;
     }
+}
+
+/* Auth Pages Styles */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--primary-bg);
+}
+
+.auth-card {
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 400px;
+    max-width: 90%;
+}
+
+.auth-card .logo {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-card h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.auth-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-color);
+}
+
+.auth-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.error-message {
+    color: #f44336;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.user-dropdown {
+    position: relative;
+    cursor: pointer;
+}
+
+.user-dropdown .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-bg);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 100;
+    width: 200px;
+}
+
+.user-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-menu .dropdown-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-menu .dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-menu .dropdown-item i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: var(--hover-bg);
 }

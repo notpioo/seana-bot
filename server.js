@@ -162,9 +162,37 @@ app.delete('/api/bot/session', async (req, res) => {
     }
 });
 
+// Routes for auth pages
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'login.html'));
+});
+
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, 'web', 'register.html'));
+});
+
+// Auth middleware for protected routes
+const checkAuth = (req, res, next) => {
+    // Firebase auth will be handled client-side
+    // This is just to ensure direct URL access is redirected to login
+    const authPages = ['/login', '/register'];
+    if (!authPages.includes(req.path) && req.path !== '/firebase-auth.js') {
+        res.sendFile(path.join(__dirname, 'web', 'index.html'));
+    } else {
+        next();
+    }
+};
+
+// Apply auth middleware to all routes except login and register
+app.get('/', checkAuth);
+
 // Catch-all route to serve the main HTML file
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'web', 'index.html'));
+app.get('*', (req, res, next) => {
+    if (req.path.includes('.')) {
+        next(); // Allow static files to be served
+    } else {
+        res.sendFile(path.join(__dirname, 'web', 'index.html'));
+    }
 });
 
 // Start server

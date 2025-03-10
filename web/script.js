@@ -1,5 +1,39 @@
 
+// Import Firebase auth
+import { auth, checkAuthState, getUserData, logoutUser } from './firebase-auth.js';
+
 document.addEventListener('DOMContentLoaded', function() {
+    // Check authentication
+    checkAuthState(async (user) => {
+        if (!user) {
+            // Not logged in, redirect to login page
+            window.location.href = '/login';
+            return;
+        }
+        
+        // User is logged in, get user data
+        const userDataResult = await getUserData(user.uid);
+        if (userDataResult.success) {
+            const userData = userDataResult.data;
+            // Update UI with user data
+            document.getElementById('username').textContent = userData.username || 'User';
+            document.getElementById('userRole').textContent = userData.role || 'User';
+            document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${userData.username || 'User'}&background=random`;
+        }
+    });
+    
+    // Logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            const result = await logoutUser();
+            if (result.success) {
+                window.location.href = '/login';
+            }
+        });
+    }
+    
     // Connect to WebSocket for real-time logs
     const socket = io();
     
