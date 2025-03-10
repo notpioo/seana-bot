@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     checkAuthState(async (user) => {
         if (!user) {
             // Not logged in, redirect to login page
-            window.location.href = '/login';
+            window.location.href = 'login.html';
             return;
         }
         
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const result = await logoutUser();
             if (result.success) {
-                window.location.href = '/login';
+                window.location.href = 'login.html';
             }
         });
     }
