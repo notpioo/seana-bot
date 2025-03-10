@@ -84,7 +84,13 @@ app.post('/api/bot/start', async (req, res) => {
             
             // Check if the output contains a QR code
             if (output.includes('scan QR code') || output.includes('QR Code received')) {
-                sendLogToClients('QR Code ready for scanning! Check terminal or continue monitoring logs.', 'qr');
+                sendLogToClients('QR Code ready for scanning! Check logs below.', 'qr');
+            }
+            
+            // Deteksi tampilan QR code di terminal
+            if (output.includes('█') || output.includes('▄') || output.includes('▀')) {
+                // Ini adalah baris QR code
+                sendLogToClients(output, 'qrcode');
             }
         });
         

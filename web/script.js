@@ -54,7 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function addLog(message, type = 'info') {
         const logEntry = document.createElement('div');
         logEntry.className = `log-entry ${type}`;
-        logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        
+        // Jika ini adalah QR code, jangan tambahkan timestamp
+        if (type === 'qrcode') {
+            logEntry.textContent = message;
+        } else {
+            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        }
         
         // Special styling for QR code message
         if (type === 'qr') {
