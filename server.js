@@ -200,7 +200,9 @@ const authenticateMiddleware = (req, res, next) => {
 };
 
 // Apply authentication middleware
-app.use(authenticateMiddleware);ted routes
+app.use(authenticateMiddleware);
+
+// Route middleware for protected routes
 const checkAuth = (req, res, next) => {
     // Firebase auth will be handled client-side
     // This is just to ensure direct URL access is redirected to login
