@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaBot Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar collapsed">
+            <div class="logo">
+                <h2>SeaBot</h2>
+            </div>
+            <div class="menu">
+                    <h3>MAIN</h3>
+                    <ul>
+                        <li>
+                            <a href="index.html"
+                                ><i class="fas fa-home"></i>
+                                <span>Dashboard</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-tags"></i>
+                                <span>Pricing</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-question-circle"></i>
+                                <span>FAQ</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-history"></i>
+                                <span>Changelog</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="bot-section">
+                    <h3>BOT</h3>
+                    <ul>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-cog"></i>
+                                <span>Config</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-terminal"></i>
+                                <span>Command</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-filter"></i>
+                                <span>Filter Commands</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-list"></i>
+                                <span>Menu</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-section">
+                    <h3>USER</h3>
+                    <ul>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-cogs"></i>
+                                <span>Settings</span></a
+                            >
+                        </li>
+                        <li class="active">
+                            <a href="profile.html"
+                                ><i class="fas fa-user"></i>
+                                <span>Profile</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-file-invoice"></i>
+                                <span>Invoice</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-handshake"></i>
+                                <span>Affiliate</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#" id="sidebarLogoutBtn"
+                                ><i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        <div class="main-content expanded">
+            <div class="header">
+                <button class="hamburger-menu" id="hamburgerMenu" title="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu-overlay" id="menuOverlay"></div>
+                <div class="toggle-mode">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="user-info user-dropdown">
+                    <span id="username">Loading...</span>
+                    <div class="user-avatar" id="userAvatarTrigger">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar">
+                    </div>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="profile.html" class="dropdown-item active"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logoutBtn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="profile-section">
+                    <h2><i class="fas fa-user-circle"></i> User Profile</h2>
+
+                    <div class="profile-container">
+                        <div class="profile-image-section">
+                            <div class="profile-image">
+                                <img id="profileAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Profile Image">
+                                <div class="image-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <button id="changeAvatarBtn" class="primary-btn">Change Avatar</button>
+                        </div>
+
+                        <div class="profile-details">
+                            <div class="input-group">
+                                <label for="displayName">Display Name</label>
+                                <input type="text" id="displayName" placeholder="Your display name" class="form-input">
+                            </div>
+
+                            <div class="input-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="Your email" class="form-input" disabled>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="role">User Role</label>
+                                <input type="text" id="role" class="form-input" disabled>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="joined">Joined Date</label>
+                                <input type="text" id="joined" class="form-input" disabled>
+                            </div>
+
+                            <div class="password-section">
+                                <h3>Change Password</h3>
+                                <div class="input-group">
+                                    <label for="currentPassword">Current Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="currentPassword" placeholder="Enter current password" class="form-input">
+                                        <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="newPassword">New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="newPassword" placeholder="Enter new password" class="form-input">
+                                        <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="confirmPassword">Confirm New Password</label>
+                                    <div class="password-input-container">
+                                        <input type="password" id="confirmPassword" placeholder="Confirm new password" class="form-input">
+                                        <span class="toggle-password"><i class="fas fa-eye"></i></span>
+                                    </div>
+                                </div>
+
+                                <div class="password-strength">
+                                    <div class="strength-meter">
+                                        <div class="strength-bar"></div>
+                                    </div>
+                                    <span class="strength-text">Password strength: Weak</span>
+                                </div>
+                            </div>
+
+                            <div class="buttons-container">
+                                <button id="saveProfileBtn" class="primary-btn">Save Changes</button>
+                                <button id="resetProfileBtn" class="secondary-btn">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="delete-account">
+                        <h3>Danger Zone</h3>
+                        <p>Once you delete your account, there is no going back. Please be certain.</p>
+                        <button id="deleteAccountBtn" class="danger-btn">Delete My Account</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <script type="module" src="profile.js"></script>
+</body>
+</html>
