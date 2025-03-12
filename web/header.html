@@ -1,0 +1,40 @@
+
+<div class="header">
+    <div class="header-left">
+        <button
+            class="hamburger-menu"
+            id="hamburgerMenu"
+            title="Toggle Menu"
+        >
+            <i class="fas fa-bars"></i>
+        </button>
+        <button
+            class="toggle-mode"
+            title="Toggle Dark Mode"
+        >
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="user-info user-dropdown">
+        <span id="username">Loading...</span>
+        <div class="user-avatar" id="userAvatarTrigger">
+            <img
+                id="userAvatar"
+                src="https://ui-avatars.com/api/?name=User&background=random"
+                alt="Avatar"
+            />
+        </div>
+        <div class="dropdown-menu" id="userDropdown">
+            <a href="profile.html" class="dropdown-item"
+                ><i class="fas fa-user"></i> Profile</a
+            >
+            <a href="#" class="dropdown-item"
+                ><i class="fas fa-cog"></i> Settings</a
+            >
+            <a href="#" id="logoutBtn" class="dropdown-item"
+                ><i class="fas fa-sign-out-alt"></i> Logout</a
+            >
+        </div>
+    </div>
+</div>

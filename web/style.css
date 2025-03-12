@@ -331,9 +331,29 @@ body {
     margin-bottom: 30px;
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .toggle-mode {
+    display: flex;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 5px;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.toggle-mode:hover {
+    background-color: var(--accent-hover);
 }
 
 .user-info {
