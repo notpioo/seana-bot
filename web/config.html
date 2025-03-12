@@ -1,171 +1,230 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Configuration</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-    <script src="firebase-auth.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <h1><i class="fas fa-robot"></i> WibuSOFT</h1>
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SeaBot Dashboard</title>
+        <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script type="module" src="script.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="sidebar collapsed">
+                <div class="logo">
+                    <h2>SeaBot</h2>
+                </div>
+                <div class="menu">
+                    <h3>MAIN</h3>
+                    <ul>
+                        <li>
+                            <a href="index.html"
+                                ><i class="fas fa-home"></i>
+                                <span>Dashboard</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-tags"></i>
+                                <span>Pricing</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-question-circle"></i>
+                                <span>FAQ</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-history"></i>
+                                <span>Changelog</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="bot-section">
+                    <h3>BOT</h3>
+                    <ul>
+                        <li class="active">
+                            <a href="config.html"
+                                ><i class="fas fa-cog"></i>
+                                <span>Config</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-terminal"></i>
+                                <span>Command</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-filter"></i>
+                                <span>Filter Commands</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="menu.html"
+                                ><i class="fas fa-list"></i>
+                                <span>Menu</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-section">
+                    <h3>USER</h3>
+                    <ul>
+                        <li>
+                            <a href="profile.html"
+                                ><i class="fas fa-cogs"></i>
+                                <span>Settings</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-file-invoice"></i>
+                                <span>Invoice</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-handshake"></i>
+                                <span>Affiliate</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#" id="sidebarLogoutBtn"
+                                ><i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="menu">
-                <h3>MENU</h3>
-                <ul>
-                    <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li><a href="menu.html"><i class="fas fa-list-alt"></i> Menu</a></li>
-                    <li class="active"><a href="config.html"><i class="fas fa-cog"></i> Config</a></li>
-                </ul>
-            </div>
-            <div class="user-section">
-                <h3>USER</h3>
-                <ul>
-                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="#" id="sidebarLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
+            <div class="main-content expanded">
+                <div class="header">
+                    <!-- This will be replaced by header.html content via header.js -->
+                </div>
+                <div class="content">
+                    <h2><i class="fas fa-cog"></i> Config</h2>
+                    
+                    <!-- Bot Settings -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <i class="fas fa-robot"></i> Bot Settings
+                        </div>
+                        <div class="config-card-body">
+                            <div class="input-group">
+                                <label for="botName">Name Bot*</label>
+                                <input type="text" id="botName" class="form-input" placeholder="Enter bot name">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="packname">Packname Sticker*</label>
+                                <input type="text" id="packname" class="form-input" placeholder="Enter packname">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="authorname">Authorname Sticker*</label>
+                                <input type="text" id="authorname" class="form-input" placeholder="Enter author name">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="footerText">Footer Text (Only Nitro)*</label>
+                                <input type="text" id="footerText" class="form-input" placeholder="Enter footer text">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="limit">Limit*</label>
+                                <input type="number" id="limit" class="form-input" placeholder="Enter limit">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="balanceLimit">Balance/limit*</label>
+                                <input type="number" id="balanceLimit" class="form-input" placeholder="Enter balance/limit">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Owner Settings -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <i class="fas fa-user-shield"></i> Owner Settings
+                        </div>
+                        <div class="config-card-body">
+                            <div id="ownerContainer">
+                                <!-- Owner entries will be generated dynamically -->
+                            </div>
+                            
+                            <button id="addOwnerBtn" class="secondary-btn"><i class="fas fa-plus"></i> Add Owner</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Prefix Settings -->
+                    <div class="config-card">
+                        <div class="config-card-header">
+                            <i class="fas fa-hashtag"></i> Prefix Settings
+                        </div>
+                        <div class="config-card-body">
+                            <div class="input-group">
+                                <label for="prefix">Prefix*</label>
+                                <input type="text" id="prefix" class="form-input" placeholder="Enter prefix (e.g. .#/!)" value=".#/!">
+                            </div>
+                            
+                            <div class="prefix-options">
+                                <div class="radio-group">
+                                    <input type="radio" id="multiPrefix" name="prefixType" value="multi" checked>
+                                    <label for="multiPrefix">Multi Prefix</label>
+                                </div>
+                                
+                                <div class="radio-group">
+                                    <input type="radio" id="singlePrefix" name="prefixType" value="single">
+                                    <label for="singlePrefix">Single Prefix</label>
+                                </div>
+                                
+                                <div class="radio-group">
+                                    <input type="radio" id="emptyPrefix" name="prefixType" value="empty">
+                                    <label for="emptyPrefix">Empty Prefix</label>
+                                </div>
+                            </div>
+                            
+                            <div class="checkbox-options">
+                                <div class="check-group">
+                                    <input type="checkbox" id="onlineOnConnect" checked>
+                                    <label for="onlineOnConnect">Online On Connect</label>
+                                </div>
+                                
+                                <div class="check-group">
+                                    <input type="checkbox" id="premiumNotification" checked>
+                                    <label for="premiumNotification">Premium Notification</label>
+                                </div>
+                                
+                                <div class="check-group">
+                                    <input type="checkbox" id="sewaNotification" checked>
+                                    <label for="sewaNotification">Sewa Notification</label>
+                                </div>
+                                
+                                <div class="check-group">
+                                    <input type="checkbox" id="joinToUse">
+                                    <label for="joinToUse">Join To Use</label>
+                                </div>
+                            </div>
+                            
+                            <button id="submitConfig" class="primary-btn"><i class="fas fa-save"></i> Submit</button>
+                            
+                            <p class="required-note">* required fields</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="main-content">
-            <div class="header">
-                <!-- This will be replaced by header.html content via header.js -->
-            </div>
-            
-            <!-- Config Section -->
-            <div class="content">
-                <h2><i class="fas fa-cog"></i> Config</h2>
-                
-                <!-- Bot Settings -->
-                <div class="config-card">
-                    <div class="config-card-header">
-                        <i class="fas fa-robot"></i> Bot Settings
-                    </div>
-                    <div class="config-card-body">
-                        <div class="input-group">
-                            <label for="botName">Name Bot*</label>
-                            <input type="text" id="botName" class="form-input" placeholder="Enter bot name">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="packname">Packname Sticker*</label>
-                            <input type="text" id="packname" class="form-input" placeholder="Enter packname">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="authorname">Authorname Sticker*</label>
-                            <input type="text" id="authorname" class="form-input" placeholder="Enter author name">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="footerText">Footer Text (Only Nitro)*</label>
-                            <input type="text" id="footerText" class="form-input" placeholder="Enter footer text">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="limit">Limit*</label>
-                            <input type="number" id="limit" class="form-input" placeholder="Enter limit">
-                        </div>
-                        
-                        <div class="input-group">
-                            <label for="balanceLimit">Balance/limit*</label>
-                            <input type="number" id="balanceLimit" class="form-input" placeholder="Enter balance/limit">
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Owner Settings -->
-                <div class="config-card">
-                    <div class="config-card-header">
-                        <i class="fas fa-user-shield"></i> Owner Settings
-                    </div>
-                    <div class="config-card-body">
-                        <div id="ownerContainer">
-                            <!-- Owner entries will be generated dynamically -->
-                        </div>
-                        
-                        <button id="addOwnerBtn" class="secondary-btn"><i class="fas fa-plus"></i> Add Owner</button>
-                    </div>
-                </div>
-                
-                <!-- Prefix Settings -->
-                <div class="config-card">
-                    <div class="config-card-header">
-                        <i class="fas fa-hashtag"></i> Prefix Settings
-                    </div>
-                    <div class="config-card-body">
-                        <div class="input-group">
-                            <label for="prefix">Prefix*</label>
-                            <input type="text" id="prefix" class="form-input" placeholder="Enter prefix (e.g. .#/!)" value=".#/!">
-                        </div>
-                        
-                        <div class="prefix-options">
-                            <div class="radio-group">
-                                <input type="radio" id="multiPrefix" name="prefixType" value="multi" checked>
-                                <label for="multiPrefix">Multi Prefix</label>
-                            </div>
-                            
-                            <div class="radio-group">
-                                <input type="radio" id="singlePrefix" name="prefixType" value="single">
-                                <label for="singlePrefix">Single Prefix</label>
-                            </div>
-                            
-                            <div class="radio-group">
-                                <input type="radio" id="emptyPrefix" name="prefixType" value="empty">
-                                <label for="emptyPrefix">Empty Prefix</label>
-                            </div>
-                        </div>
-                        
-                        <div class="checkbox-options">
-                            <div class="check-group">
-                                <input type="checkbox" id="onlineOnConnect" checked>
-                                <label for="onlineOnConnect">Online On Connect</label>
-                            </div>
-                            
-                            <div class="check-group">
-                                <input type="checkbox" id="premiumNotification" checked>
-                                <label for="premiumNotification">Premium Notification</label>
-                            </div>
-                            
-                            <div class="check-group">
-                                <input type="checkbox" id="sewaNotification" checked>
-                                <label for="sewaNotification">Sewa Notification</label>
-                            </div>
-                            
-                            <div class="check-group">
-                                <input type="checkbox" id="joinToUse">
-                                <label for="joinToUse">Join To Use</label>
-                            </div>
-                        </div>
-                        
-                        <button id="submitConfig" class="primary-btn"><i class="fas fa-save"></i> Submit</button>
-                        
-                        <p class="required-note">* required fields</p>
-                    </div>
-                </div>
-            </div>
-            
-            <footer class="footer">
-                <p>COPYRIGHT © 2025 Wibusoft, All rights Reserved</p>
-                <p>Hand-crafted & Made with ❤</p>
-            </footer>
-        </div>
-    </div>
-
-    <script src="header.js"></script>
-    <script src="config.js"></script>
-    <script>
-        // Initial auth check on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            checkAuth();
-        });
-    </script>
-</body>
+        <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+        <script src="header.js"></script>
+        <script src="config.js"></script>
+    </body>
 </html>
