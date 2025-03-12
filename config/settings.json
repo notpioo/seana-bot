@@ -1,0 +1,28 @@
+{
+  "botName": "Sea",
+  "packname": "BabyChand",
+  "authorname": "Darraaaa",
+  "footerText": "2022 © BabyChand Bot",
+  "limit": 20,
+  "balanceLimit": 250,
+  "prefix": ".#/!",
+  "prefixType": "multi",
+  "onlineOnConnect": true,
+  "premiumNotification": true,
+  "sewaNotification": true,
+  "joinToUse": false,
+  "owners": [
+    {
+      "name": "Darraaaa",
+      "number": "628570957572"
+    },
+    {
+      "name": "Renn",
+      "number": "6287883480816"
+    },
+    {
+      "name": "Pioo",
+      "number": "6289536066429"
+    }
+  ]
+}
