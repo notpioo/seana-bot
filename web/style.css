@@ -1070,6 +1070,121 @@ body {
     }
 }
 
+/* Config page styles */
+.config-section {
+    padding: 20px 0;
+}
+
+.config-section h2 {
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+.config-card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin-bottom: 25px;
+}
+
+.config-card-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.config-card-body {
+    padding: 20px;
+}
+
+.owner-entry {
+    margin-bottom: 15px;
+}
+
+.owner-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 15px;
+    align-items: end;
+}
+
+.remove-owner-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.remove-owner-btn:hover {
+    background-color: #dc3545;
+    color: white;
+}
+
+.prefix-options, .checkbox-options {
+    margin: 20px 0;
+}
+
+.radio-group, .check-group {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.radio-group input[type="radio"],
+.check-group input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.required-note {
+    margin-top: 15px;
+    color: #dc3545;
+    font-size: 14px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid var(--border-color);
+    color: #888;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .owner-fields {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .remove-owner-btn {
+        margin-top: 10px;
+        width: 100%;
+        border-radius: 5px;
+    }
+}
+
 /* Profile page styles */
 .profile-section {
     background-color: var(--card-bg);
