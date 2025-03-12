@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     // Load firebase-auth.js using a script tag
     const script = document.createElement('script');
@@ -83,12 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update avatars - first check if there's a stored avatar in localStorage
                 const storedAvatar = localStorage.getItem('userAvatar');
                 const avatarUrl = storedAvatar || userData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.username || 'User')}&background=random`;
-                
+
                 // Store the avatar URL if we got it from userData
                 if (userData.photoURL && !storedAvatar) {
                     localStorage.setItem('userAvatar', userData.photoURL);
                 }
-                
+
                 const avatarElements = document.querySelectorAll('#userAvatar');
                 avatarElements.forEach(elem => {
                     elem.src = avatarUrl;
@@ -105,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 }
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.menu) {
@@ -188,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (submitMenuBtn) {
         submitMenuBtn.addEventListener('click', async () => {
             const menuContent = document.getElementById('menuTextArea').value;
-            
+
             try {
                 const response = await fetch('/api/bot/menu', {
                     method: 'POST',
@@ -198,11 +197,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     body: JSON.stringify({ menu: menuContent })
                 });
-                
+
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
-                        alert('Menu berhasil diperbarui!');
+                        // Show success message with animation
+                        const successMessage = document.getElementById('successMessage');
+                        successMessage.classList.add('show');
+
+                        // Hide after 3 seconds
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                        }, 3000);
                     } else {
                         alert('Gagal memperbarui menu: ' + (data.message || 'Unknown error'));
                     }
