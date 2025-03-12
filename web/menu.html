@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="id">
     <head>
@@ -12,158 +11,158 @@
         />
         <script type="module" src="script.js"></script>
         <style>
-            .variable-info {
-                background-color: var(--card-bg);
-                border-radius: 10px;
-                padding: 15px;
-                margin-bottom: 20px;
+                        .variable-info {
+                            background-color: var(--card-bg);
+                            border-radius: 10px;
+                            padding: 15px;
+                            margin-bottom: 20px;
 
-<body>
-    <div class="app-container">
-        <div id="menuOverlay" class="menu-overlay"></div>
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <div class="logo">
-                    <i class="fas fa-robot"></i> SeaBot
-                </div>
-            </div>
-            <div class="sidebar-content">
-                <!-- Include dynamic header -->
-                <div id="header-placeholder"></div>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="header">
-                <div class="header-left">
-                    <button id="hamburgerMenu" class="hamburger-menu">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h2>Menu Bot</h2>
-                </div>
-                <div class="user-info" id="userAvatarTrigger">
-                    <div class="user-avatar">
-                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar" />
-                    </div>
-                    <div class="user-dropdown" id="userDropdown">
-                        <div class="user-dropdown-header">
-                            <span id="username">User</span>
-                            <small id="userRole">User</small>
-                        </div>
-                        <ul>
-                            <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="content">
-                <section class="menu-section">
-                    <h2><i class="fas fa-list-ul"></i> Custom Menu</h2>
-                    <div class="menu-container">
-                        <div class="menu-editor">
-                            <textarea id="menuTextArea" rows="15" placeholder="Masukkan menu custom kamu di sini..."></textarea>
-                            <div class="menu-buttons">
-                                <button id="submitMenu" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Menu</button>
-                                <button id="resetMenu" class="btn btn-secondary"><i class="fas fa-undo"></i> Reset</button>
+            <body>
+                <div class="app-container">
+                    <div id="menuOverlay" class="menu-overlay"></div>
+                    <div class="sidebar">
+                        <div class="sidebar-header">
+                            <div class="logo">
+                                <i class="fas fa-robot"></i> SeaBot
                             </div>
                         </div>
-                        <div class="menu-help">
-                            <div class="variable-info">
-                                <h3>Variabel Custom Menu</h3>
-                                <p>Gunakan variabel berikut untuk membuat menu dinamis:</p>
-                                <div class="variable-list">
-                                    <div class="variable-item">
-                                        <div class="variable-name">{pushname}</div>
-                                        <div class="variable-desc">Untuk Nama pengguna</div>
+                        <div class="sidebar-content">
+                            <!-- Include dynamic header -->
+                            <div id="header-placeholder"></div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <div class="header">
+                            <div class="header-left">
+                                <button id="hamburgerMenu" class="hamburger-menu">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <h2>Menu Bot</h2>
+                            </div>
+                            <div class="user-info" id="userAvatarTrigger">
+                                <div class="user-avatar">
+                                    <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar" />
+                                </div>
+                                <div class="user-dropdown" id="userDropdown">
+                                    <div class="user-dropdown-header">
+                                        <span id="username">User</span>
+                                        <small id="userRole">User</small>
                                     </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{prefix}</div>
-                                        <div class="variable-desc">Untuk Prefix Bot</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{namebot}</div>
-                                        <div class="variable-desc">Untuk Nama Bot</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{ucapan}</div>
-                                        <div class="variable-desc">Untuk Ucapan seperti "Pagi"</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{tanggal}</div>
-                                        <div class="variable-desc">Untuk Tanggal</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{wib}</div>
-                                        <div class="variable-desc">Untuk Jam WIB</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{wita}</div>
-                                        <div class="variable-desc">Untuk Jam WITA</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{wit}</div>
-                                        <div class="variable-desc">Untuk Jam WIT</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{sender}</div>
-                                        <div class="variable-desc">Untuk ID Pengirim</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{limit}</div>
-                                        <div class="variable-desc">Untuk Jumlah Limit</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{balance}</div>
-                                        <div class="variable-desc">Untuk Jumlah Balance</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{status}</div>
-                                        <div class="variable-desc">Untuk Status Pengguna</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{runtime}</div>
-                                        <div class="variable-desc">Untuk Waktu Bot Berjalan</div>
-                                    </div>
-                                    <div class="variable-item">
-                                        <div class="variable-name">{hari}</div>
-                                        <div class="variable-desc">Untuk Nama Hari</div>
-                                    </div>
+                                    <ul>
+                                        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
+                        <div class="content">
+                            <section class="menu-section">
+                                <h2><i class="fas fa-list-ul"></i> Custom Menu</h2>
+                                <div class="menu-container">
+                                    <div class="menu-editor">
+                                        <textarea id="menuTextArea" rows="15" placeholder="Masukkan menu custom kamu di sini..."></textarea>
+                                        <div class="menu-buttons">
+                                            <button id="submitMenu" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Menu</button>
+                                            <button id="resetMenu" class="btn btn-secondary"><i class="fas fa-undo"></i> Reset</button>
+                                        </div>
+                                    </div>
+                                    <div class="menu-help">
+                                        <div class="variable-info">
+                                            <h3>Variabel Custom Menu</h3>
+                                            <p>Gunakan variabel berikut untuk membuat menu dinamis:</p>
+                                            <div class="variable-list">
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{pushname}</div>
+                                                    <div class="variable-desc">Untuk Nama pengguna</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{prefix}</div>
+                                                    <div class="variable-desc">Untuk Prefix Bot</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{namebot}</div>
+                                                    <div class="variable-desc">Untuk Nama Bot</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{ucapan}</div>
+                                                    <div class="variable-desc">Untuk Ucapan seperti "Pagi"</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{tanggal}</div>
+                                                    <div class="variable-desc">Untuk Tanggal</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wib}</div>
+                                                    <div class="variable-desc">Untuk Jam WIB</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wita}</div>
+                                                    <div class="variable-desc">Untuk Jam WITA</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wit}</div>
+                                                    <div class="variable-desc">Untuk Jam WIT</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{sender}</div>
+                                                    <div class="variable-desc">Untuk ID Pengirim</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{limit}</div>
+                                                    <div class="variable-desc">Untuk Jumlah Limit</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{balance}</div>
+                                                    <div class="variable-desc">Untuk Jumlah Balance</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{status}</div>
+                                                    <div class="variable-desc">Untuk Status Pengguna</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{runtime}</div>
+                                                    <div class="variable-desc">Untuk Waktu Bot Berjalan</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{hari}</div>
+                                                    <div class="variable-desc">Untuk Nama Hari</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
-                </section>
-            </div>
-        </div>
-    </div>
-    <script src="menu.js"></script>
-</body>
-</html>
+                </div>
+                <script src="menu.js"></script>
+            </body>
+            </html>
 
-                border: 1px solid var(--border-color);
-            }
-            .variable-list {
-                display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 15px;
-            }
-            .variable-item {
-                background-color: var(--input-bg);
-                border-radius: 8px;
-                padding: 10px 15px;
-                border-left: 3px solid var(--primary-color);
-            }
-            .variable-name {
-                color: #2196F3;
-                font-weight: bold;
-                font-family: monospace;
-                font-size: 1.1em;
-                margin-bottom: 5px;
-            }
-            .variable-desc {
-                color: var(--text-color);
-                font-size: 0.9em;
-            }
+                            border: 1px solid var(--border-color);
+                        }
+                        .variable-list {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                            gap: 15px;
+                        }
+                        .variable-item {
+                            background-color: var(--input-bg);
+                            border-radius: 8px;
+                            padding: 10px 15px;
+                            border-left: 3px solid var(--primary-color);
+                        }
+                        .variable-name {
+                            color: #2196F3;
+                            font-weight: bold;
+                            font-family: monospace;
+                            font-size: 1.1em;
+                            margin-bottom: 5px;
+                        }
+                        .variable-desc {
+                            color: var(--text-color);
+                            font-size: 0.9em;
+                        }
         </style>
     </head>
     <body>
@@ -269,32 +268,150 @@
                         <h2><i class="fas fa-list"></i> Edit Menu</h2>
                         <div class="menu-container">
                             <div class="menu-editor">
-                                <textarea id="menuTextArea" placeholder="Isi textbox untuk update menu bot" rows="10"></textarea>
+                                <textarea
+                                    id="menuTextArea"
+                                    placeholder="Isi textbox untuk update menu bot"
+                                    rows="10"
+                                ></textarea>
                                 <div class="menu-buttons">
-                                    <button id="submitMenu" class="primary-btn">Submit</button>
-                                    <button id="resetMenu" class="secondary-btn">Reset Menu</button>
+                                    <button id="submitMenu" class="primary-btn">
+                                        Submit
+                                    </button>
+                                    <button
+                                        id="resetMenu"
+                                        class="secondary-btn"
+                                    >
+                                        Reset Menu
+                                    </button>
                                 </div>
                             </div>
                             <div class="menu-help">
                                 <ul class="command-list">
-                                    <li><span class="command-label">Gunakan <strong>{pushname}</strong></span> Untuk Nama pengguna</li>
-                                    <li><span class="command-label">Gunakan <strong>{prefix}</strong></span> Untuk Prefix Bot</li>
-                                    <li><span class="command-label">Gunakan <strong>{namebot}</strong></span> Untuk Nama Bot</li>
-                                    <li><span class="command-label">Gunakan <strong>{ucapan}</strong></span> Untuk Ucapan seperti "Pagi"</li>
-                                    <li><span class="command-label">Gunakan <strong>{tanggal}</strong></span> Untuk Tanggal</li>
-                                    <li><span class="command-label">Gunakan <strong>{wib}</strong></span> Untuk Jam WIB</li>
-                                    <li><span class="command-label">Gunakan <strong>{wita}</strong></span> Untuk Jam WITA</li>
-                                    <li><span class="command-label">Gunakan <strong>{wit}</strong></span> Untuk Jam WIT</li>
-                                    <li><span class="command-label">Gunakan <strong>{sender}</strong></span> Untuk Nomor Pengirim</li>
-                                    <li><span class="command-label">Gunakan <strong>{limit}</strong></span> Untuk Limit</li>
-                                    <li><span class="command-label">Gunakan <strong>{balance}</strong></span> Untuk Balance</li>
-                                    <li><span class="command-label">Gunakan <strong>{status}</strong></span> Untuk Status (Owner|Premium|Free)</li>
-                                    <li><span class="command-label">Gunakan <strong>{runtime}</strong></span> Untuk Runtime</li>
-                                    <li><span class="command-label">Gunakan <strong>{hari}</strong></span> Untuk hari</li>
-                                    <li><span class="command-label">Gunakan <strong>{level}</strong></span> Untuk level</li>
-                                    <li><span class="command-label">Gunakan <strong>{tier}</strong></span> Untuk tier</li>
-                                    <li><span class="command-label">Gunakan <strong>{xp}</strong></span> Untuk xp</li>
-                                    <li><span class="command-label">Gunakan <strong>{maxXp}</strong></span> Untuk Max Xp</li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{pushname}</strong></span
+                                        >
+                                        Untuk Nama pengguna
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{prefix}</strong></span
+                                        >
+                                        Untuk Prefix Bot
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{namebot}</strong></span
+                                        >
+                                        Untuk Nama Bot
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{ucapan}</strong></span
+                                        >
+                                        Untuk Ucapan seperti "Pagi"
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{tanggal}</strong></span
+                                        >
+                                        Untuk Tanggal
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wib}</strong></span
+                                        >
+                                        Untuk Jam WIB
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wita}</strong></span
+                                        >
+                                        Untuk Jam WITA
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wit}</strong></span
+                                        >
+                                        Untuk Jam WIT
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{sender}</strong></span
+                                        >
+                                        Untuk Nomor Pengirim
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{limit}</strong></span
+                                        >
+                                        Untuk Limit
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{balance}</strong></span
+                                        >
+                                        Untuk Balance
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{status}</strong></span
+                                        >
+                                        Untuk Status (Owner|Premium|Free)
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{runtime}</strong></span
+                                        >
+                                        Untuk Runtime
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{hari}</strong></span
+                                        >
+                                        Untuk hari
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{level}</strong></span
+                                        >
+                                        Untuk level
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{tier}</strong></span
+                                        >
+                                        Untuk tier
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan <strong>{xp}</strong></span
+                                        >
+                                        Untuk xp
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{maxXp}</strong></span
+                                        >
+                                        Untuk Max Xp
+                                    </li>
                                 </ul>
                             </div>
                         </div>
