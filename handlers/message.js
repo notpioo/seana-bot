@@ -83,6 +83,17 @@ const Fish = require('../database/models/Fish');
 const { tebakBomHandler, handleBombGuess } = require('../lib/commands/tebakbom');
 const { tebakAngkaHandler, handleGuess, hasActiveGame } = require('../lib/commands/tebakangka');
 
+// Added to load bot configuration.  Error handling is crucial.
+const botSettings = require('../config/settings');
+let config;
+try {
+    config = botSettings.getBotConfig();
+} catch (error) {
+    console.error("Error loading bot configuration:", error);
+    // Handle the error appropriately, perhaps with a default config or exiting the process.
+    process.exit(1);
+}
+
 async function handleMessages(sock) {
     sock.ev.on('messages.upsert', async (m) => {
         try {

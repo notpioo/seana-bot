@@ -76,6 +76,14 @@ async function connectToWhatsApp() {
             if (qr) {
                 logger.info('QR Code received, please scan with WhatsApp')
             }
+            
+            // Update bot config if flag is set
+            if (global.botConfigUpdated === true) {
+                const freshConfig = await botSettings.getBotConfig(true);
+                sock.authState.creds.me.name = freshConfig.botName;
+                logger.info(`Bot name updated to: ${freshConfig.botName}`);
+                global.botConfigUpdated = false;
+            }
 
             if (connection === 'close') {
                 const statusCode = lastDisconnect?.error?.output?.statusCode
