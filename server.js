@@ -59,6 +59,55 @@ app.get('/api/bot/status', (req, res) => {
     });
 });
 
+// Menu API Routes
+app.get('/api/bot/menu', async (req, res) => {
+    try {
+        const menuFilePath = path.join(__dirname, 'config', 'menu.json');
+        let menuContent = "";
+        
+        try {
+            const fileData = await fs.readFile(menuFilePath, 'utf8');
+            const menuData = JSON.parse(fileData);
+            menuContent = menuData.menu || "";
+        } catch (error) {
+            // File tidak ada atau format tidak valid, kembalikan default
+            console.log('Menu file not found or invalid, returning empty menu');
+        }
+        
+        res.json({ success: true, menu: menuContent });
+    } catch (error) {
+        console.error('Error reading menu file:', error);
+        res.json({ success: false, message: error.message });
+    }
+});
+
+app.post('/api/bot/menu', async (req, res) => {
+    try {
+        const { menu } = req.body;
+        if (menu === undefined) {
+            return res.json({ success: false, message: 'Menu content is required' });
+        }
+        
+        const menuFilePath = path.join(__dirname, 'config', 'menu.json');
+        const menuDir = path.dirname(menuFilePath);
+        
+        // Pastikan direktori config ada
+        try {
+            await fs.mkdir(menuDir, { recursive: true });
+        } catch (error) {
+            console.log('Config directory already exists or error creating it:', error);
+        }
+        
+        // Simpan menu ke file JSON
+        await fs.writeFile(menuFilePath, JSON.stringify({ menu }, null, 2), 'utf8');
+        
+        res.json({ success: true, message: 'Menu saved successfully' });
+    } catch (error) {
+        console.error('Error saving menu file:', error);
+        res.json({ success: false, message: error.message });
+    }
+});
+
 app.post('/api/bot/start', async (req, res) => {
     try {
         if (botState.status === 'online') {
