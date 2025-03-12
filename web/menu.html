@@ -1,9 +1,10 @@
+
 <!doctype html>
 <html lang="id">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>SeaBot Dashboard</title>
+        <title>SeaBot - Menu</title>
         <link rel="stylesheet" href="style.css" />
         <link
             rel="stylesheet"
@@ -20,8 +21,8 @@
                 <div class="menu">
                     <h3>MAIN</h3>
                     <ul>
-                        <li class="active">
-                            <a href="#"
+                        <li>
+                            <a href="index.html"
                                 ><i class="fas fa-home"></i>
                                 <span>Dashboard</span></a
                             >
@@ -67,7 +68,7 @@
                                 <span>Filter Commands</span></a
                             >
                         </li>
-                        <li>
+                        <li class="active">
                             <a href="menu.html"
                                 ><i class="fas fa-list"></i>
                                 <span>Menu</span></a
@@ -141,84 +142,37 @@
                     </div>
                 </div>
                 <div class="content">
-                    <div class="status-cards">
-                        <div class="card">
-                            <div class="card-content">
-                                <h3>Status</h3>
-                                <div class="status" id="botStatus">Offline</div>
+                    <div class="menu-section">
+                        <h2><i class="fas fa-list"></i> Edit Menu</h2>
+                        <div class="menu-container">
+                            <div class="menu-editor">
+                                <textarea id="menuTextArea" placeholder="Isi textbox untuk update menu bot" rows="10"></textarea>
+                                <div class="menu-buttons">
+                                    <button id="submitMenu" class="primary-btn">Submit</button>
+                                    <button id="resetMenu" class="secondary-btn">Reset Menu</button>
+                                </div>
                             </div>
-                            <div class="icon">
-                                <i class="fas fa-power-off"></i>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <h3>Expired At</h3>
-                                <div class="date" id="expiredDate">-</div>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-calendar"></i>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <h3>Runtime</h3>
-                                <div class="runtime" id="runtime">0h 0m 0s</div>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <h3>Role</h3>
-                                <div class="role" id="userRole">Admin</div>
-                            </div>
-                            <div class="icon">
-                                <i class="fas fa-user-tag"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="logs-section">
-                        <h3>
-                            Logs:
-                            <span id="connection-status">Disconnected</span>
-                        </h3>
-                        <div class="logs" id="logs-container">
-                            <!-- Logs akan muncul di sini -->
-                        </div>
-                    </div>
-                    <div class="control-section">
-                        <h3>Control</h3>
-                        <div class="buttons">
-                            <button id="startBot" class="start-btn">
-                                <i class="fas fa-play"></i> Start Bot
-                            </button>
-                            <button id="stopBot" class="stop-btn">
-                                <i class="fas fa-stop"></i> Stop Bot
-                            </button>
-                            <button id="deleteSession" class="delete-btn">
-                                <i class="fas fa-trash"></i> Delete Session
-                            </button>
-                        </div>
-                    </div>
-                    <div class="faq-section">
-                        <h3>FAQ's</h3>
-                        <p>Let us help answer the most common questions.</p>
-                        <div class="faq-item">
-                            <div class="faq-question">
-                                <h4>
-                                    Bagaimana cara mengaktivasi bot whatsapp?
-                                </h4>
-                                <i class="fas fa-chevron-down"></i>
-                            </div>
-                            <div class="faq-answer">
-                                <p>
-                                    Untuk mengaktivasi bot WhatsApp, klik tombol
-                                    "Start Bot" di panel control. Kemudian scan
-                                    QR code yang muncul dengan aplikasi WhatsApp
-                                    di ponsel Anda.
-                                </p>
+                            <div class="menu-help">
+                                <ul class="command-list">
+                                    <li><span class="command-label">Gunakan <strong>{pushname}</strong></span> Untuk Nama pengguna</li>
+                                    <li><span class="command-label">Gunakan <strong>{prefix}</strong></span> Untuk Prefix Bot</li>
+                                    <li><span class="command-label">Gunakan <strong>{namebot}</strong></span> Untuk Nama Bot</li>
+                                    <li><span class="command-label">Gunakan <strong>{ucapan}</strong></span> Untuk Ucapan seperti "Pagi"</li>
+                                    <li><span class="command-label">Gunakan <strong>{tanggal}</strong></span> Untuk Tanggal</li>
+                                    <li><span class="command-label">Gunakan <strong>{wib}</strong></span> Untuk Jam WIB</li>
+                                    <li><span class="command-label">Gunakan <strong>{wita}</strong></span> Untuk Jam WITA</li>
+                                    <li><span class="command-label">Gunakan <strong>{wit}</strong></span> Untuk Jam WIT</li>
+                                    <li><span class="command-label">Gunakan <strong>{sender}</strong></span> Untuk Nomor Pengirim</li>
+                                    <li><span class="command-label">Gunakan <strong>{limit}</strong></span> Untuk Limit</li>
+                                    <li><span class="command-label">Gunakan <strong>{balance}</strong></span> Untuk Balance</li>
+                                    <li><span class="command-label">Gunakan <strong>{status}</strong></span> Untuk Status (Owner|Premium|Free)</li>
+                                    <li><span class="command-label">Gunakan <strong>{runtime}</strong></span> Untuk Runtime</li>
+                                    <li><span class="command-label">Gunakan <strong>{hari}</strong></span> Untuk hari</li>
+                                    <li><span class="command-label">Gunakan <strong>{level}</strong></span> Untuk level</li>
+                                    <li><span class="command-label">Gunakan <strong>{tier}</strong></span> Untuk tier</li>
+                                    <li><span class="command-label">Gunakan <strong>{xp}</strong></span> Untuk xp</li>
+                                    <li><span class="command-label">Gunakan <strong>{maxXp}</strong></span> Untuk Max Xp</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -226,6 +180,6 @@
             </div>
         </div>
         <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
-        <script type="module" src="script.js"></script>
+        <script type="module" src="menu.js"></script>
     </body>
 </html>
