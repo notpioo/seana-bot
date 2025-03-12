@@ -128,8 +128,11 @@ app.post('/api/bot/config', async (req, res) => {
         // Simpan konfigurasi ke file JSON
         await fs.writeFile(configFilePath, JSON.stringify(configData, null, 2), 'utf8');
         
-        // Log bahwa konfigurasi telah berhasil disimpan
+        // Kirim pesan ke semua klien WebSocket bahwa konfigurasi telah diperbarui
         sendLogToClients('Bot configuration updated successfully', 'info');
+        
+        // Kirim event ke bot agar memuat ulang konfigurasi
+        global.botConfigUpdated = true;
         
         res.json({ success: true, message: 'Configuration saved successfully' });
     } catch (error) {

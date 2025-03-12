@@ -31,7 +31,10 @@ async function connectToWhatsApp() {
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_PATH)
         
         // Load bot configuration
-        const config = await botSettings.getBotConfig();
+        const config = await botSettings.getBotConfig(true); // Force reload
+        
+        // Initialize global flag for config update notification
+        global.botConfigUpdated = false;
         
         const sock = makeWASocket({
             printQRInTerminal: true,
@@ -44,6 +47,28 @@ async function connectToWhatsApp() {
             maxRetries: 5,
             generateHighQualityLinkPreview: true,
         })
+        
+        // Setup config checker interval
+        setInterval(async () => {
+            try {
+                if (global.botConfigUpdated) {
+                    // Reset the flag
+                    global.botConfigUpdated = false;
+                    
+                    // Get fresh config
+                    const freshConfig = await botSettings.getBotConfig(true);
+                    
+                    logger.info('Bot configuration has been updated, applying changes...');
+                    
+                    // Update bot name in connections
+                    if (sock?.user?.name !== freshConfig.botName) {
+                        logger.info(`Bot name updated from ${sock?.user?.name || 'unknown'} to ${freshConfig.botName}`);
+                    }
+                }
+            } catch (err) {
+                logger.error('Error checking configuration updates:', err);
+            }
+        }, 10000); // Check every 10 seconds
 
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect, qr } = update

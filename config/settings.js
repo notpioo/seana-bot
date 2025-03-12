@@ -6,6 +6,11 @@
 
 const fs = require('fs').promises;
 const path = require('path');
+const logger = require('../lib/utils/logger');
+
+// Cache for configuration
+let configCache = null;
+let lastConfigLoadTime = 0;
 
 // Default configuration
 const defaultConfig = {
@@ -29,19 +34,39 @@ const defaultConfig = {
 };
 
 /**
- * Get bot configuration
+ * Get bot configuration with cache invalidation
+ * @param {boolean} forceReload - Force reload from disk
  * @returns {Promise<Object>} Bot configuration
  */
-async function getBotConfig() {
+async function getBotConfig(forceReload = false) {
     try {
         const configFilePath = path.join(__dirname, 'settings.json');
+        
+        // Check if file has been modified since last load
+        const stats = await fs.stat(configFilePath).catch(() => null);
+        const fileModTime = stats ? stats.mtimeMs : 0;
+        
+        // Use cache if available and not forced to reload
+        if (!forceReload && configCache && fileModTime <= lastConfigLoadTime) {
+            return configCache;
+        }
+        
+        // Load from file
         const data = await fs.readFile(configFilePath, 'utf8');
         const config = JSON.parse(data);
+        
+        // Update cache
+        configCache = config;
+        lastConfigLoadTime = Date.now();
+        
+        logger.info('Bot configuration loaded from disk');
         return config;
     } catch (error) {
-        console.log('Config file not found or invalid, using default config');
+        logger.error('Config file not found or invalid, using default config', error);
         // Save default config if file doesn't exist
         await saveBotConfig(defaultConfig);
+        configCache = defaultConfig;
+        lastConfigLoadTime = Date.now();
         return defaultConfig;
     }
 }
