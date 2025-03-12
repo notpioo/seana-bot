@@ -228,8 +228,68 @@ document.addEventListener('DOMContentLoaded', function() {
         resetMenuBtn.addEventListener('click', () => {
             if (confirm('Apakah Anda yakin ingin mereset menu?')) {
                 document.getElementById('menuTextArea').value = '';
+                updateMenuPreview('');
             }
         });
+    }
+    
+    // Live preview functionality
+    const menuTextArea = document.getElementById('menuTextArea');
+    const menuPreview = document.getElementById('menuPreview');
+    
+    // Function to update the preview
+    function updateMenuPreview(text) {
+        if (!text || text.trim() === '') {
+            menuPreview.textContent = 'Masukkan teks menu untuk melihat preview';
+            return;
+        }
+        
+        // Replace variables with example values for preview
+        let previewText = text
+            .replace(/{pushname}/g, 'Pengguna')
+            .replace(/{prefix}/g, '.')
+            .replace(/{namebot}/g, 'SeaBot')
+            .replace(/{ucapan}/g, getGreeting())
+            .replace(/{tanggal}/g, new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'long', year: 'numeric'}))
+            .replace(/{wib}/g, new Date().toLocaleTimeString('id-ID', {timeZone: 'Asia/Jakarta'}))
+            .replace(/{wita}/g, new Date().toLocaleTimeString('id-ID', {timeZone: 'Asia/Makassar'}))
+            .replace(/{wit}/g, new Date().toLocaleTimeString('id-ID', {timeZone: 'Asia/Jayapura'}))
+            .replace(/{sender}/g, '62812345678@s.whatsapp.net')
+            .replace(/{limit}/g, '100')
+            .replace(/{balance}/g, '5000')
+            .replace(/{status}/g, 'Premium')
+            .replace(/{runtime}/g, '2 hari 5 jam 30 menit')
+            .replace(/{hari}/g, new Date().toLocaleDateString('id-ID', {weekday: 'long'}));
+        
+        // Handle simple Markdown-like formatting
+        previewText = previewText
+            .replace(/\*([^*]+)\*/g, '<strong>$1</strong>') // Bold text
+            .replace(/_([^_]+)_/g, '<em>$1</em>'); // Italic text
+        
+        menuPreview.innerHTML = previewText;
+    }
+    
+    // Get appropriate greeting based on time of day
+    function getGreeting() {
+        const hour = new Date().getHours();
+        if (hour >= 5 && hour < 12) return 'pagi';
+        if (hour >= 12 && hour < 15) return 'siang';
+        if (hour >= 15 && hour < 19) return 'sore';
+        return 'malam';
+    }
+    
+    // Listen for changes in the textarea
+    if (menuTextArea) {
+        menuTextArea.addEventListener('input', function() {
+            updateMenuPreview(this.value);
+        });
+        
+        // Also update preview when menu data is loaded
+        const originalLoadMenuData = loadMenuData;
+        loadMenuData = async () => {
+            await originalLoadMenuData();
+            updateMenuPreview(menuTextArea.value);
+        };
     }
 
     // Toggle user dropdown
