@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (submitMenuBtn) {
         submitMenuBtn.addEventListener('click', async () => {
             const menuContent = document.getElementById('menuTextArea').value;
+            const successMessage = document.getElementById('successMessage');
 
             try {
                 const response = await fetch('/api/bot/menu', {
@@ -201,13 +202,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     const data = await response.json();
                     if (data.success) {
-                        // Show success message with animation
-                        const successMessage = document.getElementById('successMessage');
-                        successMessage.classList.add('show');
-
+                        // Show success message
+                        successMessage.style.display = 'block';
+                        
                         // Hide after 3 seconds
                         setTimeout(() => {
-                            successMessage.classList.remove('show');
+                            successMessage.style.display = 'none';
                         }, 3000);
                     } else {
                         alert('Gagal memperbarui menu: ' + (data.message || 'Unknown error'));
@@ -239,6 +239,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to update the preview
     function updateMenuPreview(text) {
+        if (!menuPreview) return;
+        
         if (!text || text.trim() === '') {
             menuPreview.textContent = 'Masukkan teks menu untuk melihat preview';
             return;
