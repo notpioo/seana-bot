@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize header functions manually
+    initHeaderFunctions();
+    
     // Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyAHzj3JT2_PFdQQNvIf8yD4Z95wNJ8GEF0",
@@ -162,3 +165,78 @@ document.addEventListener('DOMContentLoaded', function() {
             });
     }
 });
+
+// Header functionality copied from header.js
+function initHeaderFunctions() {
+    // Toggle sidebar
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const menuOverlay = document.getElementById('menuOverlay');
+    
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            sidebar.classList.toggle('expanded');
+            mainContent.classList.toggle('expanded');
+            menuOverlay.classList.toggle('active');
+        });
+    }
+    
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('expanded');
+            sidebar.classList.add('collapsed');
+            mainContent.classList.add('expanded');
+            menuOverlay.classList.remove('active');
+        });
+    }
+    
+    // Toggle dark mode
+    const toggleMode = document.querySelector('.toggle-mode');
+    if (toggleMode) {
+        toggleMode.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
+        });
+    }
+    
+    // User dropdown
+    const userAvatarTrigger = document.getElementById('userAvatarTrigger');
+    const userDropdown = document.getElementById('userDropdown');
+    
+    if (userAvatarTrigger && userDropdown) {
+        userAvatarTrigger.addEventListener('click', function(e) {
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+        
+        document.addEventListener('click', function(e) {
+            if (!userDropdown.contains(e.target) && !userAvatarTrigger.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+    }
+    
+    // User information in dropdown
+    const dropdownUsername = document.getElementById('dropdown-username');
+    const username = document.getElementById('username');
+    if (username && dropdownUsername) {
+        // Make sure dropdown username matches header username
+        const updateUsername = () => {
+            if (username.textContent) {
+                dropdownUsername.textContent = username.textContent;
+            }
+        };
+        // Initial update
+        updateUsername();
+        // Update on change
+        const observer = new MutationObserver(updateUsername);
+        observer.observe(username, { childList: true });
+    }
+    
+    // Check dark mode preference
+    if (localStorage.getItem('dark-mode') === 'true') {
+        document.body.classList.add('dark-mode');
+    }
+}

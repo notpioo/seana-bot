@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div id="menuOverlay" class="menu-overlay"></div>
     <div class="container">
         <div class="sidebar">
             <div class="logo">
@@ -40,7 +42,46 @@
         </div>
         <div class="main-content">
             <div class="header">
-                <!-- Header akan dimuat dari header.html oleh header.js -->
+                <div class="header-left">
+                    <button id="hamburgerMenu" class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2>SeaBot</h2>
+                </div>
+                <div class="header-right">
+                    <button class="toggle-mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="user-avatar" id="userAvatarTrigger">
+                        <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar" id="userAvatar">
+                        <span id="username">User</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <div class="dropdown-header">
+                            <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar">
+                            <div>
+                                <span id="dropdown-username">User</span>
+                                <span class="user-role">Admin</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-body">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user-circle"></i>
+                                Profile
+                            </a>
+                            <a href="#settings" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <hr>
+                            <a href="#" id="logoutBtn" class="dropdown-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="menu-section">
@@ -110,7 +151,6 @@
 
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="header.js"></script>
     <script src="menu.js"></script>
 </body>
 </html>
