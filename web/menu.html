@@ -204,7 +204,7 @@
                     <h3>BOT</h3>
                     <ul>
                         <li>
-                            <a href="#"
+                            <a href="config.html"
                                 ><i class="fas fa-cog"></i>
                                 <span>Config</span></a
                             >
@@ -267,138 +267,293 @@
                     <div class="menu-section">
                         <h2><i class="fas fa-list"></i> Edit Menu</h2>
                         <div class="menu-container">
-                    <div class="menu-editor">
-                        <div class="menu-card">
-                            <div class="menu-card-header">
-                                <i class="fas fa-edit"></i> Editor Menu Bot
-                            </div>
-                            <div class="menu-card-body">
-                                <textarea
-                                    id="menuTextArea"
-                                    placeholder="Isi menu custom kamu di sini..."
-                                    rows="14"
-                                ></textarea>
-                                <div class="menu-buttons">
-                                    <button id="submitMenu" class="primary-btn">
-                                        <i class="fas fa-save"></i> Simpan
-                                    </button>
-                                    <button
-                                        id="resetMenu"
-                                        class="secondary-btn"
-                                    >
-                                        <i class="fas fa-undo"></i> Reset
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menu-help">
-                        <div class="menu-card">
-                            <div class="menu-card-header">
-                                <i class="fas fa-info-circle"></i> Bantuan Variabel
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="variable-container">
-                                    <div class="variable-group">
-                                        <h4>Informasi Pengguna</h4>
-                                        <div class="variable-items">
-                                            <div class="variable-item">
-                                                <div class="variable-name">{pushname}</div>
-                                                <div class="variable-desc">Nama pengguna</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{sender}</div>
-                                                <div class="variable-desc">Nomor pengirim</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{status}</div>
-                                                <div class="variable-desc">Status (Owner|Premium|Free)</div>
-                                            </div>
-                                        </div>
+                            <div class="menu-editor">
+                                <div class="menu-card">
+                                    <div class="menu-card-header">
+                                        <i class="fas fa-edit"></i> Editor Menu
+                                        Bot
                                     </div>
-                                    
-                                    <div class="variable-group">
-                                        <h4>Informasi Bot</h4>
-                                        <div class="variable-items">
-                                            <div class="variable-item">
-                                                <div class="variable-name">{prefix}</div>
-                                                <div class="variable-desc">Prefix bot</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{namebot}</div>
-                                                <div class="variable-desc">Nama bot</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{runtime}</div>
-                                                <div class="variable-desc">Waktu bot berjalan</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="variable-group">
-                                        <h4>Waktu & Tanggal</h4>
-                                        <div class="variable-items">
-                                            <div class="variable-item">
-                                                <div class="variable-name">{ucapan}</div>
-                                                <div class="variable-desc">Ucapan (Pagi/Siang/Sore/Malam)</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{tanggal}</div>
-                                                <div class="variable-desc">Tanggal saat ini</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{hari}</div>
-                                                <div class="variable-desc">Nama hari</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{wib}</div>
-                                                <div class="variable-desc">Jam WIB</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{wita}</div>
-                                                <div class="variable-desc">Jam WITA</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{wit}</div>
-                                                <div class="variable-desc">Jam WIT</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="variable-group">
-                                        <h4>Informasi Level & Ekonomi</h4>
-                                        <div class="variable-items">
-                                            <div class="variable-item">
-                                                <div class="variable-name">{limit}</div>
-                                                <div class="variable-desc">Jumlah limit</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{balance}</div>
-                                                <div class="variable-desc">Jumlah balance</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{level}</div>
-                                                <div class="variable-desc">Level pengguna</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{tier}</div>
-                                                <div class="variable-desc">Tier pengguna</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{xp}</div>
-                                                <div class="variable-desc">XP pengguna</div>
-                                            </div>
-                                            <div class="variable-item">
-                                                <div class="variable-name">{maxXp}</div>
-                                                <div class="variable-desc">Max XP level</div>
-                                            </div>
+                                    <div class="menu-card-body">
+                                        <textarea
+                                            id="menuTextArea"
+                                            placeholder="Isi menu custom kamu di sini..."
+                                            rows="14"
+                                        ></textarea>
+                                        <div class="menu-buttons">
+                                            <button
+                                                id="submitMenu"
+                                                class="primary-btn"
+                                            >
+                                                <i class="fas fa-save"></i>
+                                                Simpan
+                                            </button>
+                                            <button
+                                                id="resetMenu"
+                                                class="secondary-btn"
+                                            >
+                                                <i class="fas fa-undo"></i>
+                                                Reset
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="menu-help">
+                                <div class="menu-card">
+                                    <div class="menu-card-header">
+                                        <i class="fas fa-info-circle"></i>
+                                        Bantuan Variabel
+                                    </div>
+                                    <div class="menu-card-body">
+                                        <div class="variable-container">
+                                            <div class="variable-group">
+                                                <h4>Informasi Pengguna</h4>
+                                                <div class="variable-items">
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {pushname}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Nama pengguna
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {sender}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Nomor pengirim
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {status}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Status
+                                                            (Owner|Premium|Free)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="variable-group">
+                                                <h4>Informasi Bot</h4>
+                                                <div class="variable-items">
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {prefix}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Prefix bot
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {namebot}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Nama bot
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {runtime}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Waktu bot berjalan
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="variable-group">
+                                                <h4>Waktu & Tanggal</h4>
+                                                <div class="variable-items">
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {ucapan}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Ucapan
+                                                            (Pagi/Siang/Sore/Malam)
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {tanggal}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Tanggal saat ini
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {hari}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Nama hari
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {wib}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Jam WIB
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {wita}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Jam WITA
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {wit}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Jam WIT
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="variable-group">
+                                                <h4>
+                                                    Informasi Level & Ekonomi
+                                                </h4>
+                                                <div class="variable-items">
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {limit}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Jumlah limit
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {balance}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Jumlah balance
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {level}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Level pengguna
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {tier}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Tier pengguna
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {xp}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            XP pengguna
+                                                        </div>
+                                                    </div>
+                                                    <div class="variable-item">
+                                                        <div
+                                                            class="variable-name"
+                                                        >
+                                                            {maxXp}
+                                                        </div>
+                                                        <div
+                                                            class="variable-desc"
+                                                        >
+                                                            Max XP level
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
                     </div>
                 </div>
             </div>
