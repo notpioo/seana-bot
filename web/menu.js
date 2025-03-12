@@ -1,242 +1,291 @@
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize header functions manually
-    initHeaderFunctions();
-    
-    // Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyAHzj3JT2_PFdQQNvIf8yD4Z95wNJ8GEF0",
-        authDomain: "seanabot.firebaseapp.com",
-        projectId: "seanabot",
-        storageBucket: "seanabot.appspot.com",
-        messagingSenderId: "368082526817",
-        appId: "1:368082526817:web:5e793555a52e0fe24d5eb4"
+    // Load firebase-auth.js using a script tag
+    const script = document.createElement('script');
+    script.src = './firebase-auth.js';
+    script.type = 'module';
+    document.head.appendChild(script);
+
+    let auth, checkAuthState, getUserData, logoutUser;
+
+    script.onload = function() {
+        // Once loaded, check if functions are available in global scope
+        setTimeout(() => {
+            if (typeof window.checkAuthState === 'function') {
+                checkAuthState = window.checkAuthState;
+                getUserData = window.getUserData;
+                logoutUser = window.logoutUser;
+                auth = window.auth;
+
+                // Initialize auth checks
+                initializeAuth();
+            } else {
+                console.log("Auth module not loaded properly, retrying...");
+                // Try again after a delay
+                setTimeout(() => {
+                    if (typeof window.checkAuthState === 'function') {
+                        checkAuthState = window.checkAuthState;
+                        getUserData = window.getUserData;
+                        logoutUser = window.logoutUser;
+                        auth = window.auth;
+                        initializeAuth();
+                    } else {
+                        console.error("Auth module failed to load");
+                    }
+                }, 1000);
+            }
+        }, 500);
     };
 
-    // Initialize Firebase
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
+    // Initialize the auth checks after modules are loaded
+    const initializeAuth = () => {
+        console.log("Auth check pending...");
+        if (typeof checkAuthState === 'function') {
+            checkAuthState((user) => {
+                if (!user) {
+                    // Not logged in, redirect to login page
+                    window.location.replace('login.html');
+                    return;
+                }
+
+                // User is logged in, load user data
+                loadUserData(user);
+                // Load menu data
+                loadMenuData();
+            });
+        } else {
+            console.error("Auth module not loaded properly");
+        }
+    };
+
+    // Load user data and update UI
+    const loadUserData = async (user) => {
+        if (typeof getUserData === 'function') {
+            const userDataResult = await getUserData(user.uid);
+            if (userDataResult.success) {
+                const userData = userDataResult.data;
+
+                // Save username to localStorage for use across pages
+                localStorage.setItem('userName', userData.username || 'User');
+                localStorage.setItem('userRole', userData.role || 'User');
+
+                // Update UI with user data
+                const usernameElements = document.querySelectorAll('#username');
+                usernameElements.forEach(elem => {
+                    elem.textContent = userData.username || 'User';
+                });
+
+                const userRoleElements = document.querySelectorAll('#userRole');
+                userRoleElements.forEach(elem => {
+                    elem.textContent = userData.role || 'User';
+                });
+
+                // Update avatars - first check if there's a stored avatar in localStorage
+                const storedAvatar = localStorage.getItem('userAvatar');
+                const avatarUrl = storedAvatar || userData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.username || 'User')}&background=random`;
+                
+                // Store the avatar URL if we got it from userData
+                if (userData.photoURL && !storedAvatar) {
+                    localStorage.setItem('userAvatar', userData.photoURL);
+                }
+                
+                const avatarElements = document.querySelectorAll('#userAvatar');
+                avatarElements.forEach(elem => {
+                    elem.src = avatarUrl;
+                });
+            }
+        }
+    };
+
+    // Load saved menu content
+    const loadMenuData = async () => {
+        try {
+            const response = await fetch('/api/bot/menu', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.success && data.menu) {
+                    document.getElementById('menuTextArea').value = data.menu;
+                }
+            } else {
+                console.error('Failed to load menu data');
+            }
+        } catch (error) {
+            console.error('Error loading menu data:', error);
+        }
+    };
+
+    // Sidebar toggle functionality
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+
+    // Toggle sidebar function
+    const toggleSidebar = () => {
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            sidebar.classList.toggle('expanded');
+            if (menuOverlay) {
+                menuOverlay.classList.toggle('active');
+                // Prevent scrolling on body when menu is open
+                if (menuOverlay.classList.contains('active')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            }
+        } else {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+
+        // Ensure scrolling is always restored when closing sidebar on any device
+        if (!sidebar.classList.contains('expanded') && isMobile) {
+            document.body.style.overflow = '';
+        }
+    };
+
+    // Close menu when clicking outside on mobile
+    if (menuOverlay) {
+        menuOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('expanded');
+            menuOverlay.classList.remove('active');
+            // Restore scrolling
+            document.body.style.overflow = '';
+        });
     }
 
-    // Check if user is signed in
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            // User is signed in.
-            document.getElementById('username').textContent = user.displayName || user.email;
-            document.getElementById('userAvatar').src = user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName || 'User'}&background=random`;
+    // Add event listeners for hamburger menu toggle
+    if (hamburgerMenu) {
+        hamburgerMenu.addEventListener('click', toggleSidebar);
+    }
 
-            // Fetch menu data
-            fetchMenuData();
+    // Adjust sidebar behavior on window resize
+    window.addEventListener('resize', () => {
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            sidebar.classList.remove('collapsed');
+            if (sidebar.classList.contains('expanded')) {
+                if (menuOverlay) menuOverlay.classList.add('active');
+            }
         } else {
-            // User is not signed in. Redirect to login.
-            window.location.href = 'login.html';
+            if (menuOverlay) menuOverlay.classList.remove('active');
+            if (!sidebar.classList.contains('collapsed')) {
+                mainContent.classList.remove('expanded');
+            }
         }
     });
 
-    // Handle logout button for sidebar only (header logout is handled by header.js)
-    const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
-    if (sidebarLogoutBtn) {
-        sidebarLogoutBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-            firebase.auth().signOut().then(() => {
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                console.error('Logout Error', error);
-            });
-        });
-    }
-
-    // Menu editor functionality
-    const menuTextArea = document.getElementById('menuTextArea');
-    const menuPreview = document.getElementById('menuPreview');
+    // Submit menu button
     const submitMenuBtn = document.getElementById('submitMenu');
-    const resetMenuBtn = document.getElementById('resetMenu');
-    const successMessage = document.getElementById('successMessage');
-
-    // Update preview as user types
-    if (menuTextArea && menuPreview) {
-        menuTextArea.addEventListener('input', function() {
-            menuPreview.textContent = menuTextArea.value || 'Preview akan muncul di sini';
-        });
-    }
-
-    // Submit menu to server
-    if (submitMenuBtn && menuTextArea) {
-        submitMenuBtn.addEventListener('click', function() {
-            const menuText = menuTextArea.value;
-
-            // Here you would typically send this to your server
-            // For demo purposes, we'll just show success message
-            fetch('/api/menu', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ menu: menuText })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+    if (submitMenuBtn) {
+        submitMenuBtn.addEventListener('click', async () => {
+            const menuContent = document.getElementById('menuTextArea').value;
+            
+            try {
+                const response = await fetch('/api/bot/menu', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                    },
+                    body: JSON.stringify({ menu: menuContent })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Menu berhasil diperbarui!');
+                    } else {
+                        alert('Gagal memperbarui menu: ' + (data.message || 'Unknown error'));
+                    }
+                } else {
+                    alert('Gagal memperbarui menu. Server error.');
                 }
-                return response.json();
-            })
-            .then(data => {
-                // Show success message
-                if (successMessage) {
-                    successMessage.style.display = 'block';
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                    }, 3000);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Gagal menyimpan menu. Silakan coba lagi.');
-            });
-        });
-    }
-
-    // Reset menu to default
-    if (resetMenuBtn) {
-        resetMenuBtn.addEventListener('click', function() {
-            if (menuTextArea) {
-                menuTextArea.value = '';
-                if (menuPreview) {
-                    menuPreview.textContent = 'Preview akan muncul di sini';
-                }
+            } catch (error) {
+                console.error('Error updating menu:', error);
+                alert('Terjadi kesalahan saat memperbarui menu.');
             }
         });
     }
 
-    // Function to fetch menu data from server
-    function fetchMenuData() {
-        fetch('/api/menu')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (menuTextArea && data.menu) {
-                    menuTextArea.value = data.menu;
-                    if (menuPreview) {
-                        menuPreview.textContent = data.menu;
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching menu:', error);
-                // Set default menu if fetch fails
-                if (menuTextArea) {
-                    const defaultMenu = 
-`╔═══❲ {namebot} ❳═══❒
-║
-╠❒ ʜᴀʟᴏ {pushname} 👋
-╠❒ {ucapan}
-╠❒
-╠❒ ᴛᴀɴɢɢᴀʟ : {tanggal}
-╠❒ ᴡᴀᴋᴛᴜ   : {wib}
-╠❒ 
-╠❒ INFO PENGGUNA
-╠❒ ɴᴀᴍᴀ   : {pushname}
-╠❒ ɴᴏᴍᴏʀ  : {sender}
-╠❒ sᴛᴀᴛᴜs : {status}
-╠❒ ʟɪᴍɪᴛ  : {limit}
-╠❒ ʙᴀʟᴀɴᴄᴇ: {balance}
-╠❒ ʀᴜɴᴛɪᴍᴇ: {runtime}
-║
-╠❒ ▄▄▄▄▄ {namebot} ▄▄▄▄▄
-╠❒ ❒ ✦ MENU UTAMA ✦ ❒
-╠❒ {prefix}ai
-╠❒ {prefix}sticker
-╠❒ {prefix}download
-╠❒ {prefix}group
-╠❒ {prefix}tools
-╠❒ {prefix}owner
-╠❒ {prefix}info
-╠❒ 
-╚❒ Dibuat oleh SeanaBot`;
+    // Reset menu button
+    const resetMenuBtn = document.getElementById('resetMenu');
+    if (resetMenuBtn) {
+        resetMenuBtn.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin mereset menu?')) {
+                document.getElementById('menuTextArea').value = '';
+            }
+        });
+    }
 
-                    menuTextArea.value = defaultMenu;
-                    if (menuPreview) {
-                        menuPreview.textContent = defaultMenu;
-                    }
-                }
-            });
-    }
-});
-
-// Header functionality copied from header.js
-function initHeaderFunctions() {
-    // Toggle sidebar
-    const hamburgerMenu = document.getElementById('hamburgerMenu');
-    const sidebar = document.querySelector('.sidebar');
-    const mainContent = document.querySelector('.main-content');
-    const menuOverlay = document.getElementById('menuOverlay');
-    
-    if (hamburgerMenu) {
-        hamburgerMenu.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            sidebar.classList.toggle('expanded');
-            mainContent.classList.toggle('expanded');
-            menuOverlay.classList.toggle('active');
-        });
-    }
-    
-    if (menuOverlay) {
-        menuOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('expanded');
-            sidebar.classList.add('collapsed');
-            mainContent.classList.add('expanded');
-            menuOverlay.classList.remove('active');
-        });
-    }
-    
-    // Toggle dark mode
-    const toggleMode = document.querySelector('.toggle-mode');
-    if (toggleMode) {
-        toggleMode.addEventListener('click', function() {
-            document.body.classList.toggle('dark-mode');
-            localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
-        });
-    }
-    
-    // User dropdown
+    // Toggle user dropdown
     const userAvatarTrigger = document.getElementById('userAvatarTrigger');
     const userDropdown = document.getElementById('userDropdown');
-    
+
     if (userAvatarTrigger && userDropdown) {
         userAvatarTrigger.addEventListener('click', function(e) {
             e.stopPropagation();
             userDropdown.classList.toggle('show');
         });
-        
+
+        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
-            if (!userDropdown.contains(e.target) && !userAvatarTrigger.contains(e.target)) {
+            if (!userAvatarTrigger.contains(e.target) && !userDropdown.contains(e.target)) {
                 userDropdown.classList.remove('show');
             }
         });
     }
-    
-    // User information in dropdown
-    const dropdownUsername = document.getElementById('dropdown-username');
-    const username = document.getElementById('username');
-    if (username && dropdownUsername) {
-        // Make sure dropdown username matches header username
-        const updateUsername = () => {
-            if (username.textContent) {
-                dropdownUsername.textContent = username.textContent;
+
+    // Toggle dark mode
+    const toggleMode = document.querySelector('.toggle-mode');
+    if (toggleMode) {
+        toggleMode.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('fa-moon')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
-        };
-        // Initial update
-        updateUsername();
-        // Update on change
-        const observer = new MutationObserver(updateUsername);
-        observer.observe(username, { childList: true });
+        });
     }
-    
-    // Check dark mode preference
-    if (localStorage.getItem('dark-mode') === 'true') {
-        document.body.classList.add('dark-mode');
-    }
-}
+
+    // Logout buttons
+    const logoutBtns = document.querySelectorAll('[id="logoutBtn"], #sidebarLogoutBtn');
+
+    logoutBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Logout clicked");
+            if (typeof window.logoutUser === 'function') {
+                window.logoutUser().then(result => {
+                    if (result.success) {
+                        window.location.href = 'login.html';
+                    } else {
+                        alert("Logout failed: " + (result.error || "Unknown error"));
+                    }
+                });
+            } else if (typeof logoutUser === 'function') {
+                logoutUser().then(result => {
+                    if (result.success) {
+                        window.location.href = 'login.html';
+                    } else {
+                        alert("Logout failed: " + (result.error || "Unknown error"));
+                    }
+                });
+            } else {
+                console.error("Logout function not available");
+            }
+        });
+    });
+});

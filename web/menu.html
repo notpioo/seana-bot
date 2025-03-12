@@ -1,156 +1,426 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SeaBot - Menu Customization</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-    <div id="menuOverlay" class="menu-overlay"></div>
-    <div class="container">
-        <div class="sidebar">
-            <div class="logo">
-                <h2><i class="fas fa-robot"></i> SeaBot</h2>
-            </div>
-            <div class="menu">
-                <h3>NAVIGASI</h3>
-                <ul>
-                    <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
-                    <li class="active"><a href="menu.html"><i class="fas fa-list"></i> Menu Bot</a></li>
-                    <li><a href="#commands"><i class="fas fa-terminal"></i> Commands</a></li>
-                    <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
-                </ul>
-            </div>
-            <div class="bot-section">
-                <h3>BOT</h3>
-                <ul>
-                    <li><a href="#logs"><i class="fas fa-file-alt"></i> Logs</a></li>
-                    <li><a href="#broadcast"><i class="fas fa-broadcast-tower"></i> Broadcast</a></li>
-                    <li><a href="#backup"><i class="fas fa-database"></i> Backup</a></li>
-                </ul>
-            </div>
-            <div class="user-section">
-                <h3>USER</h3>
-                <ul>
-                    <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a href="#" id="sidebarLogoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="main-content">
-            <div class="header">
-                <div class="header-left">
-                    <button id="hamburgerMenu" class="menu-toggle">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <h2>SeaBot</h2>
-                </div>
-                <div class="header-right">
-                    <button class="toggle-mode">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div class="user-avatar" id="userAvatarTrigger">
-                        <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar" id="userAvatar">
-                        <span id="username">User</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="user-dropdown" id="userDropdown">
-                        <div class="dropdown-header">
-                            <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar">
-                            <div>
-                                <span id="dropdown-username">User</span>
-                                <span class="user-role">Admin</span>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>SeaBot - Menu</title>
+        <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <script type="module" src="script.js"></script>
+        <style>
+                        .variable-info {
+                            background-color: var(--card-bg);
+                            border-radius: 10px;
+                            padding: 15px;
+                            margin-bottom: 20px;
+
+            <body>
+                <div class="app-container">
+                    <div id="menuOverlay" class="menu-overlay"></div>
+                    <div class="sidebar">
+                        <div class="sidebar-header">
+                            <div class="logo">
+                                <i class="fas fa-robot"></i> SeaBot
                             </div>
                         </div>
-                        <div class="dropdown-body">
-                            <a href="profile.html" class="dropdown-item">
-                                <i class="fas fa-user-circle"></i>
-                                Profile
-                            </a>
-                            <a href="#settings" class="dropdown-item">
-                                <i class="fas fa-cog"></i>
-                                Settings
-                            </a>
-                            <hr>
-                            <a href="#" id="logoutBtn" class="dropdown-item">
-                                <i class="fas fa-sign-out-alt"></i>
-                                Logout
-                            </a>
+                        <div class="sidebar-content">
+                            <!-- Include dynamic header -->
+                            <div id="header-placeholder"></div>
+                        </div>
+                    </div>
+                    <div class="main-content">
+                        <div class="header">
+                            <div class="header-left">
+                                <button id="hamburgerMenu" class="hamburger-menu">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+                                <h2>Menu Bot</h2>
+                            </div>
+                            <div class="user-info" id="userAvatarTrigger">
+                                <div class="user-avatar">
+                                    <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar" />
+                                </div>
+                                <div class="user-dropdown" id="userDropdown">
+                                    <div class="user-dropdown-header">
+                                        <span id="username">User</span>
+                                        <small id="userRole">User</small>
+                                    </div>
+                                    <ul>
+                                        <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+                                        <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <section class="menu-section">
+                                <h2><i class="fas fa-list-ul"></i> Custom Menu</h2>
+                                <div class="menu-container">
+                                    <div class="menu-editor">
+                                        <textarea id="menuTextArea" rows="15" placeholder="Masukkan menu custom kamu di sini..."></textarea>
+                                        <div class="menu-buttons">
+                                            <button id="submitMenu" class="btn btn-primary"><i class="fas fa-save"></i> Simpan Menu</button>
+                                            <button id="resetMenu" class="btn btn-secondary"><i class="fas fa-undo"></i> Reset</button>
+                                        </div>
+                                    </div>
+                                    <div class="menu-help">
+                                        <div class="variable-info">
+                                            <h3>Variabel Custom Menu</h3>
+                                            <p>Gunakan variabel berikut untuk membuat menu dinamis:</p>
+                                            <div class="variable-list">
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{pushname}</div>
+                                                    <div class="variable-desc">Untuk Nama pengguna</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{prefix}</div>
+                                                    <div class="variable-desc">Untuk Prefix Bot</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{namebot}</div>
+                                                    <div class="variable-desc">Untuk Nama Bot</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{ucapan}</div>
+                                                    <div class="variable-desc">Untuk Ucapan seperti "Pagi"</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{tanggal}</div>
+                                                    <div class="variable-desc">Untuk Tanggal</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wib}</div>
+                                                    <div class="variable-desc">Untuk Jam WIB</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wita}</div>
+                                                    <div class="variable-desc">Untuk Jam WITA</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{wit}</div>
+                                                    <div class="variable-desc">Untuk Jam WIT</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{sender}</div>
+                                                    <div class="variable-desc">Untuk ID Pengirim</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{limit}</div>
+                                                    <div class="variable-desc">Untuk Jumlah Limit</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{balance}</div>
+                                                    <div class="variable-desc">Untuk Jumlah Balance</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{status}</div>
+                                                    <div class="variable-desc">Untuk Status Pengguna</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{runtime}</div>
+                                                    <div class="variable-desc">Untuk Waktu Bot Berjalan</div>
+                                                </div>
+                                                <div class="variable-item">
+                                                    <div class="variable-name">{hari}</div>
+                                                    <div class="variable-desc">Untuk Nama Hari</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
                         </div>
                     </div>
                 </div>
+                <script src="menu.js"></script>
+            </body>
+            </html>
+
+                            border: 1px solid var(--border-color);
+                        }
+                        .variable-list {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                            gap: 15px;
+                        }
+                        .variable-item {
+                            background-color: var(--input-bg);
+                            border-radius: 8px;
+                            padding: 10px 15px;
+                            border-left: 3px solid var(--primary-color);
+                        }
+                        .variable-name {
+                            color: #2196F3;
+                            font-weight: bold;
+                            font-family: monospace;
+                            font-size: 1.1em;
+                            margin-bottom: 5px;
+                        }
+                        .variable-desc {
+                            color: var(--text-color);
+                            font-size: 0.9em;
+                        }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="sidebar collapsed">
+                <div class="logo">
+                    <h2>SeaBot</h2>
+                </div>
+                <div class="menu">
+                    <h3>MAIN</h3>
+                    <ul>
+                        <li>
+                            <a href="index.html"
+                                ><i class="fas fa-home"></i>
+                                <span>Dashboard</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-tags"></i>
+                                <span>Pricing</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-question-circle"></i>
+                                <span>FAQ</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-history"></i>
+                                <span>Changelog</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="bot-section">
+                    <h3>BOT</h3>
+                    <ul>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-cog"></i>
+                                <span>Config</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-terminal"></i>
+                                <span>Command</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-filter"></i>
+                                <span>Filter Commands</span></a
+                            >
+                        </li>
+                        <li class="active">
+                            <a href="menu.html"
+                                ><i class="fas fa-list"></i>
+                                <span>Menu</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-section">
+                    <h3>USER</h3>
+                    <ul>
+                        <li>
+                            <a href="profile.html"
+                                ><i class="fas fa-cogs"></i>
+                                <span>Settings</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-file-invoice"></i>
+                                <span>Invoice</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#"
+                                ><i class="fas fa-handshake"></i>
+                                <span>Affiliate</span></a
+                            >
+                        </li>
+                        <li>
+                            <a href="#" id="sidebarLogoutBtn"
+                                ><i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span></a
+                            >
+                        </li>
+                    </ul>
+                </div>
             </div>
-
-            <div class="menu-section">
-                <h2><i class="fas fa-edit"></i> Kustomisasi Menu Bot</h2>
-
-                <div class="menu-container">
-                    <div class="menu-editor">
-                        <h3>Editor Menu</h3>
-                        <textarea id="menuTextArea" rows="15" placeholder="Masukkan teks menu di sini..."></textarea>
-                        <div class="menu-buttons">
-                            <button id="submitMenu" class="primary-btn"><i class="fas fa-save"></i> Simpan Menu</button>
-                            <button id="resetMenu" class="secondary-btn"><i class="fas fa-undo"></i> Reset</button>
+            <div class="main-content expanded">
+                <div class="header">
+                    <!-- This will be replaced by header.html content via header.js -->
+                </div>
+                <div class="content">
+                    <div class="menu-section">
+                        <h2><i class="fas fa-list"></i> Edit Menu</h2>
+                        <div class="menu-container">
+                            <div class="menu-editor">
+                                <textarea
+                                    id="menuTextArea"
+                                    placeholder="Isi textbox untuk update menu bot"
+                                    rows="10"
+                                ></textarea>
+                                <div class="menu-buttons">
+                                    <button id="submitMenu" class="primary-btn">
+                                        Submit
+                                    </button>
+                                    <button
+                                        id="resetMenu"
+                                        class="secondary-btn"
+                                    >
+                                        Reset Menu
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="menu-help">
+                                <ul class="command-list">
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{pushname}</strong></span
+                                        >
+                                        Untuk Nama pengguna
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{prefix}</strong></span
+                                        >
+                                        Untuk Prefix Bot
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{namebot}</strong></span
+                                        >
+                                        Untuk Nama Bot
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{ucapan}</strong></span
+                                        >
+                                        Untuk Ucapan seperti "Pagi"
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{tanggal}</strong></span
+                                        >
+                                        Untuk Tanggal
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wib}</strong></span
+                                        >
+                                        Untuk Jam WIB
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wita}</strong></span
+                                        >
+                                        Untuk Jam WITA
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{wit}</strong></span
+                                        >
+                                        Untuk Jam WIT
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{sender}</strong></span
+                                        >
+                                        Untuk Nomor Pengirim
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{limit}</strong></span
+                                        >
+                                        Untuk Limit
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{balance}</strong></span
+                                        >
+                                        Untuk Balance
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{status}</strong></span
+                                        >
+                                        Untuk Status (Owner|Premium|Free)
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{runtime}</strong></span
+                                        >
+                                        Untuk Runtime
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{hari}</strong></span
+                                        >
+                                        Untuk hari
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{level}</strong></span
+                                        >
+                                        Untuk level
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{tier}</strong></span
+                                        >
+                                        Untuk tier
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan <strong>{xp}</strong></span
+                                        >
+                                        Untuk xp
+                                    </li>
+                                    <li>
+                                        <span class="command-label"
+                                            >Gunakan
+                                            <strong>{maxXp}</strong></span
+                                        >
+                                        Untuk Max Xp
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div id="successMessage" class="success-message" style="display: none; margin-top: 15px; padding: 10px; background-color: var(--success-color); color: white; border-radius: 5px; text-align: center; transition: all 0.3s ease;">
-                            Menu berhasil disimpan!
-                        </div>
-                    </div>
-
-                    <div class="menu-help">
-                        <h3>Preview Menu</h3>
-                        <div id="menuPreview" style="background-color: var(--secondary-color); padding: 15px; border-radius: 10px; margin-bottom: 20px; min-height: 200px; white-space: pre-wrap; overflow-wrap: break-word;">
-                            Masukkan teks menu untuk melihat preview
-                        </div>
-
-                        <h3><code>&lt;/&gt;</code> Variabel Menu</h3>
-                        <p>Gunakan variabel berikut untuk membuat menu dinamis. Variabel akan otomatis digantikan dengan nilai yang sesuai saat menu ditampilkan.</p>
-                        <ul class="command-list">
-                            <li>
-                                <span class="command-label"><strong>{pushname}</strong> - Nama pengguna</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{prefix}</strong> - Prefix Bot</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{namebot}</strong> - Nama Bot</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{ucapan}</strong> - Ucapan waktu</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{tanggal}</strong> - Tanggal hari ini</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{wib}</strong> - Jam WIB</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{sender}</strong> - Nomor pengirim</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{status}</strong> - Status pengguna</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{limit}</strong> - Limit pengguna</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{balance}</strong> - Balance pengguna</span>
-                            </li>
-                            <li>
-                                <span class="command-label"><strong>{runtime}</strong> - Runtime bot</span>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-    <script src="menu.js"></script>
-</body>
+        <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+        <script src="header.js"></script>
+        <script type="module" src="menu.js"></script>
+    </body>
 </html>
