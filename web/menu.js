@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
     // Check if user is signed in
     firebase.auth().onAuthStateChanged(function(user) {
@@ -27,58 +29,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Toggle user dropdown
-    const userAvatarTrigger = document.getElementById('userAvatarTrigger');
-    const userDropdown = document.getElementById('userDropdown');
-
-    if (userAvatarTrigger && userDropdown) {
-        userAvatarTrigger.addEventListener('click', function(event) {
-            event.stopPropagation();
-            userDropdown.classList.toggle('active');
-        });
-    }
-
-    // Close dropdown when clicking outside
-    document.addEventListener('click', function(event) {
-        if (userDropdown && userDropdown.classList.contains('active') && !userDropdown.contains(event.target)) {
-            userDropdown.classList.remove('active');
-        }
-    });
-
-    // Handle hamburger menu
-    const hamburgerMenu = document.getElementById('hamburgerMenu');
-    const sidebar = document.querySelector('.sidebar');
-    const menuOverlay = document.getElementById('menuOverlay');
-
-    if (hamburgerMenu && sidebar) {
-        hamburgerMenu.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            menuOverlay.classList.toggle('active');
-        });
-    }
-
-    if (menuOverlay) {
-        menuOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('collapsed');
-            menuOverlay.classList.remove('active');
-        });
-    }
-
-    // Handle logout button
-    const logoutBtn = document.getElementById('logoutBtn');
+    // Handle logout button for sidebar only (header logout is handled by header.js)
     const sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function(event) {
-            event.preventDefault();
-            firebase.auth().signOut().then(() => {
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                console.error('Logout Error', error);
-            });
-        });
-    }
-
     if (sidebarLogoutBtn) {
         sidebarLogoutBtn.addEventListener('click', function(event) {
             event.preventDefault();

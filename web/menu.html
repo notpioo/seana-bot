@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -41,31 +40,12 @@
         </div>
         <div class="main-content">
             <div class="header">
-                <div class="header-left">
-                    <button class="hamburger-menu" id="hamburgerMenu" title="Toggle Menu">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <button class="toggle-mode" title="Toggle Dark Mode">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                </div>
-                <div class="menu-overlay" id="menuOverlay"></div>
-                <div class="user-info user-dropdown">
-                    <span id="username">Loading...</span>
-                    <div class="user-avatar" id="userAvatarTrigger">
-                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar">
-                    </div>
-                    <div class="dropdown-menu" id="userDropdown">
-                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
-                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-                        <a href="#" id="logoutBtn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </div>
-                </div>
+                <!-- Header akan dimuat dari header.html oleh header.js -->
             </div>
-            
+
             <div class="menu-section">
                 <h2><i class="fas fa-edit"></i> Kustomisasi Menu Bot</h2>
-                
+
                 <div class="menu-container">
                     <div class="menu-editor">
                         <h3>Editor Menu</h3>
@@ -78,13 +58,13 @@
                             Menu berhasil disimpan!
                         </div>
                     </div>
-                    
+
                     <div class="menu-help">
                         <h3>Preview Menu</h3>
                         <div id="menuPreview" style="background-color: var(--secondary-color); padding: 15px; border-radius: 10px; margin-bottom: 20px; min-height: 200px; white-space: pre-wrap; overflow-wrap: break-word;">
                             Masukkan teks menu untuk melihat preview
                         </div>
-                        
+
                         <h3><code>&lt;/&gt;</code> Variabel Menu</h3>
                         <p>Gunakan variabel berikut untuk membuat menu dinamis. Variabel akan otomatis digantikan dengan nilai yang sesuai saat menu ditampilkan.</p>
                         <ul class="command-list">
@@ -127,9 +107,10 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+    <script src="header.js"></script>
     <script src="menu.js"></script>
 </body>
 </html>
