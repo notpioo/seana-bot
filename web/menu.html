@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="menuOverlay" class="menu-overlay"></div>
     <div class="container">
         <div class="sidebar">
             <div class="logo">
@@ -43,27 +42,23 @@
         <div class="main-content">
             <div class="header">
                 <div class="header-left">
-                    <button id="hamburgerMenu" class="hamburger-menu">
+                    <button class="hamburger-menu" id="hamburgerMenu" title="Toggle Menu">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <h1>Menu Bot Customization</h1>
+                    <button class="toggle-mode" title="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </div>
-                <div class="user-info" id="userAvatarTrigger">
-                    <span id="username">User</span>
-                    <div class="user-avatar">
-                        <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User Avatar" id="userAvatar">
+                <div class="menu-overlay" id="menuOverlay"></div>
+                <div class="user-info user-dropdown">
+                    <span id="username">Loading...</span>
+                    <div class="user-avatar" id="userAvatarTrigger">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=random" alt="Avatar">
                     </div>
                     <div class="dropdown-menu" id="userDropdown">
-                        <a href="profile.html">
-                            <i class="fas fa-user"></i> Profile
-                        </a>
-                        <a href="#settings">
-                            <i class="fas fa-cog"></i> Settings
-                        </a>
-                        <hr>
-                        <a href="#" id="logoutBtn">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Profile</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+                        <a href="#" id="logoutBtn" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
                     </div>
                 </div>
             </div>
