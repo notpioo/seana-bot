@@ -5,6 +5,7 @@ const logger = require('./lib/utils/logger')
 const fs = require('fs')
 const path = require('path')
 const connectDB = require('./database/config/mongoose');
+const botSettings = require('./config/settings');
 require('dotenv').config();
 
 // Gunakan environment variable untuk auth path
@@ -29,10 +30,13 @@ async function connectToWhatsApp() {
         
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_PATH)
         
+        // Load bot configuration
+        const config = await botSettings.getBotConfig();
+        
         const sock = makeWASocket({
             printQRInTerminal: true,
             auth: state,
-            browser: ['SeaBot', 'Chrome', '5.0'],
+            browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             keys: makeCacheableSignalKeyStore(state.keys, logger),
             retryRequestDelayMs: 2000,
             connectTimeoutMs: 60000,
@@ -77,10 +81,22 @@ async function connectToWhatsApp() {
                 logger.info('Connected to WhatsApp')
                 
                 try {
-                    await sock.sendPresenceUpdate('available')
-                    logger.info('Presence update sent successfully')
+                    // Check if online status is enabled in config
+                    const config = await botSettings.getBotConfig();
+                    
+                    if (config.onlineOnConnect) {
+                        await sock.sendPresenceUpdate('available')
+                        logger.info('Presence update sent successfully')
+                    } else {
+                        logger.info('Online status disabled in configuration')
+                    }
+                    
+                    // Log bot configuration
+                    logger.info(`Bot started with name: ${config.botName}`)
+                    logger.info(`Prefix type: ${config.prefixType}, Prefix: ${config.prefix}`)
+                    logger.info(`Owners: ${config.owners.map(o => o.name).join(', ')}`)
                 } catch (err) {
-                    logger.error('Failed to send presence update:', err)
+                    logger.error('Failed to process startup configuration:', err)
                 }
             }
         })

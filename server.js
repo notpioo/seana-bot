@@ -59,6 +59,85 @@ app.get('/api/bot/status', (req, res) => {
     });
 });
 
+// Bot Config API Routes
+app.get('/api/bot/config', async (req, res) => {
+    try {
+        const configFilePath = path.join(__dirname, 'config', 'settings.json');
+        let configData = {
+            botName: 'BabyChand Bot',
+            packname: 'BabyChand',
+            authorname: 'Darraaaa',
+            footerText: '2022 © BabyChand Bot',
+            limit: 20,
+            balanceLimit: 250,
+            owners: [
+                { name: 'Darraaaa', number: '628570957572' },
+                { name: 'Renn', number: '6287883480816' },
+                { name: 'Pioo', number: '6289536066429' }
+            ],
+            prefix: '.#/!',
+            prefixType: 'multi',
+            onlineOnConnect: true,
+            premiumNotification: true,
+            sewaNotification: true,
+            joinToUse: false
+        };
+        
+        try {
+            const fileData = await fs.readFile(configFilePath, 'utf8');
+            configData = JSON.parse(fileData);
+        } catch (error) {
+            // File tidak ada atau format tidak valid, kembalikan default
+            console.log('Config file not found or invalid, using default config');
+            // Buat file config default jika tidak ada
+            const configDir = path.dirname(configFilePath);
+            try {
+                await fs.mkdir(configDir, { recursive: true });
+                await fs.writeFile(configFilePath, JSON.stringify(configData, null, 2), 'utf8');
+                console.log('Created default config file');
+            } catch (writeError) {
+                console.error('Failed to create default config file:', writeError);
+            }
+        }
+        
+        res.json({ success: true, config: configData });
+    } catch (error) {
+        console.error('Error reading config file:', error);
+        res.json({ success: false, message: error.message });
+    }
+});
+
+app.post('/api/bot/config', async (req, res) => {
+    try {
+        const configData = req.body;
+        
+        if (!configData || !configData.botName) {
+            return res.json({ success: false, message: 'Invalid configuration data' });
+        }
+        
+        const configFilePath = path.join(__dirname, 'config', 'settings.json');
+        const configDir = path.dirname(configFilePath);
+        
+        // Pastikan direktori config ada
+        try {
+            await fs.mkdir(configDir, { recursive: true });
+        } catch (error) {
+            console.log('Config directory already exists or error creating it:', error);
+        }
+        
+        // Simpan konfigurasi ke file JSON
+        await fs.writeFile(configFilePath, JSON.stringify(configData, null, 2), 'utf8');
+        
+        // Log bahwa konfigurasi telah berhasil disimpan
+        sendLogToClients('Bot configuration updated successfully', 'info');
+        
+        res.json({ success: true, message: 'Configuration saved successfully' });
+    } catch (error) {
+        console.error('Error saving config file:', error);
+        res.json({ success: false, message: error.message });
+    }
+});
+
 // Menu API Routes
 app.get('/api/bot/menu', async (req, res) => {
     try {
