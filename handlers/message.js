@@ -1,55 +1,69 @@
-const { profileHandler } = require('../lib/commands/profile');
-const { setUsernameHandler } = require('../lib/commands/username');
-const { menuHandler } = require('../lib/commands/menu');
-const { updateHandler } = require('../lib/commands/update');
-const { suitHandler, handleSuitResponse, handleSuitChoice } = require('../lib/commands/suit');
-const { stickerHandler } = require('../lib/commands/sticker');
-const { cekPremHandler } = require('../lib/commands/cekprem');
-const { listPremHandler } = require('../lib/commands/listprem');
-const { listBanHandler } = require('../lib/commands/listban');
-const User = require('../database/models/User');
-const { stickertextHandler } = require('../lib/commands/stickertext');
-const { quoteChatHandler } = require('../lib/commands/quotechat');
-const { mathHandler, handleMathAnswer, hasMathGame } = require('../lib/commands/math');
-const { confessHandler, handleConfessReply } = require('../lib/commands/confess');
-const { tiktokHandler } = require('../lib/commands/tiktok');
-const { tictactoeHandler, handleTicTacToeMove } = require('../lib/commands/tictactoe');
-const { topGlobalHandler } = require('../lib/commands/topglobal');
-const { addHandler, kickHandler } = require('../lib/commands/group');
-const { seaHandler } = require('../lib/commands/sea');
-const { setApikeyHandler } = require('../lib/commands/setapikey');
-const {quotesHandler} = require('../lib/commands/quotes');
-const { susunKataHandler,
-    handleSusunKataAnswer, 
-    gameState, 
-    leaderboardSusunHandler 
-} = require('../lib/commands/susunkata');
-const { cryptoHandler,
+const { profileHandler } = require("../lib/commands/profile");
+const { setUsernameHandler } = require("../lib/commands/username");
+const { menuHandler } = require("../lib/commands/menu");
+const { updateHandler } = require("../lib/commands/update");
+const {
+    suitHandler,
+    handleSuitResponse,
+    handleSuitChoice,
+} = require("../lib/commands/suit");
+const { stickerHandler } = require("../lib/commands/sticker");
+const { cekPremHandler } = require("../lib/commands/cekprem");
+const { listPremHandler } = require("../lib/commands/listprem");
+const { listBanHandler } = require("../lib/commands/listban");
+const User = require("../database/models/User");
+const { stickertextHandler } = require("../lib/commands/stickertext");
+const { quoteChatHandler } = require("../lib/commands/quotechat");
+const {
+    mathHandler,
+    handleMathAnswer,
+    hasMathGame,
+} = require("../lib/commands/math");
+const {
+    confessHandler,
+    handleConfessReply,
+} = require("../lib/commands/confess");
+const { tiktokHandler } = require("../lib/commands/tiktok");
+const {
+    tictactoeHandler,
+    handleTicTacToeMove,
+} = require("../lib/commands/tictactoe");
+const { topGlobalHandler } = require("../lib/commands/topglobal");
+const { addHandler, kickHandler } = require("../lib/commands/group");
+const { seaHandler } = require("../lib/commands/sea");
+const { setApikeyHandler } = require("../lib/commands/setapikey");
+const { quotesHandler } = require("../lib/commands/quotes");
+const {
+    susunKataHandler,
+    handleSusunKataAnswer,
+    gameState,
+    leaderboardSusunHandler,
+} = require("../lib/commands/susunkata");
+const {
+    cryptoHandler,
     mineHandler,
-    buyRamHandler
-} = require('../lib/commands/crypto');
-const { marketHandler,
-    sellCryptoHandler
-} = require('../lib/commands/market');
-const { diceHandler,
+    buyRamHandler,
+} = require("../lib/commands/crypto");
+const { marketHandler, sellCryptoHandler } = require("../lib/commands/market");
+const {
+    diceHandler,
     joinDiceHandler,
     startDiceHandler,
     handleDiceChoice,
     diceStatsHandler,
-    resetDiceStatsHandler
- } = require('../lib/commands/dice');
-const { balanceHandler,
+    resetDiceStatsHandler,
+} = require("../lib/commands/dice");
+const {
+    balanceHandler,
     limitHandler,
     premiumHandler,
     banHandler,
-    addCdCryptoHandler } = require('../lib/commands/owner');
-const { 
+    addCdCryptoHandler,
+} = require("../lib/commands/owner");
+const {
     fishingHandler,
     dashboardHandler,
-    startBonanzaHandler,
-    endBonanzaHandler,
     areaHandler,
-    areaEventHandler,
     switchRodHandler,
     fishBagHandler,
     sellFishHandler,
@@ -63,28 +77,34 @@ const {
     unlockFishHandler,
     specialShopHandler,
     addStockHandler,
-    fishEventHandler
-} = require('../lib/commands/fish');
-const { 
-    tradeHandler, 
-    handleTradeResponse,
-    putTradeHandler, 
-    acceptTradeHandler, 
-    cancelTradeHandler 
-} = require('../lib/commands/trade');
+} = require("../lib/commands/fish");
 const {
-    fastTypeHandler,
-    handleAnswer
-} = require('../lib/commands/fasttype');
-const { inventoryHandler, useBoostHandler } = require('../lib/commands/inventory');
-const { transferHandler } = require('../lib/commands/transfer');
-const { afkHandler, checkAfkStatus } = require('../lib/commands/afk');
-const Fish = require('../database/models/Fish');
-const { tebakBomHandler, handleBombGuess } = require('../lib/commands/tebakbom');
-const { tebakAngkaHandler, handleGuess, hasActiveGame } = require('../lib/commands/tebakangka');
+    tradeHandler,
+    handleTradeResponse,
+    putTradeHandler,
+    acceptTradeHandler,
+    cancelTradeHandler,
+} = require("../lib/commands/trade");
+const { fastTypeHandler, handleAnswer } = require("../lib/commands/fasttype");
+const {
+    inventoryHandler,
+    useBoostHandler,
+} = require("../lib/commands/inventory");
+const { transferHandler } = require("../lib/commands/transfer");
+const { afkHandler, checkAfkStatus } = require("../lib/commands/afk");
+const Fish = require("../database/models/Fish");
+const {
+    tebakBomHandler,
+    handleBombGuess,
+} = require("../lib/commands/tebakbom");
+const {
+    tebakAngkaHandler,
+    handleGuess,
+    hasActiveGame,
+} = require("../lib/commands/tebakangka");
 
 // Added to load bot configuration.  Error handling is crucial.
-const botSettings = require('../config/settings');
+const botSettings = require("../config/settings");
 let config;
 try {
     config = botSettings.getBotConfig();
@@ -95,17 +115,19 @@ try {
 }
 
 async function handleMessages(sock) {
-    sock.ev.on('messages.upsert', async (m) => {
+    sock.ev.on("messages.upsert", async (m) => {
         try {
             const msg = m.messages[0];
             if (msg.key.fromMe) return;
 
-            const body = msg.message?.conversation || 
-             msg.message?.extendedTextMessage?.text || 
-             msg.message?.imageMessage?.caption || 
-             msg.message?.videoMessage?.caption ||
-             msg.message?.viewOnceMessage?.message?.imageMessage?.caption ||
-             msg.message?.viewOnceMessage?.message?.videoMessage?.caption || '';
+            const body =
+                msg.message?.conversation ||
+                msg.message?.extendedTextMessage?.text ||
+                msg.message?.imageMessage?.caption ||
+                msg.message?.videoMessage?.caption ||
+                msg.message?.viewOnceMessage?.message?.imageMessage?.caption ||
+                msg.message?.viewOnceMessage?.message?.videoMessage?.caption ||
+                "";
 
             // Reset daily limits
             User.resetDailyLimits();
@@ -116,289 +138,284 @@ async function handleMessages(sock) {
 
             if (user?.isBanned) {
                 if (user.banExpiry && user.banExpiry > Date.now()) {
-                    await sock.sendMessage(msg.key.remoteJid, { 
-                        text: `❌ Anda sedang dalam masa banned sampai ${new Date(user.banExpiry).toLocaleString()}`, 
-                        quoted: msg 
+                    await sock.sendMessage(msg.key.remoteJid, {
+                        text: `❌ Anda sedang dalam masa banned sampai ${new Date(user.banExpiry).toLocaleString()}`,
+                        quoted: msg,
                     });
                     return;
                 } else {
-                    await User.updateUser(senderJid, { 
-                        isBanned: false, 
-                        banExpiry: null 
+                    await User.updateUser(senderJid, {
+                        isBanned: false,
+                        banExpiry: null,
                     });
                 }
             }
 
             // Check premium expiry
-            if (user?.status === 'premium' && user.premiumExpiry) {
+            if (user?.status === "premium" && user.premiumExpiry) {
                 const now = new Date();
                 const expiry = new Date(user.premiumExpiry);
 
                 if (expiry < now) {
                     try {
-                        const updated = await User.updateUser(senderJid, { 
-                            status: 'basic', 
-                            premiumExpiry: null, 
-                            limit: 25 
+                        const updated = await User.updateUser(senderJid, {
+                            status: "basic",
+                            premiumExpiry: null,
+                            limit: 25,
                         });
 
                         if (updated) {
-                            await sock.sendMessage(msg.key.remoteJid, { 
-                                text: '⚠️ Status premium Anda telah berakhir. Status diubah menjadi basic.',
-                                quoted: msg 
+                            await sock.sendMessage(msg.key.remoteJid, {
+                                text: "⚠️ Status premium Anda telah berakhir. Status diubah menjadi basic.",
+                                quoted: msg,
                             });
                         }
                     } catch (error) {
-                        console.error('Error updating expired premium status:', error);
+                        console.error(
+                            "Error updating expired premium status:",
+                            error,
+                        );
                     }
                 }
             }
 
             // Handle commands
-            if (body.startsWith('.')) {
-                const command = body.slice(1).split(' ')[0];
+            if (body.startsWith(".")) {
+                const command = body.slice(1).split(" ")[0];
 
                 switch (command) {
-                    case 'profile':
+                    case "profile":
                         await profileHandler(sock, msg);
                         break;
-                    case 'setusername':
+                    case "setusername":
                         await setUsernameHandler(sock, msg);
                         break;
-                    case 'menu':
+                    case "menu":
                         await menuHandler(sock, msg);
                         break;
-                    case 'suit':
-                        const mentionedJid = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
+                    case "suit":
+                        const mentionedJid =
+                            msg.message?.extendedTextMessage?.contextInfo
+                                ?.mentionedJid || [];
                         if (mentionedJid.length === 0) {
                             await sock.sendMessage(msg.key.remoteJid, {
-                                text: '❌ Tag lawan untuk memulai suit! Contoh: .suit @mention',
-                                quoted: msg
+                                text: "❌ Tag lawan untuk memulai suit! Contoh: .suit @mention",
+                                quoted: msg,
                             });
                             return;
                         }
                         await suitHandler(sock, msg, mentionedJid);
                         break;
-                    case 'addbalance':
-                        await balanceHandler(sock, msg, 'add');
+                    case "addbalance":
+                        await balanceHandler(sock, msg, "add");
                         break;
-                    case 'delbalance':
-                        await balanceHandler(sock, msg, 'del');
+                    case "delbalance":
+                        await balanceHandler(sock, msg, "del");
                         break;
-                    case 'addlimit':
-                        await limitHandler(sock, msg, 'add');
+                    case "addlimit":
+                        await limitHandler(sock, msg, "add");
                         break;
-                    case 'dellimit':
-                        await limitHandler(sock, msg, 'del');
+                    case "dellimit":
+                        await limitHandler(sock, msg, "del");
                         break;
-                    case 'addprem':
-                        await premiumHandler(sock, msg, 'add');
+                    case "addprem":
+                        await premiumHandler(sock, msg, "add");
                         break;
-                    case 'delprem':
-                        await premiumHandler(sock, msg, 'del');
+                    case "delprem":
+                        await premiumHandler(sock, msg, "del");
                         break;
-                    case 'ban':
-                        await banHandler(sock, msg, 'ban');
+                    case "ban":
+                        await banHandler(sock, msg, "ban");
                         break;
-                    case 'unban':
-                        await banHandler(sock, msg, 'unban');
+                    case "unban":
+                        await banHandler(sock, msg, "unban");
                         break;
-                    case 'cekprem':
+                    case "cekprem":
                         await cekPremHandler(sock, msg);
                         break;
-                    case 'listprem':
+                    case "listprem":
                         await listPremHandler(sock, msg);
                         break;
-                    case 'listban':
+                    case "listban":
                         await listBanHandler(sock, msg);
                         break;
-                    case 'sticker':
-                    case 's':
+                    case "sticker":
+                    case "s":
                         await stickerHandler(sock, msg);
                         break;
-                    case 'st':
+                    case "st":
                         await stickertextHandler(sock, msg);
                         break;
-                    case 'qc':
+                    case "qc":
                         await quoteChatHandler(sock, msg);
                         break;
-                    case 'math':
+                    case "math":
                         await mathHandler(sock, msg);
                         break;
-                    case 'confess':
+                    case "confess":
                         await confessHandler(sock, msg);
                         break;
-                    case 'ttnowm':
+                    case "ttnowm":
                         await tiktokHandler(sock, msg);
                         break;
-                    case 'ttt':
+                    case "ttt":
                         await tictactoeHandler(sock, msg);
                         break;
-                    case 'topglobal':
+                    case "topglobal":
                         await topGlobalHandler(sock, msg);
                         break;
-                    case 'add':
+                    case "add":
                         await addHandler(sock, msg);
                         break;
-                    case 'kick':
+                    case "kick":
                         await kickHandler(sock, msg);
                         break;
-                    case 'sea':
+                    case "sea":
                         await seaHandler(sock, msg);
                         break;
-                    case 'setapikey':
+                    case "setapikey":
                         await setApikeyHandler(sock, msg);
                         break;
-                    case 'susunkata':
+                    case "susunkata":
                         await susunKataHandler(sock, msg);
                         break;
-                    case 'lbsusun':
+                    case "lbsusun":
                         await leaderboardSusunHandler(sock, msg);
                         break;
-                    case 'dice':
+                    case "dice":
                         await diceHandler(sock, msg);
                         break;
-                    case 'joindice':
+                    case "joindice":
                         await joinDiceHandler(sock, msg);
                         break;
-                    case 'startdice':
+                    case "startdice":
                         await startDiceHandler(sock, msg);
                         break;
-                    case 'dicestats':
+                    case "dicestats":
                         await diceStatsHandler(sock, msg);
                         break;
-                    case 'resetdice':
+                    case "resetdice":
                         await resetDiceStatsHandler(sock, msg);
                         break;
-                    case 'inventory':
+                    case "inventory":
                         await inventoryHandler(sock, msg);
                         break;
-                    case 'crypto':
+                    case "crypto":
                         await cryptoHandler(sock, msg);
                         break;
-                    case 'mine':
+                    case "mine":
                         await mineHandler(sock, msg);
                         break;
-                    case 'buyram':
+                    case "buyram":
                         await buyRamHandler(sock, msg);
                         break;
-                    case 'market':
+                    case "market":
                         await marketHandler(sock, msg);
                         break;
-                    case 'addcdcrypto':
+                    case "addcdcrypto":
                         await addCdCryptoHandler(sock, msg);
                         break;
-                    case 'use':
+                    case "use":
                         await useBoostHandler(sock, msg);
                         break;
-                    case 'tf':
+                    case "tf":
                         await transferHandler(sock, msg);
                         break;
-                    case 'fish':
+                    case "fish":
                         await fishingHandler(sock, msg);
                         break;
-                    case 'fishing':
+                    case "fishing":
                         await dashboardHandler(sock, msg);
                         break;
-                    case 'area':
+                    case "area":
                         await areaHandler(sock, msg);
                         break;
-                    case 'areaevent':
-                        await areaEventHandler(sock, msg);
-                        break;
-                    case 'switchrod':
+                    case "switchrod":
                         await switchRodHandler(sock, msg);
                         break;
-                    case 'fishbag':
+                    case "fishbag":
                         await fishBagHandler(sock, msg);
                         break;
-                    case 'sellfish':
+                    case "sellfish":
                         await sellFishHandler(sock, msg);
                         break;
-                    case 'fishshop':
+                    case "fishshop":
                         await fishShopHandler(sock, msg);
                         break;
-                    case 'fishstats':
+                    case "fishstats":
                         await fishStatsHandler(sock, msg);
                         break;
-                    case 'buyrod':
+                    case "buyrod":
                         await buyRodHandler(sock, msg);
                         break;
-                    case 'switchbait':
+                    case "switchbait":
                         await switchBaitHandler(sock, msg);
                         break;
-                    case 'baitshop':
+                    case "baitshop":
                         await baitShopHandler(sock, msg);
                         break;
-                    case 'buybait':
+                    case "buybait":
                         await buyBaitHandler(sock, msg);
                         break;
-                    case 'lockfish':
+                    case "lockfish":
                         await lockFishHandler(sock, msg);
                         break;
-                    case 'unlockfish':
+                    case "unlockfish":
                         await unlockFishHandler(sock, msg);
                         break;
-                    case 'specialshop':
+                    case "specialshop":
                         await specialShopHandler(sock, msg);
                         break;
-                    case 'addstock':
+                    case "addstock":
                         await addStockHandler(sock, msg);
                         break;
-                    case 'startbonanza':
-                        await startBonanzaHandler(sock, msg);
-                        break;
-                    case 'endbonanza':
-                        await endBonanzaHandler(sock, msg);
-                        break;
-                    case 'fishevent':
-                        await fishEventHandler(sock, msg);
-                        break;
-                    case 'trade':
+                    case "trade":
                         await tradeHandler(sock, msg);
                         break;
-                    case 'puttrade':
+                    case "puttrade":
                         await putTradeHandler(sock, msg);
                         break;
-                    case 'atrade':
+                    case "atrade":
                         await acceptTradeHandler(sock, msg);
                         break;
-                    case 'ctrade':
+                    case "ctrade":
                         await cancelTradeHandler(sock, msg);
                         break;
-                    case 'update':
+                    case "update":
                         await updateHandler(sock, msg);
                         break;
-                    case 'tebakbom':
+                    case "tebakbom":
                         await tebakBomHandler(sock, msg);
                         break;
-                    case 'tebakangka':
+                    case "tebakangka":
                         await tebakAngkaHandler(sock, msg);
                         break;
-                    case 'fasttype':
+                    case "fasttype":
                         await fastTypeHandler(sock, msg);
                         break;
-                    case 'afk':
+                    case "afk":
                         await afkHandler(sock, msg);
                         break;
-                    case 'quotes':
+                    case "quotes":
                         await quotesHandler(sock, msg);
                         break;
-                    case 'ping':
+                    case "ping":
                         const start = performance.now();
-                        await sock.sendMessage(msg.key.remoteJid, { react: { text: "🏓", key: msg.key } });
+                        await sock.sendMessage(msg.key.remoteJid, {
+                            react: { text: "🏓", key: msg.key },
+                        });
                         const latency = (performance.now() - start).toFixed(4);
                         await sock.sendMessage(msg.key.remoteJid, {
                             text: `🏓 Pong! Latency: ${latency}ms`,
-                            quoted: msg
+                            quoted: msg,
                         });
                         break;
-                    case 'boostinfo':
-                        const infoNumber = parseInt(body.split(' ')[1]);
+                    case "boostinfo":
+                        const infoNumber = parseInt(body.split(" ")[1]);
                         if (isNaN(infoNumber)) {
                             await sock.sendMessage(msg.key.remoteJid, {
-                                text: '❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1',
-                                quoted: msg
+                                text: "❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1",
+                                quoted: msg,
                             });
                             return;
                         }
@@ -407,14 +424,12 @@ async function handleMessages(sock) {
                     default:
                         // Handle unknown commands
                         await sock.sendMessage(msg.key.remoteJid, {
-                            text: '❌ Command tidak dikenali!',
-                            quoted: msg
+                            text: "❌ Command tidak dikenali!",
+                            quoted: msg,
                         });
                         break;
                 }
             }
-
-
 
             // Handle game moves
             const moveNumber = parseInt(body);
@@ -435,7 +450,7 @@ async function handleMessages(sock) {
             }
 
             // Handle dice choices (K/B)
-            if (['K', 'B'].includes(body.toUpperCase())) {
+            if (["K", "B"].includes(body.toUpperCase())) {
                 await handleDiceChoice(sock, msg);
             }
 
@@ -445,7 +460,7 @@ async function handleMessages(sock) {
             }
 
             // Handle suit/trade responses (Y/T)
-            if (body.toUpperCase() === 'Y' || body.toUpperCase() === 'T') {
+            if (body.toUpperCase() === "Y" || body.toUpperCase() === "T") {
                 // Cek apakah ada suit response handler dulu
                 const isSuitResponse = await handleSuitResponse(sock, msg);
 
@@ -456,7 +471,7 @@ async function handleMessages(sock) {
             }
 
             // Handle suit choices (G/B/K)
-            if (['G', 'B', 'K'].includes(body.toUpperCase())) {
+            if (["G", "B", "K"].includes(body.toUpperCase())) {
                 await handleSuitChoice(sock, msg);
             }
 
@@ -473,14 +488,13 @@ async function handleMessages(sock) {
 
             // Check AFK status
             await checkAfkStatus(sock, msg);
-
-
         } catch (error) {
-            console.error('Error handling message:', error);
-            if (msg && msg.key && msg.key.remoteJid) {  // Add null check
+            console.error("Error handling message:", error);
+            if (msg && msg.key && msg.key.remoteJid) {
+                // Add null check
                 await sock.sendMessage(msg.key.remoteJid, {
-                    text: '❌ Terjadi kesalahan saat memproses command',
-                    quoted: msg
+                    text: "❌ Terjadi kesalahan saat memproses command",
+                    quoted: msg,
                 });
             }
         }

@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 
 const fishSchema = new mongoose.Schema({
@@ -34,7 +35,7 @@ const fishSchema = new mongoose.Schema({
             name: String,
             rarity: String,
             quantity: Number,
-            isLocked: { type: Boolean, default: false } // Ubah dari 'locked' ke 'isLocked'
+            isLocked: { type: Boolean, default: false } 
         }],
         baits: [{
             name: String,
@@ -43,22 +44,17 @@ const fishSchema = new mongoose.Schema({
     },
     stats: {
         totalCatch: { type: Number, default: 0 },
+        totalProfit: { type: Number, default: 0 },
         rareCatch: { type: Number, default: 0 },
         epicCatch: { type: Number, default: 0 },
         legendaryCatch: { type: Number, default: 0 },
         mythicCatch: { type: Number, default: 0 },
         secretCatch: { type: Number, default: 0 },
-        totalProfit: { type: Number, default: 0 }
+        level: { type: Number, default: 1 },
+        xp: { type: Number, default: 0 }
     },
-    event: {
-        isActive: { type: Boolean, default: false },
-        endTime: { type: Date, default: null }
-    },
-    bonanzaEvent: {
-        isActive: { type: Boolean, default: false },
-        endTime: { type: Date, default: null },
-        lunarBait: { type: Number, default: 0 }
-    }
+    endTime: { type: Date, default: null },
+    lunarBait: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Fish', fishSchema);
