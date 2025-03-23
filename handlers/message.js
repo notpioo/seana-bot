@@ -102,6 +102,7 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
+const { wwHandler, wwJoinHandler, wwStartHandler, wwHelpHandler, wwVoteHandler } = require("../lib/commands/werewolf"); //Import werewolf handlers
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -118,8 +119,7 @@ async function handleMessages(sock) {
     sock.ev.on("messages.upsert", async (m) => {
         try {
             const msg = m.messages[0];
-            if (msg.key.fromMe) return;
-
+            // Allow commands from both private and group chats, including self-messages
             const body =
                 msg.message?.conversation ||
                 msg.message?.extendedTextMessage?.text ||
@@ -396,6 +396,26 @@ async function handleMessages(sock) {
                     case "afk":
                         await afkHandler(sock, msg);
                         break;
+                    case "ww":
+                        await wwHandler(sock, msg);
+                        break;
+                    case "wwjoin":
+                        await wwJoinHandler(sock, msg);
+                        break;
+                    case "wwstart":
+                        await wwStartHandler(sock, msg);
+                        break;
+                    case "wwhelp":
+                        await wwHelpHandler(sock, msg);
+                        break;
+                    case "wwvote":
+                        await wwVoteHandler(sock, msg);
+                        break;
+                }
+                
+                // Handle night action messages in private chat
+                if (!msg.key.remoteJid.endsWith('@g.us')) {
+                    await handleNightAction(sock, msg);
                     case "quotes":
                         await quotesHandler(sock, msg);
                         break;
@@ -490,12 +510,15 @@ async function handleMessages(sock) {
             await checkAfkStatus(sock, msg);
         } catch (error) {
             console.error("Error handling message:", error);
-            if (msg && msg.key && msg.key.remoteJid) {
-                // Add null check
-                await sock.sendMessage(msg.key.remoteJid, {
-                    text: "❌ Terjadi kesalahan saat memproses command",
-                    quoted: msg,
-                });
+            try {
+                if (m && m.messages && m.messages[0] && m.messages[0].key && m.messages[0].key.remoteJid) {
+                    await sock.sendMessage(m.messages[0].key.remoteJid, {
+                        text: "❌ Terjadi kesalahan saat memproses command",
+                        quoted: m.messages[0],
+                    });
+                }
+            } catch (err) {
+                console.error("Error in error handler:", err);
             }
         }
     });
