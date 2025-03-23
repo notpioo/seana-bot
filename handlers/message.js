@@ -102,7 +102,7 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
-const { wwHandler, wwJoinHandler, wwStartHandler, wwHelpHandler, wwVoteHandler } = require("../lib/commands/werewolf"); //Import werewolf handlers
+const { wwHandler, wwJoinHandler, wwStartHandler, wwHelpHandler, wwVoteHandler, wwcHandler, handleNightAction } = require("../lib/commands/werewolf"); //Import werewolf handlers
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -411,43 +411,39 @@ async function handleMessages(sock) {
                     case "wwvote":
                         await wwVoteHandler(sock, msg);
                         break;
+                    case "wwc":
+                        await wwcHandler(sock, msg);
+                        break;
                 }
-                
+
                 // Handle night action messages in private chat
                 if (!msg.key.remoteJid.endsWith('@g.us')) {
                     await handleNightAction(sock, msg);
-                    case "quotes":
-                        await quotesHandler(sock, msg);
-                        break;
-                    case "ping":
-                        const start = performance.now();
+                }
+
+                // Handle additional commands
+                if (command === "quotes") {
+                    await quotesHandler(sock, msg);
+                } else if (command === "ping") {
+                    const start = performance.now();
+                    await sock.sendMessage(msg.key.remoteJid, {
+                        react: { text: "🏓", key: msg.key },
+                    });
+                    const latency = (performance.now() - start).toFixed(4);
+                    await sock.sendMessage(msg.key.remoteJid, {
+                        text: `🏓 Pong! Latency: ${latency}ms`,
+                        quoted: msg,
+                    });
+                } else if (command === "boostinfo") {
+                    const infoNumber = parseInt(body.split(" ")[1]);
+                    if (isNaN(infoNumber)) {
                         await sock.sendMessage(msg.key.remoteJid, {
-                            react: { text: "🏓", key: msg.key },
-                        });
-                        const latency = (performance.now() - start).toFixed(4);
-                        await sock.sendMessage(msg.key.remoteJid, {
-                            text: `🏓 Pong! Latency: ${latency}ms`,
+                            text: "❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1",
                             quoted: msg,
                         });
-                        break;
-                    case "boostinfo":
-                        const infoNumber = parseInt(body.split(" ")[1]);
-                        if (isNaN(infoNumber)) {
-                            await sock.sendMessage(msg.key.remoteJid, {
-                                text: "❌ Silakan masukkan nomor boost yang ingin dilihat. Contoh: .boostinfo 1",
-                                quoted: msg,
-                            });
-                            return;
-                        }
-                        await boostInfoHandler(sock, msg, infoNumber);
-                        break;
-                    default:
-                        // Handle unknown commands
-                        await sock.sendMessage(msg.key.remoteJid, {
-                            text: "❌ Command tidak dikenali!",
-                            quoted: msg,
-                        });
-                        break;
+                        return;
+                    }
+                    await boostInfoHandler(sock, msg, infoNumber);
                 }
             }
 
