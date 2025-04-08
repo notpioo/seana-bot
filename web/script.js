@@ -352,22 +352,78 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Start bot button
-    if (startBtn) {
-        startBtn.addEventListener('click', function() {
-            if (botRunning) return;
+    // Start with QR button
+    const startWithQRBtn = document.getElementById('startWithQR');
+    const startWithCodeBtn = document.getElementById('startWithCode');
+    const pairingCodeForm = document.getElementById('pairingCodeForm');
+    const phoneNumberInput = document.getElementById('phoneNumber');
+    const submitPairingBtn = document.getElementById('submitPairing');
 
-            addLog('Starting bot...');
+    if (startWithQRBtn) {
+        startWithQRBtn.addEventListener('click', function() {
+            if (botRunning) return;
+            pairingCodeForm.style.display = 'none';
+            addLog('Starting bot with QR...');
 
             fetch('/api/bot/start', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                }
+                },
+                body: JSON.stringify({ method: 'qr' })
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
+                    setBotOnline();
+                    addLog('Bot started successfully');
+                } else {
+                    addLog(`Failed to start bot: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addLog('Error starting bot');
+            });
+        });
+    }
+
+    if (startWithCodeBtn) {
+        startWithCodeBtn.addEventListener('click', function() {
+            if (botRunning) return;
+            pairingCodeForm.style.display = 'block';
+        });
+    }
+
+    if (submitPairingBtn) {
+        submitPairingBtn.addEventListener('click', function() {
+            const phoneNumber = phoneNumberInput.value.trim();
+            if (!phoneNumber) {
+                addLog('Please enter a phone number', 'error');
+                return;
+            }
+
+            if (!phoneNumber.match(/^628\d{8,12}$/)) {
+                addLog('Invalid phone number format. Use 628xxxxx', 'error');
+                return;
+            }
+
+            addLog('Starting bot with pairing code...');
+            
+            fetch('/api/bot/start', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                },
+                body: JSON.stringify({
+                    method: 'code',
+                    phoneNumber: phoneNumber
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    pairingCodeForm.style.display = 'none';
                     setBotOnline();
                     addLog('Bot started successfully');
                 } else {

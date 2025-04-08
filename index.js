@@ -36,11 +36,16 @@ async function connectToWhatsApp() {
         // Initialize global flag for config update notification
         global.botConfigUpdated = false;
         
+        const usePairingCode = process.argv.includes('--pairing-code');
+        const phoneNumber = process.argv[process.argv.indexOf('--phone-number') + 1];
+
         const sock = makeWASocket({
-            printQRInTerminal: true,
+            printQRInTerminal: !usePairingCode,
             auth: state,
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             keys: makeCacheableSignalKeyStore(state.keys, logger),
+            pairingCode: usePairingCode,
+            phoneNumber: usePairingCode ? phoneNumber : undefined,
             retryRequestDelayMs: 2000,
             connectTimeoutMs: 60000,
             keepAliveIntervalMs: 10000,

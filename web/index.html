@@ -160,14 +160,23 @@
                     <div class="control-section">
                         <h3>Control</h3>
                         <div class="buttons">
-                            <button id="startBot" class="start-btn">
-                                <i class="fas fa-play"></i> Start Bot
+                            <button id="startWithQR" class="start-btn">
+                                <i class="fas fa-qrcode"></i> Start with QR
+                            </button>
+                            <button id="startWithCode" class="start-btn">
+                                <i class="fas fa-key"></i> Start with Code
                             </button>
                             <button id="stopBot" class="stop-btn">
                                 <i class="fas fa-stop"></i> Stop Bot
                             </button>
                             <button id="deleteSession" class="delete-btn">
                                 <i class="fas fa-trash"></i> Delete Session
+                            </button>
+                        </div>
+                        <div id="pairingCodeForm" style="display: none; margin-top: 20px;">
+                            <input type="text" id="phoneNumber" placeholder="Enter WhatsApp number (628xxxxx)" class="form-input">
+                            <button id="submitPairing" class="start-btn">
+                                <i class="fas fa-paper-plane"></i> Submit
                             </button>
                         </div>
                     </div>

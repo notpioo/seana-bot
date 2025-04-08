@@ -201,10 +201,20 @@ app.post('/api/bot/start', async (req, res) => {
             botProcess = null;
         }
 
-        sendLogToClients('Starting bot...');
+        const method = req.body.method || 'qr';
+        const phoneNumber = req.body.phoneNumber;
+
+        sendLogToClients(`Starting bot with ${method}...`);
         
         // Use spawn instead of exec for better output handling
-        botProcess = spawn('node', ['index.js'], {
+        const args = ['index.js'];
+        if (method === 'code' && phoneNumber) {
+            args.push('--pairing-code');
+            args.push('--phone-number');
+            args.push(phoneNumber);
+        }
+        
+        botProcess = spawn('node', args, {
             stdio: ['ignore', 'pipe', 'pipe']
         });
         
