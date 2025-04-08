@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="id">
     <head>
@@ -112,7 +111,7 @@
                 </div>
                 <div class="content">
                     <h2><i class="fas fa-cog"></i> Config</h2>
-                    
+
                     <!-- Bot Settings -->
                     <div class="config-card">
                         <div class="config-card-header">
@@ -120,34 +119,42 @@
                         </div>
                         <div class="config-card-body">
                             <div class="input-group">
+                                <label for="botNumber">Nomor WhatsApp Bot*</label>
+                                <input type="text" id="botNumber" class="form-input" placeholder="628xxxxxxxxxx" required>
+                            </div>
+
+                            <div class="input-group">
                                 <label for="botName">Name Bot*</label>
                                 <input type="text" id="botName" class="form-input" placeholder="Enter bot name">
                             </div>
-                            
+
                             <div class="input-group">
                                 <label for="packname">Packname Sticker*</label>
                                 <input type="text" id="packname" class="form-input" placeholder="Enter packname">
                             </div>
-                            
+
                             <div class="input-group">
                                 <label for="authorname">Authorname Sticker*</label>
                                 <input type="text" id="authorname" class="form-input" placeholder="Enter author name">
                             </div>
-                            
-                            <!-- Footer Text field removed as requested -->
-                            
+
+
                             <div class="input-group">
                                 <label for="limit">Limit*</label>
                                 <input type="number" id="limit" class="form-input" placeholder="Enter limit">
                             </div>
-                            
+
                             <div class="input-group">
                                 <label for="balanceLimit">Balance/limit*</label>
                                 <input type="number" id="balanceLimit" class="form-input" placeholder="Enter balance/limit">
                             </div>
+                            <div class="input-group">
+                                <label for="prefix">Prefix Commands*</label>
+                                <input type="text" id="prefix" class="form-input" placeholder="Enter prefix (e.g., .#/!)" required>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- Owner Settings -->
                     <div class="config-card">
                         <div class="config-card-header">
@@ -157,63 +164,59 @@
                             <div id="ownerContainer">
                                 <!-- Owner entries will be generated dynamically -->
                             </div>
-                            
+
                             <button id="addOwnerBtn" class="secondary-btn"><i class="fas fa-plus"></i> Add Owner</button>
                         </div>
                     </div>
-                    
+
                     <!-- Prefix Settings -->
                     <div class="config-card">
                         <div class="config-card-header">
                             <i class="fas fa-hashtag"></i> Prefix Settings
                         </div>
                         <div class="config-card-body">
-                            <div class="input-group">
-                                <label for="prefix">Prefix*</label>
-                                <input type="text" id="prefix" class="form-input" placeholder="Enter prefix (e.g. .#/!)" value=".#/!">
-                            </div>
-                            
+
                             <div class="prefix-options">
                                 <div class="radio-group">
                                     <input type="radio" id="multiPrefix" name="prefixType" value="multi" checked>
                                     <label for="multiPrefix">Multi Prefix</label>
                                 </div>
-                                
+
                                 <div class="radio-group">
                                     <input type="radio" id="singlePrefix" name="prefixType" value="single">
                                     <label for="singlePrefix">Single Prefix</label>
                                 </div>
-                                
+
                                 <div class="radio-group">
                                     <input type="radio" id="emptyPrefix" name="prefixType" value="empty">
                                     <label for="emptyPrefix">Empty Prefix</label>
                                 </div>
                             </div>
-                            
+
                             <div class="checkbox-options">
                                 <div class="check-group">
                                     <input type="checkbox" id="onlineOnConnect" checked>
                                     <label for="onlineOnConnect">Online On Connect</label>
                                 </div>
-                                
+
                                 <div class="check-group">
                                     <input type="checkbox" id="premiumNotification" checked>
                                     <label for="premiumNotification">Premium Notification</label>
                                 </div>
-                                
+
                                 <div class="check-group">
                                     <input type="checkbox" id="sewaNotification" checked>
                                     <label for="sewaNotification">Sewa Notification</label>
                                 </div>
-                                
+
                                 <div class="check-group">
                                     <input type="checkbox" id="joinToUse">
                                     <label for="joinToUse">Join To Use</label>
                                 </div>
                             </div>
-                            
+
                             <button id="submitConfig" class="primary-btn"><i class="fas fa-save"></i> Submit</button>
-                            
+
                             <p class="required-note">* required fields</p>
                         </div>
                     </div>

@@ -31,7 +31,7 @@ async function loadConfig() {
         document.getElementById('botName').value = config.botName || '';
         document.getElementById('packname').value = config.packname || '';
         document.getElementById('authorname').value = config.authorname || '';
-        //document.getElementById('footerText').value = config.footerText || ''; //removed
+        document.getElementById('botNumber').value = config.botNumber || ''; // Added botNumber
         document.getElementById('limit').value = config.limit || 0;
         document.getElementById('balanceLimit').value = config.balanceLimit || 0;
         document.getElementById('prefix').value = config.prefix || '.#/!';
@@ -135,7 +135,7 @@ async function saveConfig() {
             botName: document.getElementById('botName').value,
             packname: document.getElementById('packname').value,
             authorname: document.getElementById('authorname').value,
-            //footerText removed as requested.
+            botNumber: document.getElementById('botNumber').value, // Added botNumber
             limit: parseInt(document.getElementById('limit').value) || 0,
             balanceLimit: parseInt(document.getElementById('balanceLimit').value) || 0,
             prefix: document.getElementById('prefix').value,
@@ -159,7 +159,7 @@ async function saveConfig() {
         });
 
         // Validate required fields
-        const requiredFields = ['botName', 'packname', 'authorname', 'limit', 'balanceLimit', 'prefix']; // footerText removed
+        const requiredFields = ['botName', 'packname', 'authorname', 'limit', 'balanceLimit', 'prefix', 'botNumber']; // Added botNumber
         let missingFields = [];
 
         requiredFields.forEach(field => {
