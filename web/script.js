@@ -38,7 +38,15 @@ async function startWithCode() {
 
 async function startPairing() {
     const phoneNumber = document.getElementById('phoneNumber').value;
+    const pairingCode = document.getElementById('pairingCode');
+    
     if (!phoneNumber || !phoneNumber.match(/^62\d{9,}$/)) {
+        alert('Masukkan nomor yang valid (contoh: 628123456789)');
+        return;
+    }
+    
+    // Clear previous pairing code
+    pairingCode.innerHTML = '<div class="waiting">Menunggu kode pairing...</div>';
         alert('Masukkan nomor yang valid (contoh: 628123456789)');
         return;
     }
@@ -357,6 +365,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     socket.on('botLog', (data) => {
         addLog(data.message, data.type);
+        
+        // Handle pairing code
+        if (data.type === 'pairingCode') {
+            const pairingCode = document.getElementById('pairingCode');
+            if (pairingCode) {
+                pairingCode.innerHTML = `
+                    <div class="code-container">
+                        <h4>Kode Pairing:</h4>
+                        <div class="code">${data.message.split(': ')[1]}</div>
+                        <p>Masukkan kode ini di WhatsApp Anda</p>
+                    </div>
+                `;
+            }
+        }
     });
 
     socket.on('botStatus', (data) => {

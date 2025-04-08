@@ -220,6 +220,12 @@ app.post('/api/bot/start', async (req, res) => {
             console.log(`Bot stdout: ${output}`);
             sendLogToClients(output);
             
+            // Check if the output contains a pairing code
+            const pairingCodeMatch = output.match(/Your pairing code: (\d+)/i);
+            if (pairingCodeMatch) {
+                sendLogToClients(`Kode pairing: ${pairingCodeMatch[1]}`, 'pairingCode');
+            }
+            
             // Check if the output contains a QR code
             if (output.includes('scan QR code') || output.includes('QR Code received')) {
                 sendLogToClients('QR Code ready for scanning! Check logs below.', 'qr');
