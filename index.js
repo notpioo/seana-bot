@@ -25,46 +25,46 @@ async function connectToWhatsApp() {
     try {
         // Pastikan direktori auth ada
         ensureDirectoryExists(path.dirname(AUTH_PATH))
-        
+
         logger.info(`Using auth directory: ${AUTH_PATH}`)
-        
+
         const { state, saveCreds } = await useMultiFileAuthState(AUTH_PATH)
-        
+
         // Load bot configuration
         const config = await botSettings.getBotConfig(true); // Force reload
-        
+
         // Initialize global flag for config update notification
         global.botConfigUpdated = false;
-        
-        const usePairingCode = process.argv.includes('--pairing-code');
-        const phoneNumber = process.argv[process.argv.indexOf('--phone-number') + 1];
+
+        const startMethod = process.env.START_METHOD || 'qr';
+        const phoneNumber = process.env.PHONE_NUMBER;
 
         const sock = makeWASocket({
-            printQRInTerminal: !usePairingCode,
+            printQRInTerminal: startMethod === 'qr',
             auth: state,
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             keys: makeCacheableSignalKeyStore(state.keys, logger),
-            pairingCode: usePairingCode,
-            phoneNumber: usePairingCode ? phoneNumber : undefined,
+            pairingCode: startMethod === 'code',
+            phoneNumber: startMethod === 'code' ? phoneNumber : undefined,
             retryRequestDelayMs: 2000,
             connectTimeoutMs: 60000,
             keepAliveIntervalMs: 10000,
             maxRetries: 5,
             generateHighQualityLinkPreview: true,
         })
-        
+
         // Setup config checker interval
         setInterval(async () => {
             try {
                 if (global.botConfigUpdated) {
                     // Reset the flag
                     global.botConfigUpdated = false;
-                    
+
                     // Get fresh config
                     const freshConfig = await botSettings.getBotConfig(true);
-                    
+
                     logger.info('Bot configuration has been updated, applying changes...');
-                    
+
                     // Update bot name in connections
                     if (sock?.user?.name !== freshConfig.botName) {
                         logger.info(`Bot name updated from ${sock?.user?.name || 'unknown'} to ${freshConfig.botName}`);
@@ -81,7 +81,7 @@ async function connectToWhatsApp() {
             if (qr) {
                 logger.info('QR Code received, please scan with WhatsApp')
             }
-            
+
             // Update bot config if flag is set
             if (global.botConfigUpdated === true) {
                 const freshConfig = await botSettings.getBotConfig(true);
@@ -117,18 +117,18 @@ async function connectToWhatsApp() {
             } else if (connection === 'open') {
                 reconnectAttempts = 0
                 logger.info('Connected to WhatsApp')
-                
+
                 try {
                     // Check if online status is enabled in config
                     const config = await botSettings.getBotConfig();
-                    
+
                     if (config.onlineOnConnect) {
                         await sock.sendPresenceUpdate('available')
                         logger.info('Presence update sent successfully')
                     } else {
                         logger.info('Online status disabled in configuration')
                     }
-                    
+
                     // Log bot configuration
                     logger.info(`Bot started with name: ${config.botName}`)
                     logger.info(`Prefix type: ${config.prefixType}, Prefix: ${config.prefix}`)

@@ -1054,7 +1054,7 @@ body {
     .menu-container {
         grid-template-columns: 1fr;
     }
-    
+
     .variable-items {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
@@ -1064,7 +1064,7 @@ body {
     .variable-items {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
-    
+
     .menu-editor textarea {
         min-height: 350px;
     }
@@ -1177,7 +1177,7 @@ body {
         grid-template-columns: 1fr;
         gap: 10px;
     }
-    
+
     .remove-owner-btn {
         margin-top: 10px;
         width: 100%;
@@ -1464,4 +1464,71 @@ body {
     .profile-image-section {
         margin-bottom: 20px;
     }
+}
+
+/* Pairing Code Form Styles */
+.pairing-code-form {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.form-input {
+    flex: 1;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 2px solid #e1e1e1;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    outline: none;
+}
+
+.helper-text {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #666;
+}
+
+.submit-btn {
+    padding: 12px 24px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submit-btn:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+}
+
+.submit-btn:active {
+    transform: translateY(1px);
 }

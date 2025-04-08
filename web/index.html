@@ -173,11 +173,17 @@
                                 <i class="fas fa-trash"></i> Delete Session
                             </button>
                         </div>
-                        <div id="pairingCodeForm" style="display: none; margin-top: 20px;">
-                            <input type="text" id="phoneNumber" placeholder="Enter WhatsApp number (628xxxxx)" class="form-input">
-                            <button id="submitPairing" class="start-btn">
-                                <i class="fas fa-paper-plane"></i> Submit
-                            </button>
+                        <div id="pairingCodeForm" style="display: none;" class="pairing-code-form">
+                            <div class="form-group">
+                                <label for="phoneNumber">WhatsApp Number</label>
+                                <div class="input-group">
+                                    <input type="text" id="phoneNumber" placeholder="628xxxxxxxxxx" class="form-input">
+                                    <button id="submitPairing" class="submit-btn">
+                                        <i class="fas fa-paper-plane"></i> Get Code
+                                    </button>
+                                </div>
+                                <small class="helper-text">Enter your WhatsApp number starting with 628</small>
+                            </div>
                         </div>
                     </div>
                     <div class="faq-section">
