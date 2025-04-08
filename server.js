@@ -1,4 +1,3 @@
-
 const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
@@ -30,13 +29,13 @@ let botState = {
 // Socket connection for real-time logs
 io.on('connection', (socket) => {
     console.log('Client connected to websocket');
-    
+
     // Send current bot status on connection
     socket.emit('botStatus', {
         status: botState.status,
         startTime: botState.startTime
     });
-    
+
     socket.on('disconnect', () => {
         console.log('Client disconnected from websocket');
     });
@@ -82,7 +81,7 @@ app.get('/api/bot/config', async (req, res) => {
             sewaNotification: true,
             joinToUse: false
         };
-        
+
         try {
             const fileData = await fs.readFile(configFilePath, 'utf8');
             configData = JSON.parse(fileData);
@@ -99,7 +98,7 @@ app.get('/api/bot/config', async (req, res) => {
                 console.error('Failed to create default config file:', writeError);
             }
         }
-        
+
         res.json({ success: true, config: configData });
     } catch (error) {
         console.error('Error reading config file:', error);
@@ -110,30 +109,30 @@ app.get('/api/bot/config', async (req, res) => {
 app.post('/api/bot/config', async (req, res) => {
     try {
         const configData = req.body;
-        
+
         if (!configData || !configData.botName) {
             return res.json({ success: false, message: 'Invalid configuration data' });
         }
-        
+
         const configFilePath = path.join(__dirname, 'config', 'settings.json');
         const configDir = path.dirname(configFilePath);
-        
+
         // Pastikan direktori config ada
         try {
             await fs.mkdir(configDir, { recursive: true });
         } catch (error) {
             console.log('Config directory already exists or error creating it:', error);
         }
-        
+
         // Simpan konfigurasi ke file JSON
         await fs.writeFile(configFilePath, JSON.stringify(configData, null, 2), 'utf8');
-        
+
         // Kirim pesan ke semua klien WebSocket bahwa konfigurasi telah diperbarui
         sendLogToClients('Bot configuration updated successfully', 'info');
-        
+
         // Kirim event ke bot agar memuat ulang konfigurasi
         global.botConfigUpdated = true;
-        
+
         res.json({ success: true, message: 'Configuration saved successfully' });
     } catch (error) {
         console.error('Error saving config file:', error);
@@ -146,7 +145,7 @@ app.get('/api/bot/menu', async (req, res) => {
     try {
         const menuFilePath = path.join(__dirname, 'config', 'menu.json');
         let menuContent = "";
-        
+
         try {
             const fileData = await fs.readFile(menuFilePath, 'utf8');
             const menuData = JSON.parse(fileData);
@@ -155,7 +154,7 @@ app.get('/api/bot/menu', async (req, res) => {
             // File tidak ada atau format tidak valid, kembalikan default
             console.log('Menu file not found or invalid, returning empty menu');
         }
-        
+
         res.json({ success: true, menu: menuContent });
     } catch (error) {
         console.error('Error reading menu file:', error);
@@ -169,20 +168,20 @@ app.post('/api/bot/menu', async (req, res) => {
         if (menu === undefined) {
             return res.json({ success: false, message: 'Menu content is required' });
         }
-        
+
         const menuFilePath = path.join(__dirname, 'config', 'menu.json');
         const menuDir = path.dirname(menuFilePath);
-        
+
         // Pastikan direktori config ada
         try {
             await fs.mkdir(menuDir, { recursive: true });
         } catch (error) {
             console.log('Config directory already exists or error creating it:', error);
         }
-        
+
         // Simpan menu ke file JSON
         await fs.writeFile(menuFilePath, JSON.stringify({ menu }, null, 2), 'utf8');
-        
+
         res.json({ success: true, message: 'Menu saved successfully' });
     } catch (error) {
         console.error('Error saving menu file:', error);
@@ -202,48 +201,49 @@ app.post('/api/bot/start', async (req, res) => {
         }
 
         sendLogToClients('Starting bot...');
-        
+
         // Get pairing mode from request
         const pairingMode = req.body.mode || 'qr';
-        
+
         // Use spawn instead of exec for better output handling
         botProcess = spawn('node', ['index.js'], {
             stdio: ['ignore', 'pipe', 'pipe'],
             env: {
                 ...process.env,
-                PAIRING_MODE: pairingMode
+                PAIRING_MODE: pairingMode,
+                PAIRING_NUMBER: req.body.phoneNumber
             }
         });
-        
+
         botProcess.stdout.on('data', (data) => {
             const output = data.toString();
             console.log(`Bot stdout: ${output}`);
             sendLogToClients(output);
-            
+
             // Check if the output contains a pairing code
             const pairingCodeMatch = output.match(/Your pairing code: (\d+)/i);
             if (pairingCodeMatch) {
                 sendLogToClients(`Kode pairing: ${pairingCodeMatch[1]}`, 'pairingCode');
             }
-            
+
             // Check if the output contains a QR code
             if (output.includes('scan QR code') || output.includes('QR Code received')) {
                 sendLogToClients('QR Code ready for scanning! Check logs below.', 'qr');
             }
-            
+
             // Deteksi tampilan QR code di terminal
             if (output.includes('█') || output.includes('▄') || output.includes('▀') || output.includes('▓') || output.includes('▒')) {
                 // Ini adalah baris QR code
                 sendLogToClients(output, 'qrcode');
             }
         });
-        
+
         botProcess.stderr.on('data', (data) => {
             const error = data.toString();
             console.error(`Bot stderr: ${error}`);
             sendLogToClients(error, 'error');
         });
-        
+
         botProcess.on('close', (code) => {
             const message = `Bot process exited with code ${code}`;
             console.log(message);
@@ -255,7 +255,7 @@ app.post('/api/bot/start', async (req, res) => {
 
         botState.status = 'online';
         botState.startTime = new Date().toISOString();
-        
+
         res.json({ success: true });
     } catch (error) {
         console.error('Failed to start bot:', error);
@@ -277,7 +277,7 @@ app.post('/api/bot/stop', async (req, res) => {
 
         botState.status = 'offline';
         botState.startTime = null;
-        
+
         res.json({ success: true });
     } catch (error) {
         console.error('Failed to stop bot:', error);
@@ -292,7 +292,7 @@ app.delete('/api/bot/session', async (req, res) => {
         }
 
         const authPath = process.env.AUTH_PATH || path.join(__dirname, 'sessions', 'auth_info');
-        
+
         try {
             await execAsync(`rm -rf ${authPath}`);
             res.json({ success: true });
@@ -319,7 +319,7 @@ app.get('/register', (req, res) => {
 const authenticateMiddleware = (req, res, next) => {
     // For API routes, check authentication header
     const authHeader = req.headers.authorization;
-    
+
     if (req.path === '/login.html' || req.path === '/register.html' || 
         req.path === '/login' || req.path === '/register' || 
         req.path.startsWith('/firebase-auth.js') || 
@@ -329,17 +329,17 @@ const authenticateMiddleware = (req, res, next) => {
         // Allow access to auth pages without authentication
         return next();
     }
-    
+
     // If accessing main page or dashboard, redirect to login
     if (!authHeader && (req.path === '/' || req.path === '/index.html')) {
         return res.redirect('/login.html');
     }
-    
+
     // For API calls, return 401 if not authenticated
     if (!authHeader && req.path.startsWith('/api/')) {
         return res.status(401).json({ success: false, message: 'Authentication required' });
     }
-    
+
     next();
 };
 
