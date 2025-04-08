@@ -160,8 +160,11 @@
                     <div class="control-section">
                         <h3>Control</h3>
                         <div class="buttons">
-                            <button id="startBot" class="start-btn">
-                                <i class="fas fa-play"></i> Start Bot
+                            <button id="startBotQR" class="start-btn">
+                                <i class="fas fa-qrcode"></i> Start with QR
+                            </button>
+                            <button id="startBotCode" class="start-btn">
+                                <i class="fas fa-key"></i> Start with Code
                             </button>
                             <button id="stopBot" class="stop-btn">
                                 <i class="fas fa-stop"></i> Stop Bot
@@ -169,6 +172,13 @@
                             <button id="deleteSession" class="delete-btn">
                                 <i class="fas fa-trash"></i> Delete Session
                             </button>
+                        </div>
+                        <div id="pairingSection" class="pairing-section" style="display: none;">
+                            <div class="pairing-form">
+                                <input type="text" id="phoneNumber" placeholder="Masukkan nomor (628xxxxx)" />
+                                <button id="pairButton" class="pair-button">Mulai Pairing</button>
+                            </div>
+                            <div id="pairingCode" class="pairing-code"></div>
                         </div>
                     </div>
                     <div class="faq-section">

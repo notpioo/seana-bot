@@ -203,9 +203,16 @@ app.post('/api/bot/start', async (req, res) => {
 
         sendLogToClients('Starting bot...');
         
+        // Get pairing mode from request
+        const pairingMode = req.body.mode || 'qr';
+        
         // Use spawn instead of exec for better output handling
         botProcess = spawn('node', ['index.js'], {
-            stdio: ['ignore', 'pipe', 'pipe']
+            stdio: ['ignore', 'pipe', 'pipe'],
+            env: {
+                ...process.env,
+                PAIRING_MODE: pairingMode
+            }
         });
         
         botProcess.stdout.on('data', (data) => {

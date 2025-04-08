@@ -1,5 +1,41 @@
 
-// Pairing code functionality
+// Pairing handlers
+document.getElementById('startBotQR').addEventListener('click', startWithQR);
+document.getElementById('startBotCode').addEventListener('click', startWithCode);
+document.getElementById('pairButton').addEventListener('click', startPairing);
+
+async function startWithQR() {
+    const pairingSection = document.getElementById('pairingSection');
+    pairingSection.style.display = 'none';
+    
+    fetch('/api/bot/start', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({ mode: 'qr' })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            sendLogToClients('Starting bot with QR code...');
+        } else {
+            alert('Failed to start bot: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error starting bot');
+    });
+}
+
+async function startWithCode() {
+    const pairingSection = document.getElementById('pairingSection');
+    pairingSection.style.display = 'block';
+    document.getElementById('phoneNumber').focus();
+}
+
 async function startPairing() {
     const phoneNumber = document.getElementById('phoneNumber').value;
     if (!phoneNumber || !phoneNumber.match(/^62\d{9,}$/)) {
