@@ -31,7 +31,7 @@ async function connectToWhatsApp() {
         global.botConfigUpdated = false;
 
         sock = makeWASocket({
-            printQRInTerminal: false,
+            printQRInTerminal: true,
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, logger)
@@ -39,8 +39,8 @@ async function connectToWhatsApp() {
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             logger: logger,
             generateHighQualityLinkPreview: true,
-            defaultQueryTimeoutMs: 60000,
-            connectTimeoutMs: 60000,
+            defaultQueryTimeoutMs: undefined,
+            connectTimeoutMs: undefined,
             version: [2, 2323, 4],
             getMessage: async () => {
                 return { conversation: 'hello' };
@@ -54,7 +54,9 @@ async function connectToWhatsApp() {
                 try {
                     logger.info('Requesting pairing code for:', phoneNumber);
                     const code = await sock.requestPairingCode(phoneNumber);
-                    logger.info('Your pairing code:', code);
+                    const pairingMessage = `Your pairing code: ${code}`;
+                    console.log('\n' + pairingMessage + '\n');
+                    logger.info(pairingMessage);
                     // Emit pairing code to web interface
                     process.emit('bot:log', {
                         type: 'pairingCode',
