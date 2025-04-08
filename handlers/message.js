@@ -102,7 +102,7 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
-const { wwHandler, wwJoinHandler, wwStartHandler, wwHelpHandler, wwVoteHandler, wwcHandler, handleNightAction } = require("../lib/commands/werewolf"); //Import werewolf handlers
+
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -396,30 +396,10 @@ async function handleMessages(sock) {
                     case "afk":
                         await afkHandler(sock, msg);
                         break;
-                    case "ww":
-                        await wwHandler(sock, msg);
-                        break;
-                    case "wwjoin":
-                        await wwJoinHandler(sock, msg);
-                        break;
-                    case "wwstart":
-                        await wwStartHandler(sock, msg);
-                        break;
-                    case "wwhelp":
-                        await wwHelpHandler(sock, msg);
-                        break;
-                    case "wwvote":
-                        await wwVoteHandler(sock, msg);
-                        break;
-                    case "wwc":
-                        await wwcHandler(sock, msg);
-                        break;
+                    
                 }
 
-                // Handle night action messages in private chat
-                if (!msg.key.remoteJid.endsWith('@g.us')) {
-                    await handleNightAction(sock, msg);
-                }
+                
 
                 // Handle additional commands
                 if (command === "quotes") {
