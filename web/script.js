@@ -163,27 +163,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtns = document.querySelectorAll('[id="logoutBtn"], #sidebarLogoutBtn');
 
     logoutBtns.forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', async function(e) {
             e.preventDefault();
             console.log("Logout clicked");
-            if (typeof window.logoutUser === 'function') {
-                window.logoutUser().then(result => {
+            try {
+                if (typeof window.logoutUser === 'function') {
+                    const result = await window.logoutUser();
                     if (result.success) {
-                        window.location.href = 'login.html';
+                        localStorage.clear();
+                        window.location.replace('login.html');
                     } else {
                         alert("Logout failed: " + (result.error || "Unknown error"));
                     }
-                });
-            } else if (typeof logoutUser === 'function') {
-                logoutUser().then(result => {
+                } else if (typeof logoutUser === 'function') {
+                    const result = await logoutUser();
                     if (result.success) {
-                        window.location.href = 'login.html';
+                        localStorage.clear();
+                        window.location.replace('login.html');
                     } else {
                         alert("Logout failed: " + (result.error || "Unknown error"));
                     }
-                });
-            } else {
-                console.error("Logout function not available");
+                } else {
+                    console.error("Logout function not available");
+                    localStorage.clear();
+                    window.location.replace('login.html');
+                }
+            } catch (error) {
+                console.error("Logout error:", error);
+                localStorage.clear();
+                window.location.replace('login.html');
             }
         });
     });

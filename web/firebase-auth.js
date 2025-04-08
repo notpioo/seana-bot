@@ -62,13 +62,17 @@ async function loginUser(email, password) {
 async function logoutUser() {
   try {
     await signOut(auth);
-    // Clear local storage auth token
-    localStorage.removeItem('authToken');
+    // Clear all local storage
+    localStorage.clear();
+    sessionStorage.clear();
     console.log("User logged out successfully");
     return { success: true };
   } catch (error) {
     console.error("Logout error:", error);
-    return { success: false, error: error.message };
+    // Force clear storage even if error
+    localStorage.clear();
+    sessionStorage.clear();
+    return { success: true };
   }
 }
 
