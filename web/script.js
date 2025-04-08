@@ -162,32 +162,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Logout buttons (handle all logout buttons on the page)
     const logoutBtns = document.querySelectorAll('[id="logoutBtn"], #sidebarLogoutBtn');
 
-    logoutBtns.forEach(btn => {
-        btn.addEventListener('click', async function(e) {
+    async function handleLogout(e) {
+        if (e) {
             e.preventDefault();
             e.stopPropagation();
-            console.log("Logout clicked");
-            try {
-                const logoutFunc = window.logoutUser || logoutUser;
-                if (typeof logoutFunc === 'function') {
-                    const result = await logoutFunc();
-                    if (result.success) {
-                        window.location.replace('/login.html');
-                    }
-                } else {
-                    console.error("Logout function not available");
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    window.location.replace('/login.html');
-                }
-            } catch (error) {
-                console.error("Logout error:", error);
-                localStorage.clear();
-                sessionStorage.clear();
-                window.location.replace('/login.html');
+        }
+        console.log("Logout clicked");
+        try {
+            // Clear all storage first
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            // Clear cookies
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            
+            const logoutFunc = window.logoutUser || logoutUser;
+            if (typeof logoutFunc === 'function') {
+                await logoutFunc();
             }
-        });
+            
+            window.location.replace('/login.html');
+        } catch (error) {
+            console.error("Logout error:", error);
+            // Force redirect even if error
+            window.location.replace('/login.html');
+        }
+    }
+
+    logoutBtns.forEach(btn => {
+        btn.addEventListener('click', handleLogout);
     });
+
+    // Make handleLogout available globally
+    window.handleLogout = handleLogout;
 
     // Connect to WebSocket for real-time logs
     const socket = io();

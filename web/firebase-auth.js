@@ -62,28 +62,11 @@ async function loginUser(email, password) {
 async function logoutUser() {
   try {
     await signOut(auth);
-    // Clear all storages
-    localStorage.clear();
-    sessionStorage.clear();
-    
-    // Clear cookies
-    document.cookie.split(";").forEach(function(c) { 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-    
     console.log("User logged out successfully");
-    window.location.replace('/login.html');
     return { success: true };
   } catch (error) {
     console.error("Logout error:", error);
-    // Force clear all data even if error
-    localStorage.clear();
-    sessionStorage.clear();
-    document.cookie.split(";").forEach(function(c) { 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-    window.location.replace('/login.html');
-    return { success: true };
+    return { success: false, error: error.message };
   }
 }
 
