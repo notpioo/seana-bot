@@ -1097,7 +1097,7 @@ body {
 .config-card-header {
     background-color: var(--primary-color);
     color: white;
-    padding: 15px 20px;
+    padding:15px 20px;
     font-weight: 600;
     font-size: 1.1rem;
     display: flex;
@@ -1574,43 +1574,81 @@ body {
 }
 
 .form-input {
-    flex: 1;
-    padding: 12px 15px;
-    font-size: 16px;
-    border: 2px solid #e1e1e1;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.form-input:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
 }
 
 .form-input:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
     outline: none;
+    transform: translateY(-2px);
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+    opacity: 0.8;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
 }
 
 .helper-text {
     display: block;
-    margin-top: 6px;
-    font-size: 12px;
-    color: #666;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.5;
 }
 
 .submit-btn {
-    padding: 12px 24px;
-    background: #4CAF50;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-hover));
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.25);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .submit-btn:hover {
-    background: #45a049;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.35);
 }
 
 .submit-btn:active {
     transform: translateY(1px);
+}
+
+.submit-btn i {
+    font-size: 16px;
 }
