@@ -54,10 +54,20 @@ async function connectToWhatsApp() {
                 try {
                     logger.info('Requesting pairing code for:', phoneNumber);
                     const code = await sock.requestPairingCode(phoneNumber);
-                    logger.info('Pairing code:', code);
-                    global.pairingCode = code;
+                    logger.info('Your pairing code:', code);
+                    // Emit pairing code to web interface
+                    process.emit('bot:log', {
+                        type: 'pairingCode',
+                        message: code,
+                        time: new Date().toLocaleTimeString()
+                    });
                 } catch (error) {
                     logger.error('Failed to request pairing code:', error);
+                    process.emit('bot:log', {
+                        type: 'error',
+                        message: 'Failed to request pairing code: ' + error.message,
+                        time: new Date().toLocaleTimeString()
+                    });
                 }
             }
         }

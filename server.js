@@ -228,6 +228,11 @@ app.post('/api/bot/start', async (req, res) => {
             env: env
         });
 
+        // Handle custom bot events
+        process.on('bot:log', (data) => {
+            sendLogToClients(data.message, data.type);
+        });
+
         botProcess.stdout.on('data', (data) => {
             const output = data.toString();
             console.log(`Bot stdout: ${output}`);
