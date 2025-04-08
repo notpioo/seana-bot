@@ -77,25 +77,13 @@ async function getUserData(userId) {
   try {
     const snapshot = await get(ref(database, 'users/' + userId));
     if (snapshot.exists()) {
-      const data = snapshot.val();
-      // Set default role if not exists
-      if (!data.role) {
-        data.role = 'member';
-        await set(ref(database, 'users/' + userId), data);
-      }
-      return { success: true, data: data };
+      return { success: true, data: snapshot.val() };
     } else {
       return { success: false, error: 'User data not found' };
     }
   } catch (error) {
     return { success: false, error: error.message };
   }
-}
-
-// Check if user is admin
-async function isAdmin(userId) {
-  const result = await getUserData(userId);
-  return result.success && result.data.role === 'admin';
 }
 
 // Update user profile

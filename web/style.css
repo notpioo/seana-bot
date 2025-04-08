@@ -1532,23 +1532,3 @@ body {
 .submit-btn:active {
     transform: translateY(1px);
 }
-.member-section {
-    padding: 20px;
-}
-
-.dashboard-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.dark-mode .dashboard-card {
-    background: #2d2d2d;
-    color: #fff;
-}
-
-.shop-items, .quest-list, .leaderboard {
-    margin-top: 15px;
-}
