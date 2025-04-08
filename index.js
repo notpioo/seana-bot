@@ -75,10 +75,18 @@ async function connectToWhatsApp() {
 
             if (qr) {
                 const config = await botSettings.getBotConfig();
-                const code = await sock.requestPairingCode(config.botNumber || '628XXXXXXXXXX');
-                logger.info('QR Code received, please scan with WhatsApp.  Pairing code:', code);
+                try {
+                    const code = await sock.requestPairingCode(config.botNumber || '628XXXXXXXXXX');
+                    console.log('\n[PAIRING CODE]:', code, '\n')
+                    logger.info('='.repeat(50))
+                    logger.info('KODE PAIRING ANDA:', code)
+                    logger.info('='.repeat(50))
 
+                } catch (err) {
+                    logger.error('Error requesting pairing code:', err)
+                }
             }
+
 
             // Update bot config if flag is set
             if (global.botConfigUpdated === true) {
