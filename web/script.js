@@ -168,30 +168,16 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log("Logout clicked");
             try {
                 if (typeof window.logoutUser === 'function') {
-                    const result = await window.logoutUser();
-                    if (result.success) {
-                        localStorage.clear();
-                        window.location.replace('login.html');
-                    } else {
-                        alert("Logout failed: " + (result.error || "Unknown error"));
-                    }
+                    await window.logoutUser();
                 } else if (typeof logoutUser === 'function') {
-                    const result = await logoutUser();
-                    if (result.success) {
-                        localStorage.clear();
-                        window.location.replace('login.html');
-                    } else {
-                        alert("Logout failed: " + (result.error || "Unknown error"));
-                    }
+                    await logoutUser();
                 } else {
                     console.error("Logout function not available");
-                    localStorage.clear();
-                    window.location.replace('login.html');
+                    window.location.replace('/login.html');
                 }
             } catch (error) {
                 console.error("Logout error:", error);
-                localStorage.clear();
-                window.location.replace('login.html');
+                window.location.replace('/login.html');
             }
         });
     });
