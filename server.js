@@ -191,8 +191,12 @@ app.post('/api/bot/menu', async (req, res) => {
 
 app.post('/api/bot/start', async (req, res) => {
     try {
-        if (botState.status === 'online') {
-            return res.json({ success: false, message: 'Bot is already running' });
+        if (botProcess) {
+            botProcess.kill();
+            botProcess = null;
+            botState.status = 'offline';
+            botState.startTime = null;
+            await new Promise(resolve => setTimeout(resolve, 2000));
         }
 
         if (botProcess) {

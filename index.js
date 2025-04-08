@@ -39,12 +39,14 @@ async function connectToWhatsApp() {
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             logger: logger,
             generateHighQualityLinkPreview: true,
-            defaultQueryTimeoutMs: undefined,
-            connectTimeoutMs: undefined,
+            defaultQueryTimeoutMs: 60000,
+            connectTimeoutMs: 60000,
             version: [2, 2323, 4],
             getMessage: async () => {
                 return { conversation: 'hello' };
-            }
+            },
+            markOnlineOnConnect: true,
+            retryRequestDelayMs: 2000
         });
 
         // Handle pairing code

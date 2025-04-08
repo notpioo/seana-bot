@@ -1,3 +1,4 @@
+
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -5,7 +6,10 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Avionika:Mutiaraf2
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGODB_URI);
+        await mongoose.connect(MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         console.log('Successfully connected to MongoDB.');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error.message);
@@ -20,7 +24,6 @@ const connectDB = async () => {
         console.log('MongoDB disconnected');
     });
 
-    // Handle application termination
     process.on('SIGINT', async () => {
         try {
             await mongoose.connection.close();
