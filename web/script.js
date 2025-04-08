@@ -1,3 +1,37 @@
+
+// Pairing code functionality
+async function startPairing() {
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    if (!phoneNumber || !phoneNumber.match(/^62\d{9,}$/)) {
+        alert('Masukkan nomor yang valid (contoh: 628123456789)');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/bot/pair', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ phoneNumber })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            document.getElementById('pairingCode').innerHTML = `
+                <h4>Kode Pairing:</h4>
+                <div class="code">${data.code}</div>
+                <p>Masukkan kode ini di WhatsApp Anda</p>
+            `;
+        } else {
+            alert(data.message || 'Gagal memulai pairing');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat memulai pairing');
+    }
+}
+
 // Firebase auth functions
 let auth, checkAuthState, getUserData, logoutUser;
 
