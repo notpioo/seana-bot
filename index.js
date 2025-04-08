@@ -36,9 +36,8 @@ async function connectToWhatsApp() {
         // Initialize global flag for config update notification
         global.botConfigUpdated = false;
         
-        const phoneNumber = process.env.BOT_NUMBER || '6285709557572';
-        
         const sock = makeWASocket({
+            printQRInTerminal: true,
             auth: state,
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             keys: makeCacheableSignalKeyStore(state.keys, logger),
@@ -47,17 +46,7 @@ async function connectToWhatsApp() {
             keepAliveIntervalMs: 10000,
             maxRetries: 5,
             generateHighQualityLinkPreview: true,
-            mobile: true,
-            pairingCode: true,
-            printQRInTerminal: false,
         })
-
-        // Handle pairing code
-        if (!sock.authState.creds.registered) {
-            const code = await sock.requestPairingCode(phoneNumber)
-            logger.info(`Pairing code: ${code}`)
-            console.log(`Pairing code: ${code}`)
-        }
         
         // Setup config checker interval
         setInterval(async () => {
