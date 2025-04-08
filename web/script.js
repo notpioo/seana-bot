@@ -81,12 +81,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update avatars - first check if there's a stored avatar in localStorage
                 const storedAvatar = localStorage.getItem('userAvatar');
                 const avatarUrl = storedAvatar || userData.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.username || 'User')}&background=random`;
-                
+
                 // Store the avatar URL if we got it from userData
                 if (userData.photoURL && !storedAvatar) {
                     localStorage.setItem('userAvatar', userData.photoURL);
                 }
-                
+
                 const avatarElements = document.querySelectorAll('#userAvatar');
                 avatarElements.forEach(elem => {
                     elem.src = avatarUrl;
@@ -165,18 +165,25 @@ document.addEventListener('DOMContentLoaded', function() {
     logoutBtns.forEach(btn => {
         btn.addEventListener('click', async function(e) {
             e.preventDefault();
+            e.stopPropagation();
             console.log("Logout clicked");
             try {
-                if (typeof window.logoutUser === 'function') {
-                    await window.logoutUser();
-                } else if (typeof logoutUser === 'function') {
-                    await logoutUser();
+                const logoutFunc = window.logoutUser || logoutUser;
+                if (typeof logoutFunc === 'function') {
+                    const result = await logoutFunc();
+                    if (result.success) {
+                        window.location.replace('/login.html');
+                    }
                 } else {
                     console.error("Logout function not available");
+                    localStorage.clear();
+                    sessionStorage.clear();
                     window.location.replace('/login.html');
                 }
             } catch (error) {
                 console.error("Logout error:", error);
+                localStorage.clear();
+                sessionStorage.clear();
                 window.location.replace('/login.html');
             }
         });
@@ -403,7 +410,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             addLog('Starting bot with pairing code...');
-            
+
             fetch('/api/bot/start', {
                 method: 'POST',
                 headers: {
