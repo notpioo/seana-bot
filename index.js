@@ -1,71 +1,80 @@
 const makeWASocket = require('@whiskeysockets/baileys').default;
 const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys');
+const { handleMessages } = require('./handlers/message');
 const logger = require('./lib/utils/logger');
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
-const { parsePhoneNumber } = require('awesome-phonenumber');
 const connectDB = require('./database/config/mongoose');
+const botSettings = require('./config/settings');
 require('dotenv').config();
 
 const AUTH_PATH = process.env.AUTH_PATH || path.join(process.cwd(), 'sessions', 'auth_info');
-const pairingCode = process.argv.includes('--qr') ? false : process.argv.includes('--pairing-code') || process.env.PAIRING_CODE === 'true';
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
+
+function ensureDirectoryExists(directory) {
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true });
+    }
+}
+
+let sock = null;
+let reconnectAttempts = 0;
+const maxReconnectAttempts = 5;
+const reconnectInterval = 3000;
 
 async function connectToWhatsApp() {
     try {
-        const { state, saveCreds } = await useMultiFileAuthState(AUTH_PATH);
+        ensureDirectoryExists(path.dirname(AUTH_PATH));
+        logger.info(`Using auth directory: ${AUTH_PATH}`);
 
-        const sock = makeWASocket({
-            printQRInTerminal: !pairingCode,
+        const { state, saveCreds } = await useMultiFileAuthState(AUTH_PATH);
+        const config = await botSettings.getBotConfig(true);
+        global.botConfigUpdated = false;
+
+        sock = makeWASocket({
+            printQRInTerminal: false,
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, logger)
             },
-            browser: ['SeaBot', 'Chrome', '5.0'],
+            browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
             logger: logger,
             generateHighQualityLinkPreview: true,
             defaultQueryTimeoutMs: 60000,
             connectTimeoutMs: 60000,
-            version: [2, 2323, 4]
+            version: [2, 2323, 4],
+            getMessage: async () => {
+                return { conversation: 'hello' };
+            }
         });
 
         // Handle pairing code
-        if (pairingCode && !sock.authState.creds.registered) {
-            let phoneNumber = process.env.PAIRING_NUMBER;
-
-            if (!phoneNumber) {
-                phoneNumber = await question('Please type your WhatsApp number: ');
-                phoneNumber = phoneNumber.replace(/[^0-9]/g, '');
-
-                if (!phoneNumber || phoneNumber.length < 10) {
-                    logger.error('Invalid phone number. Please start with country code (e.g. 62xxx)');
-                    process.exit(1);
-                }
-            }
-
-            setTimeout(async () => {
+        if (!sock.authState.creds.registered) {
+            const phoneNumber = process.env.PAIRING_NUMBER;
+            if (phoneNumber) {
                 try {
+                    logger.info('Requesting pairing code for:', phoneNumber);
                     const code = await sock.requestPairingCode(phoneNumber);
-                    logger.info('Your pairing code:', code);
+                    logger.info('Pairing code:', code);
+                    global.pairingCode = code;
                 } catch (error) {
                     logger.error('Failed to request pairing code:', error);
-                    process.exit(1);
                 }
-            }, 3000);
+            }
         }
 
         sock.ev.on('connection.update', async (update) => {
             const { connection, lastDisconnect } = update;
 
             if (connection === 'close') {
-                const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-                logger.info('Connection closed due to:', lastDisconnect?.error?.output?.payload?.message);
+                const shouldReconnect = (lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut) && 
+                                     reconnectAttempts < maxReconnectAttempts;
+
+                logger.info(`Connection closed. Reconnect: ${shouldReconnect}`);
 
                 if (shouldReconnect) {
-                    logger.info('Reconnecting...');
-                    connectToWhatsApp();
+                    reconnectAttempts++;
+                    logger.info(`Reconnecting... Attempt ${reconnectAttempts}`);
+                    setTimeout(connectToWhatsApp, reconnectInterval);
                 } else {
                     logger.info('Connection closed permanently');
                     if (lastDisconnect?.error?.output?.statusCode === DisconnectReason.loggedOut) {
@@ -78,7 +87,9 @@ async function connectToWhatsApp() {
                     }
                 }
             } else if (connection === 'open') {
-                logger.info('Connected successfully!');
+                reconnectAttempts = 0;
+                logger.info('Connected to WhatsApp');
+
                 try {
                     const config = await botSettings.getBotConfig();
                     if (config.onlineOnConnect) {
@@ -95,20 +106,22 @@ async function connectToWhatsApp() {
 
         return sock;
     } catch (err) {
-        logger.error('Error in connection:', err);
-        throw err;
+        logger.error('Failed to connect:', err);
+        if (reconnectAttempts < maxReconnectAttempts) {
+            reconnectAttempts++;
+            setTimeout(connectToWhatsApp, reconnectInterval);
+        }
     }
 }
 
-async function startBot() {
+(async () => {
     try {
         await connectDB();
-        logger.info('Connected to MongoDB');
         await connectToWhatsApp();
     } catch (err) {
-        logger.error('Failed to start bot:', err);
+        logger.error('Fatal error:', err);
         process.exit(1);
     }
-}
+})();
 
-startBot();
+module.exports = { connectToWhatsApp };
