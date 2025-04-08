@@ -202,17 +202,30 @@ app.post('/api/bot/start', async (req, res) => {
 
         sendLogToClients('Starting bot...');
 
-        // Get pairing mode from request
-        const pairingMode = req.body.mode || 'qr';
+        // Validate phone number if provided
+        const phoneNumber = req.body.phoneNumber;
+        if (phoneNumber && !phoneNumber.match(/^[1-9]\d{10,14}$/)) {
+            return res.json({ 
+                success: false, 
+                message: 'Invalid phone number format. Please use format: 628123456789' 
+            });
+        }
+
+        // Set environment variables
+        const env = {
+            ...process.env,
+            PAIRING_MODE: req.body.mode || 'qr',
+            NODE_ENV: 'production'
+        };
+
+        if (phoneNumber) {
+            env.PAIRING_NUMBER = phoneNumber;
+        }
 
         // Use spawn instead of exec for better output handling
         botProcess = spawn('node', ['index.js'], {
             stdio: ['ignore', 'pipe', 'pipe'],
-            env: {
-                ...process.env,
-                PAIRING_MODE: pairingMode,
-                PAIRING_NUMBER: req.body.phoneNumber
-            }
+            env: env
         });
 
         botProcess.stdout.on('data', (data) => {
