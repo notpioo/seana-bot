@@ -1,7 +1,28 @@
 // Firebase auth functions
 let auth, checkAuthState, getUserData, logoutUser;
 
-document.addEventListener('DOMContentLoaded', function() {
+async function updateUIBasedOnRole(userId) {
+    const adminElements = document.querySelectorAll('.admin-only');
+    const memberElements = document.querySelectorAll('.member-only');
+    
+    const isUserAdmin = await isAdmin(userId);
+    
+    adminElements.forEach(element => {
+        element.style.display = isUserAdmin ? '' : 'none';
+    });
+    
+    memberElements.forEach(element => {
+        element.style.display = isUserAdmin ? 'none' : '';
+    });
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // Check auth state
+    checkAuthState(async (user) => {
+        if (user) {
+            await updateUIBasedOnRole(user.uid);
+        }
+    });
     // Load firebase-auth.js using a script tag
     const script = document.createElement('script');
     script.src = './firebase-auth.js';
