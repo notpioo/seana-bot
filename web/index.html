@@ -160,11 +160,8 @@
                     <div class="control-section">
                         <h3>Control</h3>
                         <div class="buttons">
-                            <button id="startBotQR" class="start-btn">
-                                <i class="fas fa-qrcode"></i> Start with QR
-                            </button>
-                            <button id="startBotCode" class="start-btn">
-                                <i class="fas fa-key"></i> Start with Code
+                            <button id="startBot" class="start-btn">
+                                <i class="fas fa-play"></i> Start Bot
                             </button>
                             <button id="stopBot" class="stop-btn">
                                 <i class="fas fa-stop"></i> Stop Bot
@@ -172,13 +169,6 @@
                             <button id="deleteSession" class="delete-btn">
                                 <i class="fas fa-trash"></i> Delete Session
                             </button>
-                        </div>
-                        <div id="pairingSection" class="pairing-section" style="display: none;">
-                            <div class="pairing-form">
-                                <input type="text" id="phoneNumber" placeholder="Masukkan nomor (628xxxxx)" />
-                                <button id="pairButton" class="pair-button">Mulai Pairing</button>
-                            </div>
-                            <div id="pairingCode" class="pairing-code"></div>
                         </div>
                     </div>
                     <div class="faq-section">
@@ -193,22 +183,12 @@
                             </div>
                             <div class="faq-answer">
                                 <p>
-                                    Untuk mengaktivasi bot WhatsApp, ada 2 cara:
+                                    Untuk mengaktivasi bot WhatsApp, klik tombol
+                                    "Start Bot" di panel control. Kemudian scan
+                                    QR code yang muncul dengan aplikasi WhatsApp
+                                    di ponsel Anda.
                                 </p>
-                                <ol>
-                                    <li>Scan QR code yang muncul setelah klik tombol "Start Bot"</li>
-                                    <li>Masukkan nomor WhatsApp dan kode yang muncul di layar</li>
-                                </ol>
                             </div>
-                        </div>
-                        
-                        <div class="pairing-section">
-                            <h3>Pairing dengan Kode</h3>
-                            <div class="pairing-form">
-                                <input type="text" id="phoneNumber" placeholder="Masukkan nomor (628xxxxx)" />
-                                <button onclick="startPairing()" class="pair-button">Mulai Pairing</button>
-                            </div>
-                            <div id="pairingCode" class="pairing-code"></div>
                         </div>
                     </div>
                 </div>

@@ -1,183 +1,3 @@
-// Pairing handlers
-document.addEventListener('DOMContentLoaded', function() {
-    const startBotQR = document.getElementById('startBotQR');
-    const startBotCode = document.getElementById('startBotCode');
-    const pairButton = document.getElementById('pairButton');
-    const pairingSection = document.getElementById('pairingSection');
-    const stopBtn = document.getElementById('stopBot');
-    const deleteBtn = document.getElementById('deleteSession');
-
-    if (startBotQR) {
-        startBotQR.addEventListener('click', async () => {
-            try {
-                pairingSection.style.display = 'none';
-                const response = await fetch('/api/bot/start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    },
-                    body: JSON.stringify({ mode: 'qr' })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    console.log('Starting bot with QR...');
-                } else {
-                    alert('Failed to start bot: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error starting bot');
-            }
-        });
-    }
-
-    if (startBotCode) {
-        startBotCode.addEventListener('click', () => {
-            pairingSection.style.display = 'block';
-            const phoneInput = document.getElementById('phoneNumber');
-            if (phoneInput) {
-                phoneInput.focus();
-            }
-        });
-    }
-
-    if (pairButton) {
-        pairButton.addEventListener('click', async () => {
-            const phoneNumber = document.getElementById('phoneNumber').value;
-
-            if (!phoneNumber || !phoneNumber.match(/^62\d{9,}$/)) {
-                alert('Masukkan nomor yang valid (contoh: 628123456789)');
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/bot/start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    },
-                    body: JSON.stringify({ 
-                        mode: 'code',
-                        phoneNumber: phoneNumber 
-                    })
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    document.getElementById('pairingCode').innerHTML = `
-                        <div class="code-container">
-                            <h4>Menunggu kode pairing...</h4>
-                            <p>Silakan cek WhatsApp Anda untuk kode otentikasi</p>
-                        </div>
-                    `;
-                } else {
-                    alert(data.message || 'Gagal memulai pairing');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat memulai pairing');
-            }
-        });
-    }
-
-    if (stopBtn) {
-        stopBtn.addEventListener('click', async () => {
-            try {
-                const response = await fetch('/api/bot/stop', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    console.log('Bot stopped successfully');
-                } else {
-                    alert('Failed to stop bot: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error stopping bot');
-            }
-        });
-    }
-
-    if (deleteBtn) {
-        deleteBtn.addEventListener('click', async () => {
-            if (!confirm('Are you sure you want to delete the session?')) {
-                return;
-            }
-
-            try {
-                const response = await fetch('/api/bot/session', {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                });
-
-                const data = await response.json();
-                if (data.success) {
-                    console.log('Session deleted successfully');
-                } else {
-                    alert('Failed to delete session: ' + data.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error deleting session');
-            }
-        });
-    }
-
-    // Socket.io connection
-    const socket = io();
-
-    socket.on('connect', () => {
-        console.log('Connected to server websocket');
-        if (document.getElementById('connection-status')) {
-            document.getElementById('connection-status').textContent = 'Connected';
-            document.getElementById('connection-status').classList.add('connected');
-        }
-    });
-
-    socket.on('disconnect', () => {
-        console.log('Disconnected from server websocket');
-        if (document.getElementById('connection-status')) {
-            document.getElementById('connection-status').textContent = 'Disconnected';
-            document.getElementById('connection-status').classList.remove('connected');
-        }
-    });
-
-    socket.on('botLog', (data) => {
-        const logsContainer = document.getElementById('logs-container');
-        if (!logsContainer) return;
-
-        const logEntry = document.createElement('div');
-        logEntry.className = `log-entry ${data.type}`;
-
-        if (data.type === 'pairingCode') {
-            const pairingCode = document.getElementById('pairingCode');
-            if (pairingCode) {
-                pairingCode.innerHTML = `
-                    <div class="code-container">
-                        <h4>Kode Pairing:</h4>
-                        <div class="code">${data.message}</div>
-                        <p>Masukkan kode ini di WhatsApp Anda</p>
-                    </div>
-                `;
-            }
-        }
-
-        logEntry.textContent = `[${data.time}] ${data.message}`;
-        logsContainer.appendChild(logEntry);
-        logsContainer.scrollTop = logsContainer.scrollHeight;
-    });
-});
-
 // Firebase auth functions
 let auth, checkAuthState, getUserData, logoutUser;
 
@@ -369,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Connect to WebSocket for real-time logs
-    //This part is already handled in the edited snippet
+    const socket = io();
 
     // Status elements
     const statusEl = document.getElementById('botStatus');
@@ -448,9 +268,56 @@ document.addEventListener('DOMContentLoaded', function() {
         logsContainer.scrollTop = logsContainer.scrollHeight;
     }
 
+    // Socket event handlers
+    socket.on('connect', () => {
+        console.log('Connected to server websocket');
+        if (connectionStatusEl) {
+            connectionStatusEl.textContent = 'Connected';
+            connectionStatusEl.classList.add('connected');
+        }
+    });
 
-    // Socket event handlers (already handled in the edited snippet)
+    socket.on('disconnect', () => {
+        console.log('Disconnected from server websocket');
+        if (connectionStatusEl) {
+            connectionStatusEl.textContent = 'Disconnected';
+            connectionStatusEl.classList.remove('connected');
+        }
+    });
 
+    socket.on('botLog', (data) => {
+        addLog(data.message, data.type);
+    });
+
+    socket.on('botStatus', (data) => {
+        if (data.status === 'online') {
+            setBotOnline();
+            startTime = new Date(data.startTime);
+        } else {
+            setBotOffline();
+        }
+        addLog(`Bot status: ${data.status}`);
+    });
+
+    // Check bot status on load as fallback
+    fetch('/api/bot/status', {
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'online') {
+                setBotOnline();
+            } else {
+                setBotOffline();
+            }
+            addLog(`Bot status: ${data.status}`);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            addLog('Error fetching bot status', 'error');
+        });
 
     function setBotOnline() {
         if (!statusEl) return;
@@ -514,9 +381,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Stop bot button (already handled in edited snippet)
+    // Stop bot button
+    if (stopBtn) {
+        stopBtn.addEventListener('click', function() {
+            if (!botRunning) return;
 
-    // Delete session button (already handled in edited snippet)
+            addLog('Stopping bot...');
+
+            fetch('/api/bot/stop', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    setBotOffline();
+                    addLog('Bot stopped successfully');
+                } else {
+                    addLog(`Failed to stop bot: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addLog('Error stopping bot');
+            });
+        });
+    }
+
+    // Delete session button
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function() {
+            if (botRunning) {
+                addLog('Stop the bot first before deleting session');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete the session? This will log out your WhatsApp connection.')) {
+                return;
+            }
+
+            addLog('Deleting session...');
+
+            fetch('/api/bot/session', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addLog('Session deleted successfully');
+                } else {
+                    addLog(`Failed to delete session: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addLog('Error deleting session');
+            });
+        });
+    }
 
     // Toggle user dropdown
     const userAvatarTrigger = document.getElementById('userAvatarTrigger');

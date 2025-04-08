@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -8,7 +7,7 @@ const connectDB = async () => {
     try {
         await mongoose.connect(MONGODB_URI, {
             useNewUrlParser: true,
-            useUnifiedTopology: true,
+            useUnifiedTopology: true
         });
         console.log('Successfully connected to MongoDB.');
     } catch (error) {
@@ -24,6 +23,7 @@ const connectDB = async () => {
         console.log('MongoDB disconnected');
     });
 
+    // Handle application termination
     process.on('SIGINT', async () => {
         try {
             await mongoose.connection.close();
