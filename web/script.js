@@ -172,17 +172,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Clear all storage first
             localStorage.clear();
             sessionStorage.clear();
-            
+
             // Clear cookies
             document.cookie.split(";").forEach(function(c) { 
                 document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
             });
-            
+
             const logoutFunc = window.logoutUser || logoutUser;
             if (typeof logoutFunc === 'function') {
                 await logoutFunc();
             }
-            
+
             window.location.replace('/login.html');
         } catch (error) {
             console.error("Logout error:", error);
@@ -388,11 +388,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     setBotOnline();
                     addLog('Bot started successfully');
                 } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: `Failed to start bot: ${data.message}`
+                    });
                     addLog(`Failed to start bot: ${data.message}`);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error starting bot'
+                });
                 addLog('Error starting bot');
             });
         });
@@ -409,11 +417,19 @@ document.addEventListener('DOMContentLoaded', function() {
         submitPairingBtn.addEventListener('click', function() {
             const phoneNumber = phoneNumberInput.value.trim();
             if (!phoneNumber) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Please enter a phone number'
+                });
                 addLog('Please enter a phone number', 'error');
                 return;
             }
 
             if (!phoneNumber.match(/^628\d{8,12}$/)) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Invalid phone number format. Use 628xxxxx'
+                });
                 addLog('Invalid phone number format. Use 628xxxxx', 'error');
                 return;
             }
@@ -437,11 +453,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     setBotOnline();
                     addLog('Bot started successfully');
                 } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: `Failed to start bot: ${data.message}`
+                    });
                     addLog(`Failed to start bot: ${data.message}`);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error starting bot'
+                });
                 addLog('Error starting bot');
             });
         });
@@ -466,11 +490,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     setBotOffline();
                     addLog('Bot stopped successfully');
                 } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: `Failed to stop bot: ${data.message}`
+                    });
                     addLog(`Failed to stop bot: ${data.message}`);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error stopping bot'
+                });
                 addLog('Error stopping bot');
             });
         });
@@ -480,6 +512,10 @@ document.addEventListener('DOMContentLoaded', function() {
     if (deleteBtn) {
         deleteBtn.addEventListener('click', function() {
             if (botRunning) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Stop the bot first before deleting session'
+                });
                 addLog('Stop the bot first before deleting session');
                 return;
             }
@@ -501,11 +537,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     addLog('Session deleted successfully');
                 } else {
+                    Toast.fire({
+                        icon: 'error',
+                        title: `Failed to delete session: ${data.message}`
+                    });
                     addLog(`Failed to delete session: ${data.message}`);
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Error deleting session'
+                });
                 addLog('Error deleting session');
             });
         });
@@ -539,3 +583,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+//Remember to include SweetAlert2 in your HTML file  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
