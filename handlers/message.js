@@ -396,6 +396,9 @@ async function handleMessages(sock) {
                     case "afk":
                         await afkHandler(sock, msg);
                         break;
+                    case "yt":
+                        await youtubeHandler(sock, msg);
+                        break;
                     
                 }
 
