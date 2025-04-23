@@ -92,6 +92,7 @@ const {
 } = require("../lib/commands/inventory");
 const { transferHandler } = require("../lib/commands/transfer");
 const { afkHandler, checkAfkStatus } = require("../lib/commands/afk");
+const { plantHandler, harvestHandler } = require("../lib/commands/farm");
 const { youtubeHandler } = require("../lib/commands/youtube");
 const Fish = require("../database/models/Fish");
 const {
