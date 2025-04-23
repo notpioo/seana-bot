@@ -15,6 +15,14 @@ const farmSchema = new mongoose.Schema({
         type: Number,
         default: 10
     },
+    level: {
+        type: Number,
+        default: 1
+    },
+    xp: {
+        type: Number,
+        default: 0
+    },
     seeds: [{
         name: String,
         quantity: Number
@@ -24,7 +32,15 @@ const farmSchema = new mongoose.Schema({
         plantedAt: Date,
         quantity: Number,
         slot: Number
-    }]
+    }],
+    inventory: {
+        crops: [{
+            name: String,
+            quantity: Number,
+            weight: Number,
+            tier: String
+        }]
+    }
 });
 
 module.exports = mongoose.model('Farm', farmSchema);
