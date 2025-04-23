@@ -5,7 +5,8 @@ const farmSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        index: true // Add index for better query performance
     },
     coins: {
         type: Number,
