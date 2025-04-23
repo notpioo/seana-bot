@@ -417,6 +417,12 @@ async function handleMessages(sock) {
                     case "harvest":
                         await harvestHandler(sock, msg);
                         break;
+                    case "fbuy":
+                        await buyHandler(sock, msg);
+                        break;
+                    case "fsell":
+                        await sellAllHandler(sock, msg);
+                        break;
                 }
 
 
