@@ -92,7 +92,15 @@ const {
 } = require("../lib/commands/inventory");
 const { transferHandler } = require("../lib/commands/transfer");
 const { afkHandler, checkAfkStatus } = require("../lib/commands/afk");
-const { farmHandler, plantHandler, harvestHandler } = require("../lib/commands/farm");
+const { 
+    farmHandler, 
+    plantHandler, 
+    harvestHandler,
+    farmBagHandler,
+    farmShopHandler,
+    buyHandler,
+    sellAllHandler
+} = require("../lib/commands/farm");
 const { youtubeHandler } = require("../lib/commands/youtube");
 const Fish = require("../database/models/Fish");
 const {
@@ -104,7 +112,6 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
-const { farmBagHandler, farmShopHandler } = require("../lib/commands/farm"); // Assuming these are defined elsewhere
 
 
 // Added to load bot configuration.  Error handling is crucial.
