@@ -401,6 +401,9 @@ async function handleMessages(sock) {
                     case "yt":
                         await youtubeHandler(sock, msg);
                         break;
+                    case "farm":
+                        await farmHandler(sock, msg);
+                        break;
                     case "plant":
                         await plantHandler(sock, msg);
                         break;
