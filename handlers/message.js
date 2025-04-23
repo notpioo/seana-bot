@@ -104,6 +104,7 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
+const { farmBagHandler, farmShopHandler } = require("../lib/commands/farm"); // Assuming these are defined elsewhere
 
 
 // Added to load bot configuration.  Error handling is crucial.
@@ -404,6 +405,12 @@ async function handleMessages(sock) {
                     case "farm":
                         await farmHandler(sock, msg);
                         break;
+                    case "fbag":
+                        await farmBagHandler(sock, msg);
+                        break;
+                    case "fshop":
+                        await farmShopHandler(sock, msg);
+                        break;
                     case "plant":
                         await plantHandler(sock, msg);
                         break;
@@ -412,7 +419,7 @@ async function handleMessages(sock) {
                         break;
                 }
 
-                
+
 
                 // Handle additional commands
                 if (command === "quotes") {
