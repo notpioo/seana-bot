@@ -92,14 +92,16 @@ const {
 } = require("../lib/commands/inventory");
 const { transferHandler } = require("../lib/commands/transfer");
 const { afkHandler, checkAfkStatus } = require("../lib/commands/afk");
-const { 
-    farmHandler, 
-    plantHandler, 
+const {
+    farmHandler,
+    plantHandler,
     harvestHandler,
     farmBagHandler,
     farmShopHandler,
     buyHandler,
-    sellAllHandler
+    sellAllHandler,
+    fupgradeHandler,
+    fuplandHandler,
 } = require("../lib/commands/farm");
 const { youtubeHandler } = require("../lib/commands/youtube");
 const Fish = require("../database/models/Fish");
@@ -112,7 +114,6 @@ const {
     handleGuess,
     hasActiveGame,
 } = require("../lib/commands/tebakangka");
-
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -430,9 +431,13 @@ async function handleMessages(sock) {
                     case "fsell":
                         await sellAllHandler(sock, msg);
                         break;
+                    case "fup":
+                        await fupgradeHandler(sock, msg);
+                        break;
+                    case "fupland":
+                        await fuplandHandler(sock, msg);
+                        break;
                 }
-
-
 
                 // Handle additional commands
                 if (command === "quotes") {
@@ -520,7 +525,13 @@ async function handleMessages(sock) {
         } catch (error) {
             console.error("Error handling message:", error);
             try {
-                if (m && m.messages && m.messages[0] && m.messages[0].key && m.messages[0].key.remoteJid) {
+                if (
+                    m &&
+                    m.messages &&
+                    m.messages[0] &&
+                    m.messages[0].key &&
+                    m.messages[0].key.remoteJid
+                ) {
                     await sock.sendMessage(m.messages[0].key.remoteJid, {
                         text: "❌ Terjadi kesalahan saat memproses command",
                         quoted: m.messages[0],
