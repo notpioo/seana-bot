@@ -12,6 +12,10 @@ const farmSchema = new mongoose.Schema({
         type: Number,
         default: 1500
     },
+    diamonds: {
+        type: Number,
+        default: 0
+    },
     slots: {
         type: Number,
         default: 10
