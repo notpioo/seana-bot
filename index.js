@@ -89,7 +89,8 @@ async function connectToWhatsApp() {
 
             // Handle pairing code output
             if (update.pairingCode) {
-                logger.info(`Your WhatsApp pairing code: ${update.pairingCode}`)
+                logger.info(`Your WhatsApp pairing code: ${update.pairingCode}`);
+                console.log(`pairing code: ${update.pairingCode}`);
             }
 
             // Update bot config if flag is set

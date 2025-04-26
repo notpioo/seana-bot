@@ -233,8 +233,8 @@ app.post('/api/bot/start', async (req, res) => {
             }
             
             // Deteksi pairing code
-            if (output.includes('your pairing code:')) {
-                const pairingCode = output.match(/your pairing code: (\d+)/i)?.[1];
+            if (output.includes('pairing code:')) {
+                const pairingCode = output.match(/pairing code: (\d+)/i)?.[1];
                 if (pairingCode) {
                     sendLogToClients(`Your WhatsApp pairing code: ${pairingCode}`, 'pairingcode');
                 }
