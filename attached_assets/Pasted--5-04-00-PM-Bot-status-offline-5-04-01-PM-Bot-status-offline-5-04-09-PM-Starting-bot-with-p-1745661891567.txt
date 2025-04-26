@@ -1,0 +1,156 @@
+[5:04:00 PM] Bot status: offline
+[5:04:01 PM] Bot status: offline
+[5:04:09 PM] Starting bot with pairing code...
+[5:04:09 PM] Starting bot with code...
+[5:04:09 PM] Bot started successfully
+[5:04:10 PM] (node:4240) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version (Use `node --trace-warnings ...` to show where the warning was created)
+[5:04:10 PM] (node:4240) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+[5:04:10 PM] [INFO] Bot configuration loaded from disk
+[5:04:11 PM] Successfully connected to MongoDB.
+[5:04:11 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:11 PM] [INFO] Bot configuration loaded from disk
+[5:04:11 PM] [INFO] Credentials updated successfully
+[5:04:11 PM] [INFO] Credentials updated and saved successfully
+[5:04:11 PM] [ERROR] Failed to request pairing code:
+[5:04:11 PM] {"level":30,"time":"2025-04-26T10:04:12.648Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"brbPs2XiJ4eWstbwK/vqYMTvA612P4GUT6i6K6hyV34="}},"msg":"connected to WA"}
+[5:04:12 PM] {"level":30,"time":"2025-04-26T10:04:12.873Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:14 PM] {"level":30,"time":"2025-04-26T10:04:15.337Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:14 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:14 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:14 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:14 PM] [INFO] Connection closed. Status: 405, Reconnect: true, Attempt: 1/5 [INFO] Reconnecting in 3000ms...
+[5:04:14 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:14 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:14 PM] [INFO] Bot configuration loaded from disk
+[5:04:14 PM] [INFO] Credentials updated successfully
+[5:04:14 PM] [INFO] Credentials updated and saved successfully
+[5:04:14 PM] [ERROR] Failed to request pairing code:
+[5:04:14 PM] {"level":30,"time":"2025-04-26T10:04:15.556Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"EdqVJklCn0Q54vtQ17SbM2IStAoEdyuBEAvvQWzaMgc="}},"msg":"connected to WA"}
+[5:04:14 PM] {"level":30,"time":"2025-04-26T10:04:15.761Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:17 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:17 PM] [INFO] Bot configuration loaded from disk
+[5:04:17 PM] [INFO] Credentials updated successfully
+[5:04:17 PM] [INFO] Credentials updated and saved successfully
+[5:04:17 PM] [ERROR] Failed to request pairing code:
+[5:04:17 PM] {"level":30,"time":"2025-04-26T10:04:18.552Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"TwHlMw4BBOUDSnwQx94dPCLrshXkZJp6c6iRK5kv+00="}},"msg":"connected to WA"}
+[5:04:17 PM] {"level":30,"time":"2025-04-26T10:04:18.686Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:18 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: true, Attempt: 2/5 [INFO] Reconnecting in 3000ms...
+[5:04:18 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:18 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:18 PM] [INFO] Bot configuration loaded from disk
+[5:04:18 PM] [INFO] Credentials updated successfully
+[5:04:18 PM] [INFO] Credentials updated and saved successfully
+[5:04:18 PM] [ERROR] Failed to request pairing code:
+[5:04:18 PM] {"level":30,"time":"2025-04-26T10:04:18.752Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:18 PM] {"level":30,"time":"2025-04-26T10:04:19.100Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"IgM69v8oS+G8BOYj27vm1jlJekqXp31XMb6/svAtwDI="}},"msg":"connected to WA"}
+[5:04:18 PM] {"level":30,"time":"2025-04-26T10:04:19.236Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:21 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:21 PM] [INFO] Bot configuration loaded from disk
+[5:04:21 PM] [INFO] Credentials updated successfully
+[5:04:21 PM] [INFO] Credentials updated and saved successfully
+[5:04:21 PM] [ERROR] Failed to request pairing code:
+[5:04:21 PM] {"level":30,"time":"2025-04-26T10:04:21.851Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"4sxl+5w2yll8xixsNoHYEKl7HREWXcvQ9WZZ8d0ydBM="}},"msg":"connected to WA"}
+[5:04:21 PM] {"level":30,"time":"2025-04-26T10:04:21.986Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:21 PM] {"level":30,"time":"2025-04-26T10:04:22.122Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:21 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true
+[5:04:21 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:21 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:21 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: true, Attempt: 3/5 [INFO] Reconnecting in 3000ms...
+[5:04:21 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:21 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:21 PM] [INFO] Bot configuration loaded from disk
+[5:04:21 PM] [INFO] Credentials updated successfully
+[5:04:21 PM] [INFO] Credentials updated and saved successfully
+[5:04:21 PM] [ERROR] Failed to request pairing code:
+[5:04:22 PM] {"level":30,"time":"2025-04-26T10:04:22.755Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:22 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: true, Attempt: 4/5 [INFO] Reconnecting in 3000ms...
+[5:04:22 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:22 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:22 PM] [INFO] Bot configuration loaded from disk
+[5:04:22 PM] [INFO] Credentials updated successfully
+[5:04:22 PM] [INFO] Credentials updated and saved successfully
+[5:04:22 PM] [ERROR] Failed to request pairing code:
+[5:04:22 PM] {"level":30,"time":"2025-04-26T10:04:22.842Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"XC0fDcZEWQNxg8p7Gv5GM1upd2M7Lnf0Vc+Ao/Jo9Do="}},"msg":"connected to WA"}
+[5:04:22 PM] {"level":30,"time":"2025-04-26T10:04:23.081Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:22 PM] {"level":30,"time":"2025-04-26T10:04:23.373Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"tLf8T8mngC4OAAemHQPZSIiGbvT4G511seY4TyAF/1Y="}},"msg":"connected to WA"}
+[5:04:22 PM] {"level":30,"time":"2025-04-26T10:04:23.577Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:24 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:24 PM] [INFO] Bot configuration loaded from disk
+[5:04:24 PM] [INFO] Credentials updated successfully
+[5:04:24 PM] [INFO] Credentials updated and saved successfully
+[5:04:24 PM] [ERROR] Failed to request pairing code:
+[5:04:24 PM] {"level":30,"time":"2025-04-26T10:04:25.557Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"nsrZfDDeGIlDnXdLe8VRgC/In6FaimDpP0agOdEuLjo="}},"msg":"connected to WA"}
+[5:04:24 PM] {"level":30,"time":"2025-04-26T10:04:25.697Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:24 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:24 PM] [INFO] Bot configuration loaded from disk
+[5:04:24 PM] [INFO] Credentials updated successfully
+[5:04:24 PM] [INFO] Credentials updated and saved successfully
+[5:04:25 PM] [ERROR] Failed to request pairing code:
+[5:04:25 PM] {"level":30,"time":"2025-04-26T10:04:25.974Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"YewYBiprrb3KB9ue7MtolRUgUBiYgJZTsDNaDyfu8jc="}},"msg":"connected to WA"}
+[5:04:25 PM] {"level":30,"time":"2025-04-26T10:04:26.171Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:25 PM] {"level":30,"time":"2025-04-26T10:04:26.729Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:25 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true
+[5:04:25 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:25 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:25 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: true, Attempt: 5/5 [INFO] Reconnecting in 3000ms...
+[5:04:25 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:25 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:25 PM] [INFO] Bot configuration loaded from disk
+[5:04:25 PM] [INFO] Credentials updated successfully
+[5:04:25 PM] [INFO] Credentials updated and saved successfully
+[5:04:25 PM] [ERROR] Failed to request pairing code:
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:26.806Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:26 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: false, Attempt: 6/5 [INFO] Connection closed permanently
+[5:04:26 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:26 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:26 PM] [INFO] Bot configuration loaded from disk
+[5:04:26 PM] [INFO] Credentials updated successfully
+[5:04:26 PM] [INFO] Credentials updated and saved successfully
+[5:04:26 PM] [ERROR] Failed to request pairing code:
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:26.966Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"/EaQ05hwgf40pv0fHLEeXD7K4pSEL6cBNE427gRRrEM="}},"msg":"connected to WA"}
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.117Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"}
+[5:04:26 PM] [INFO] Connection closed due to Connection Failure. Reconnecting: true [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: false, Attempt: 6/5 [INFO] Connection closed permanently
+[5:04:26 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:26 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:26 PM] [INFO] Bot configuration loaded from disk
+[5:04:26 PM] [INFO] Credentials updated successfully
+[5:04:26 PM] [INFO] Credentials updated and saved successfully
+[5:04:26 PM] [ERROR] Failed to request pairing code:
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.193Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.341Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","trace":"Error: Connection Failure\n at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:524:13)\n at WebSocketClient.emit (node:events:518:28)\n at /home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:236:35\n at Object.decodeFrame (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/noise-handler.js:144:17)\n at process.processTicksAndRejections (node:internal/process/task_queues:95:5)","msg":"connection errored"} [INFO] Connection closed due to Connection Failure. Reconnecting: true
+[5:04:26 PM] 🔄 Koneksi terputus, mencoba menghubungkan kembali...
+[5:04:26 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:26 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info [INFO] Connection closed. Status: 405, Reconnect: false, Attempt: 6/5 [INFO] Connection closed permanently
+[5:04:26 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:26 PM] ❌ Koneksi terputus dari WhatsApp
+[5:04:26 PM] [INFO] Bot configuration loaded from disk
+[5:04:26 PM] [INFO] Credentials updated successfully
+[5:04:26 PM] [INFO] Credentials updated and saved successfully
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.418Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"8DbolW2S0rrzgxJmiGUY0N6GL24PBNBUpNDXJXL6wxU="}},"msg":"connected to WA"}
+[5:04:26 PM] [ERROR] Failed to request pairing code:
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.524Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"WuVXwzCAuV30rEHjXVbnP5BInFy71mF/pxIKsU6BmCM="}},"msg":"connected to WA"}
+[5:04:26 PM] Stopping bot...
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.574Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"0YXOP7gVyHRutKyxEkj3QZKjYI2YQdblluHSKiAR6wc="}},"msg":"connected to WA"}
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.618Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:26 PM] {"level":30,"time":"2025-04-26T10:04:27.659Z","pid":4240,"hostname":"7e25cb90b670","class":"baileys","node":{"username":"6283895472636","passive":true,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED"},"msg":"logging in..."}
+[5:04:26 PM] Bot stopped successfully
+[5:04:26 PM] Bot process exited with code null
+[5:04:29 PM] Deleting session...
+[5:04:29 PM] Session deleted successfully
+[5:04:31 PM] Starting bot with QR...
+[5:04:31 PM] Starting bot with qr...
+[5:04:31 PM] Bot started successfully
+[5:04:32 PM] (node:4253) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version (Use `node --trace-warnings ...` to show where the warning was created)
+[5:04:32 PM] (node:4253) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+[5:04:32 PM] [INFO] Bot configuration loaded from disk
+[5:04:33 PM] Successfully connected to MongoDB.
+[5:04:33 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[5:04:33 PM] [INFO] Bot configuration loaded from disk
+[5:04:33 PM] {"level":30,"time":"2025-04-26T10:04:33.954Z","pid":4253,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"XZfHo7yyYY4QCvb3Kh1bQSUd5YTKySzCr8ZZRiQo0y4="}},"msg":"connected to WA"}
+[5:04:33 PM] {"level":30,"time":"2025-04-26T10:04:34.123Z","pid":4253,"hostname":"7e25cb90b670","class":"baileys","node":{"passive":false,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED","devicePairingData":{"eRegid":"AAAAfQ==","eKeytype":"BQ==","eIdent":"Bs8feGIN/yfKpe4U+C1xf7KJsRKsYS+HiQVxm0rMFiY=","eSkeyId":"AAAB","eSkeyVal":"T9CLmLk09/x1+G1nLVOhbrGYZ9fgqaiMuUfwR+ZfnEE=","eSkeySig":"CjPNWP/wrwiYPhyYiFbIAg5xxaT4ohiX8RhUyY+/+wJcLr/J7P1k7CW6mwPKMKdiWUe0vNt8K81uz4li7Q+tAA==","buildHash":"xEauBiqjwsZJtQsy2Yl8zg==","deviceProps":"CgVTZWFhYRgBIAA="}},"msg":"not logged in, attempting registration..."}
+[5:04:33 PM] [INFO] QR Code received, please scan with WhatsApp
+[5:04:33 PM] QR Code ready for scanning! Check logs below.
+[5:04:33 PM] [INFO] QR Code received, please scan with WhatsApp
+[5:04:33 PM] QR Code ready for scanning! Check logs below.
+[5:04:33 PM] /home/runner/workspace/index.js:66 const qrString = await QRCode.toString(qr, {type: 'terminal'}) ^ ReferenceError: QRCode is not defined at EventEmitter.<anonymous> (/home/runner/workspace/index.js:66:34) at EventEmitter.emit (node:events:530:35) at EventEmitter.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/event-buffer.js:40:16) at EventEmitter.emit (node:events:518:28) at Object.emit (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Utils/event-buffer.js:94:23) at genPairQR (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:485:16) at WebSocketClient.<anonymous> (/home/runner/workspace/node_modules/@whiskeysockets/baileys/lib/Socket/socket.js:489:9) Node.js v20.18.1
+[5:04:34 PM] Bot process exited with code 1
