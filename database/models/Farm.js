@@ -53,6 +53,14 @@ const farmSchema = new mongoose.Schema({
             weight: Number,
             tier: String
         }]
+    },
+    pets: {
+        type: Array,
+        default: []
+    },
+    activePet: {
+        type: Object,
+        default: null
     }
 });
 

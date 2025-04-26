@@ -441,6 +441,12 @@ async function handleMessages(sock) {
                     case "fhelp":
                         await fhelpHandler(sock, msg);
                         break;
+                    case "fpet":
+                        await farm.fpetHandler(sock, msg); // Assumes fpetHandler exists in farm.js
+                        break;
+                    case "fgive":
+                        await farm.fgiveHandler(sock, msg); // Assumes fgiveHandler exists in farm.js
+                        break;
                 }
 
                 // Handle additional commands
