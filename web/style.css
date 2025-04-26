@@ -1624,6 +1624,49 @@ body {
     line-height: 1.5;
 }
 
+.qr-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.qr-modal.active {
+    display: flex;
+}
+
+.qr-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.qr-code {
+    font-family: monospace;
+    white-space: pre;
+    background: white;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.close-modal {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
 .submit-btn {
     padding: 14px 28px;
     background: linear-gradient(135deg, var(--primary-color), var(--accent-hover));

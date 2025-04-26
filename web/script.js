@@ -297,6 +297,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     socket.on('botLog', (data) => {
         addLog(data.message, data.type);
+        // Show QR in modal if the log message is a QR code
+        if (data.type === 'qrcode') {
+            const qrModal = document.getElementById('qrModal');
+            const qrCode = document.getElementById('qrCode');
+            if (qrModal && qrCode) {
+                qrCode.textContent = data.message;
+                qrModal.classList.add('active');
+            }
+        }
     });
 
     socket.on('botStatus', (data) => {
