@@ -102,7 +102,9 @@ const {
     sellAllHandler,
     fupgradeHandler,
     fuplandHandler,
-    fhelpHandler
+    fhelpHandler,
+    fpetHandler,
+    fgiveHandler
 } = require("../lib/commands/farm");
 const { youtubeHandler } = require("../lib/commands/youtube");
 const Fish = require("../database/models/Fish");
@@ -442,10 +444,10 @@ async function handleMessages(sock) {
                         await fhelpHandler(sock, msg);
                         break;
                     case "fpet":
-                        await farm.fpetHandler(sock, msg); // Assumes fpetHandler exists in farm.js
+                        await fpetHandler(sock, msg);
                         break;
                     case "fgive":
-                        await farm.fgiveHandler(sock, msg); // Assumes fgiveHandler exists in farm.js
+                        await fgiveHandler(sock, msg);
                         break;
                 }
 
