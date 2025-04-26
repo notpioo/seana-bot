@@ -256,17 +256,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function addLog(message, type = 'info') {
         if (!logsContainer) return;
 
-        const logEntry = document.createElement('div');
-        logEntry.className = `log-entry ${type}`;
-
-        // Jika ini adalah QR code, jangan tambahkan timestamp
+        // Skip adding QR code to logs since it will be shown in modal
         if (type === 'qrcode') {
-            logEntry.textContent = message;
-        } else {
-            logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            return;
         }
 
-        // Special styling for QR code message
+        const logEntry = document.createElement('div');
+        logEntry.className = `log-entry ${type}`;
+        logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+
+        // Special styling for different message types
         if (type === 'qr') {
             logEntry.style.color = '#ff9800';
             logEntry.style.fontWeight = 'bold';
