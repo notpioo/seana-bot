@@ -1,5 +1,6 @@
 const makeWASocket = require('@whiskeysockets/baileys').default
 const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys')
+const QRCode = require('qrcode')
 const { handleMessages } = require('./handlers/message')
 const logger = require('./lib/utils/logger')
 const fs = require('fs')
@@ -61,15 +62,24 @@ async function connectToWhatsApp() {
             const { connection, lastDisconnect, qr } = update
 
             if(qr) {
-                // Generate QR in terminal format
-                logger.info('QR Code received, please scan with WhatsApp')
-                const qrString = await QRCode.toString(qr, {type: 'terminal'})
-                console.log(qrString)
+                try {
+                    logger.info('QR Code received, please scan with WhatsApp')
+                    // Generate QR in terminal format
+                    const qrString = await QRCode.toString(qr, {type: 'terminal'})
+                    console.log(qrString)
+                } catch (error) {
+                    logger.error('Failed to generate QR:', error)
+                }
             }
 
-            if(connection === "connecting" && startMethod === 'code') {
+            if(connection === "connecting" && startMethod === 'code' && phoneNumber) {
                 try {
-                    const code = await sock.requestPairingCode(phoneNumber)
+                    // Format nomor telepon
+                    const formattedPhone = phoneNumber.startsWith('08') ? 
+                        '62' + phoneNumber.slice(1) : 
+                        phoneNumber.startsWith('62') ? phoneNumber : '62' + phoneNumber
+                        
+                    const code = await sock.requestPairingCode(formattedPhone)
                     logger.info(`Your WhatsApp pairing code: ${code}`)
                 } catch (error) {
                     logger.error('Failed to request pairing code:', error)
