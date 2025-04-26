@@ -493,29 +493,19 @@ body {
 
 .buttons {
     display: flex;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
 .buttons button {
-    flex: 1 1 auto;
-    min-width: 140px;
-    padding: 12px 20px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     transition: all 0.3s;
-    white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-    .buttons button {
-        min-width: 100%;
-    }
 }
 
 .buttons button i {
@@ -1664,7 +1654,8 @@ body {
     border-radius: 15px;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    width: min(90vw, 400px);
+    max-width: 90%;
+    width: 400px;
     border: 1px solid var(--border-color);
 }
 
@@ -1678,15 +1669,14 @@ body {
     font-family: monospace;
     white-space: pre;
     background: white;
-    padding: 20px;
-    margin: 0 auto 20px;
+    padding: 25px;
+    margin: 15px 0;
     border-radius: 10px;
-    font-size: 8px;
+    font-size: 12px;
     line-height: 1;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     max-width: 100%;
-    overflow: hidden;
-    transform: scale(0.9);
+    overflow: auto;
 }
 
 .close-modal {

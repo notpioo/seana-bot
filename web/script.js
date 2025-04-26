@@ -238,7 +238,6 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTime = null;
     let runtimeInterval = null;
     let botRunning = false;
-    let lastQRCode = null; // Store the last QR code received
 
     function updateRuntime() {
         if (!startTime) return;
@@ -299,9 +298,12 @@ document.addEventListener('DOMContentLoaded', function() {
         addLog(data.message, data.type);
         // Show QR in modal if the log message is a QR code
         if (data.type === 'qrcode') {
-            lastQRCode = data.message; // Store the QR code
-            const viewQRBtn = document.getElementById('viewQR');
-            if(viewQRBtn) viewQRBtn.style.display = 'block';
+            const qrModal = document.getElementById('qrModal');
+            const qrCode = document.getElementById('qrCode');
+            if (qrModal && qrCode) {
+                qrCode.textContent = data.message;
+                qrModal.classList.add('active');
+            }
         }
     });
 
@@ -374,7 +376,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const pairingCodeForm = document.getElementById('pairingCodeForm');
     const phoneNumberInput = document.getElementById('phoneNumber');
     const submitPairingBtn = document.getElementById('submitPairing');
-    const viewQRBtn = document.getElementById('viewQR');
 
     if (startWithQRBtn) {
         startWithQRBtn.addEventListener('click', function() {
@@ -589,166 +590,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-
-    // View QR Code button functionality
-    if (viewQRBtn) {
-        viewQRBtn.addEventListener('click', () => {
-            if (lastQRCode) {
-                const qrModal = document.getElementById('qrModal');
-                const qrCode = document.getElementById('qrCode');
-                const closeBtn = document.getElementById('closeQrModal');
-
-                if (qrModal && qrCode) {
-                    qrCode.textContent = lastQRCode;
-                    qrModal.classList.add('active');
-
-                    closeBtn.onclick = () => {
-                        qrModal.classList.remove('active');
-                    };
-                }
-            } else {
-                alert("No QR code available.");
-            }
-        });
-    }
-
-
-    // Initialize control buttons
-    function initializeControlButtons() {
-        const startWithQRBtn = document.getElementById('startWithQR');
-        const startWithCodeBtn = document.getElementById('startWithCode');
-        const viewQRBtn = document.getElementById('viewQR');
-        const stopBtn = document.getElementById('stopBot');
-        const deleteBtn = document.getElementById('deleteSession');
-
-        if (startWithQRBtn) {
-            startWithQRBtn.addEventListener('click', function() {
-                if (botRunning) return;
-                if (pairingCodeForm) pairingCodeForm.style.display = 'none';
-                addLog('Starting bot with QR...');
-
-                fetch('/api/bot/start', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    },
-                    body: JSON.stringify({ method: 'qr' })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        setBotOnline();
-                        addLog('Bot started successfully');
-                    } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: `Failed to start bot: ${data.message}`
-                        });
-                        addLog(`Failed to start bot: ${data.message}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error starting bot'
-                    });
-                    addLog('Error starting bot');
-                });
-            });
-        }
-
-        if (startWithCodeBtn) {
-            startWithCodeBtn.addEventListener('click', function() {
-                if (botRunning) return;
-                if (pairingCodeForm) pairingCodeForm.style.display = 'block';
-            });
-        }
-
-        if (stopBtn) {
-            stopBtn.addEventListener('click', function() {
-                if (!botRunning) return;
-                addLog('Stopping bot...');
-
-                fetch('/api/bot/stop', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        setBotOffline();
-                        addLog('Bot stopped successfully');
-                    } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: `Failed to stop bot: ${data.message}`
-                        });
-                        addLog(`Failed to stop bot: ${data.message}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error stopping bot'
-                    });
-                    addLog('Error stopping bot');
-                });
-            });
-        }
-
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', function() {
-                if (botRunning) {
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'Stop the bot first before deleting session'
-                    });
-                    addLog('Stop the bot first before deleting session');
-                    return;
-                }
-
-                if (!confirm('Are you sure you want to delete the session? This will log out your WhatsApp connection.')) {
-                    return;
-                }
-
-                addLog('Deleting session...');
-
-                fetch('/api/bot/session', {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        addLog('Session deleted successfully');
-                    } else {
-                        Toast.fire({
-                            icon: 'error',
-                            title: `Failed to delete session: ${data.message}`
-                        });
-                        addLog(`Failed to delete session: ${data.message}`);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Toast.fire({
-                        icon: 'error',
-                        title: 'Error deleting session'
-                    });
-                    addLog('Error deleting session');
-                });
-            });
-        }
-    }
-
-    // Initialize control buttons on page load
-    initializeControlButtons();
 });
 
 //Remember to include SweetAlert2 in your HTML file  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
