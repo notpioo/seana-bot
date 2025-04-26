@@ -82,6 +82,16 @@ async function connectToWhatsApp() {
                 logger.info('QR Code received, please scan with WhatsApp')
             }
 
+            // Check for pairing code when using code method
+            if (connection === 'open' && process.env.START_METHOD === 'code') {
+                logger.info('Connected to WhatsApp - pairing code mode')
+            }
+
+            // Handle pairing code output
+            if (update.pairingCode) {
+                logger.info(`Your WhatsApp pairing code: ${update.pairingCode}`)
+            }
+
             // Update bot config if flag is set
             if (global.botConfigUpdated === true) {
                 const freshConfig = await botSettings.getBotConfig(true);
