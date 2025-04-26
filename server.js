@@ -231,6 +231,14 @@ app.post('/api/bot/start', async (req, res) => {
                 // Ini adalah baris QR code
                 sendLogToClients(output, 'qrcode');
             }
+            
+            // Deteksi pairing code
+            if (output.includes('your pairing code:')) {
+                const pairingCode = output.match(/your pairing code: (\d+)/i)?.[1];
+                if (pairingCode) {
+                    sendLogToClients(`Your WhatsApp pairing code: ${pairingCode}`, 'pairingcode');
+                }
+            }
         });
 
         botProcess.stderr.on('data', (data) => {

@@ -491,6 +491,17 @@ body {
     width: auto;
 }
 
+.log-entry.pairingcode {
+    color: #4CAF50;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: rgba(76, 175, 80, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    text-align: center;
+}
+
 .buttons {
     display: flex;
     gap: 10px;
