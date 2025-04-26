@@ -50,10 +50,12 @@ async function connectToWhatsApp() {
             pairingCode: startMethod === 'code',
             phoneNumber: startMethod === 'code' ? phoneNumber : undefined,
             generateHighQualityLinkPreview: true,
-            defaultQueryTimeoutMs: 60000,
-            connectTimeoutMs: 60000,
-            retryRequestDelayMs: 5000,
-            maxRetries: 3,
+            defaultQueryTimeoutMs: 120000, // Tambah timeout
+            connectTimeoutMs: 120000,
+            retryRequestDelayMs: 2000,
+            maxRetries: 5,
+            linkPreviewImageThumbnailWidth: 300,
+            qrTimeout: 40000,
             markOnlineOnConnect: true
         })
 

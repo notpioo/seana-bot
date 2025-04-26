@@ -221,15 +221,11 @@ app.post('/api/bot/start', async (req, res) => {
             console.log(`Bot stdout: ${output}`);
             sendLogToClients(output);
 
-            // Check if the output contains a QR code
-            if (output.includes('scan QR code') || output.includes('QR Code received')) {
-                sendLogToClients('QR Code ready for scanning! Check logs below.', 'qr');
-            }
-
-            // Deteksi tampilan QR code di terminal
-            if (output.includes('█') || output.includes('▄') || output.includes('▀') || output.includes('▓') || output.includes('▒')) {
-                // Ini adalah baris QR code
+            // Deteksi QR code dalam format terminal
+            if (output.includes('█') || output.includes('▄') || output.includes('▀')) {
+                // Kirim QR code ke client
                 sendLogToClients(output, 'qrcode');
+                io.emit('qrCode', output);
             }
             
             // Deteksi pairing code dan QR
