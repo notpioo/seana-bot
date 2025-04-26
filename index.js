@@ -1,6 +1,5 @@
 const makeWASocket = require('@whiskeysockets/baileys').default
 const { useMultiFileAuthState, DisconnectReason, makeCacheableSignalKeyStore } = require('@whiskeysockets/baileys')
-const QRCode = require('qrcode')
 const { handleMessages } = require('./handlers/message')
 const logger = require('./lib/utils/logger')
 const fs = require('fs')
@@ -41,75 +40,17 @@ async function connectToWhatsApp() {
         const phoneNumber = process.env.PHONE_NUMBER;
 
         const sock = makeWASocket({
-            printQRInTerminal: false, // We'll handle QR ourselves
-            auth: {
-                creds: state.creds,
-                keys: makeCacheableSignalKeyStore(state.keys, logger)
-            },
+            printQRInTerminal: startMethod === 'qr',
+            auth: state,
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
+            keys: makeCacheableSignalKeyStore(state.keys, logger),
             pairingCode: startMethod === 'code',
             phoneNumber: startMethod === 'code' ? phoneNumber : undefined,
-            generateHighQualityLinkPreview: true,
-            defaultQueryTimeoutMs: 120000, // Tambah timeout
-            connectTimeoutMs: 120000,
             retryRequestDelayMs: 2000,
+            connectTimeoutMs: 60000,
+            keepAliveIntervalMs: 10000,
             maxRetries: 5,
-            linkPreviewImageThumbnailWidth: 300,
-            qrTimeout: 40000,
-            markOnlineOnConnect: true
-        })
-
-        // Handle connection updates
-        sock.ev.on('connection.update', async (update) => {
-            const { connection, lastDisconnect, qr } = update
-
-            if(qr) {
-                try {
-                    logger.info('QR Code received, please scan with WhatsApp')
-                    // Generate QR in terminal format
-                    const qrString = await QRCode.toString(qr, {type: 'terminal'})
-                    console.log(qrString)
-                } catch (error) {
-                    logger.error('Failed to generate QR:', error)
-                }
-            }
-
-            if(connection === "connecting" && startMethod === 'code' && phoneNumber) {
-                try {
-                    // Format nomor telepon
-                    const formattedPhone = phoneNumber.startsWith('08') ? 
-                        '62' + phoneNumber.slice(1) : 
-                        phoneNumber.startsWith('62') ? phoneNumber : '62' + phoneNumber
-                        
-                    const code = await sock.requestPairingCode(formattedPhone)
-                    logger.info(`Your WhatsApp pairing code: ${code}`)
-                } catch (error) {
-                    logger.error('Failed to request pairing code:', error)
-                }
-            }
-
-            if(connection === 'close') {
-                const shouldReconnect = (lastDisconnect?.error)?.output?.statusCode !== DisconnectReason.loggedOut
-                logger.info(`Connection closed due to ${lastDisconnect?.error?.message}. Reconnecting: ${shouldReconnect}`)
-                
-                if(shouldReconnect) {
-                    connectToWhatsApp()
-                }
-            }
-
-            if(connection === 'open') {
-                logger.info('Connected to WhatsApp')
-            }
-        })
-
-        // Handle auth state updates
-        sock.ev.on('creds.update', async () => {
-            try {
-                await saveCreds()
-                logger.info('Credentials updated successfully')
-            } catch (error) {
-                logger.error('Failed to save credentials:', error)
-            }
+            generateHighQualityLinkPreview: true,
         })
 
         // Setup config checker interval
@@ -139,18 +80,6 @@ async function connectToWhatsApp() {
 
             if (qr) {
                 logger.info('QR Code received, please scan with WhatsApp')
-            }
-
-            // Check for pairing code when using code method
-            if (connection === 'open' && process.env.START_METHOD === 'code') {
-                logger.info('Connected to WhatsApp - pairing code mode')
-            }
-
-            // Handle pairing code output
-            if (update.pairingCode) {
-                const pairingMessage = `Your WhatsApp pairing code: ${update.pairingCode}`;
-                logger.info(pairingMessage);
-                console.log(pairingMessage);
             }
 
             // Update bot config if flag is set

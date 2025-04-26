@@ -439,29 +439,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Update validation to handle international format
-            if (!phoneNumber.match(/^(628|08)\d{8,12}$/)) {
+            if (!phoneNumber.match(/^628\d{8,12}$/)) {
                 Toast.fire({
                     icon: 'error',
-                    title: 'Invalid phone number format. Use 628xxxxx or 08xxxxx'
+                    title: 'Invalid phone number format. Use 628xxxxx'
                 });
-                addLog('Invalid phone number format. Use 628xxxxx or 08xxxxx', 'error');
+                addLog('Invalid phone number format. Use 628xxxxx', 'error');
                 return;
             }
 
-            // Convert 08 to 628 format if needed
-            const formattedNumber = phoneNumber.startsWith('08') ? '62' + phoneNumber.slice(1) : phoneNumber;
             addLog('Starting bot with pairing code...');
 
             fetch('/api/bot/start', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                    'Content-Type': 'application/json'
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`
                 },
                 body: JSON.stringify({
                     method: 'code',
-                    phoneNumber: formattedNumber
+                    phoneNumber: phoneNumber
                 })
             })
             .then(response => response.json())
