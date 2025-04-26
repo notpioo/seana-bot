@@ -1,0 +1,13 @@
+[4:54:03 PM] Starting bot with pairing code...
+[4:54:04 PM] Starting bot with code...
+[4:54:04 PM] Bot started successfully
+[4:54:05 PM] (node:3436) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version (Use `node --trace-warnings ...` to show where the warning was created)
+[4:54:05 PM] (node:3436) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+[4:54:05 PM] [INFO] Bot configuration loaded from disk
+[4:54:06 PM] Successfully connected to MongoDB.
+[4:54:06 PM] [INFO] Using auth directory: /home/runner/workspace/sessions/auth_info
+[4:54:06 PM] [INFO] Bot configuration loaded from disk
+[4:54:06 PM] {"level":30,"time":"2025-04-26T09:54:07.018Z","pid":3436,"hostname":"7e25cb90b670","class":"baileys","browser":["Seaaa","Chrome","5.0"],"helloMsg":{"clientHello":{"ephemeral":"Kly8fciH/1OeRk8CN3wcunag6FOELyXuB0c0F3i+l0k="}},"msg":"connected to WA"}
+[4:54:06 PM] {"level":30,"time":"2025-04-26T09:54:07.156Z","pid":3436,"hostname":"7e25cb90b670","class":"baileys","node":{"passive":false,"userAgent":{"platform":"WEB","appVersion":{"primary":2,"secondary":3000,"tertiary":1017531287},"osVersion":"0.1","device":"Desktop","osBuildNumber":"0.1","releaseChannel":"RELEASE","localeLanguageIso6391":"en","localeCountryIso31661Alpha2":"US"},"webInfo":{"webSubPlatform":"WEB_BROWSER"},"connectType":"WIFI_UNKNOWN","connectReason":"USER_ACTIVATED","devicePairingData":{"eRegid":"AAAAKg==","eKeytype":"BQ==","eIdent":"uvB57fg+ZbTkjYzUZ33mJB8AMYfIOQIO4Jo1oCaraj8=","eSkeyId":"AAAB","eSkeyVal":"7OBZQnGgCqJ7aqK8+Oiu5jytvCL9oELuqL8I76NUig4=","eSkeySig":"qLv15r482DhDWu+R2wLYecvdbcn6g6rj6QKRb2mlzKEwM2QPfmSeImja3PuR8JWIy+eYXtrMfSomypuVIg3ZiQ==","buildHash":"xEauBiqjwsZJtQsy2Yl8zg==","deviceProps":"CgVTZWFhYRgBIAA="}},"msg":"not logged in, attempting registration..."}
+[4:54:06 PM] [INFO] QR Code received, please scan with WhatsApp
+[4:54:06 PM] QR Code ready for scanning! Check logs below.
