@@ -256,8 +256,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function addLog(message, type = 'info') {
         if (!logsContainer) return;
 
-        // Skip adding QR code to logs since it will be shown in modal
-        if (type === 'qrcode') {
+        // Skip QR codes from being added to logs
+        if (type === 'qrcode' || (type === 'info' && message.includes('▄▄▄▄▄'))) {
             return;
         }
 
