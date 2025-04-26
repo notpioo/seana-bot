@@ -102,6 +102,7 @@ const {
     sellAllHandler,
     fupgradeHandler,
     fuplandHandler,
+    fhelpHandler
 } = require("../lib/commands/farm");
 const { youtubeHandler } = require("../lib/commands/youtube");
 const Fish = require("../database/models/Fish");
@@ -436,6 +437,9 @@ async function handleMessages(sock) {
                         break;
                     case "fupland":
                         await fuplandHandler(sock, msg);
+                        break;
+                    case "fhelp":
+                        await fhelpHandler(sock, msg);
                         break;
                 }
 
