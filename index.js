@@ -41,16 +41,19 @@ async function connectToWhatsApp() {
 
         const sock = makeWASocket({
             printQRInTerminal: startMethod === 'qr',
-            auth: state,
+            auth: {
+                creds: state.creds,
+                keys: makeCacheableSignalKeyStore(state.keys, logger)
+            },
             browser: [config.botName || 'SeaBot', 'Chrome', '5.0'],
-            keys: makeCacheableSignalKeyStore(state.keys, logger),
             pairingCode: startMethod === 'code',
             phoneNumber: startMethod === 'code' ? phoneNumber : undefined,
-            retryRequestDelayMs: 2000,
-            connectTimeoutMs: 60000,
-            keepAliveIntervalMs: 10000,
-            maxRetries: 5,
             generateHighQualityLinkPreview: true,
+            defaultQueryTimeoutMs: 60000,
+            connectTimeoutMs: 60000,
+            retryRequestDelayMs: 5000,
+            maxRetries: 3,
+            markOnlineOnConnect: true
         })
 
         // Setup config checker interval

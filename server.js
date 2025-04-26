@@ -233,11 +233,18 @@ app.post('/api/bot/start', async (req, res) => {
             }
             
             // Deteksi pairing code
-            if (output.includes('Your WhatsApp pairing code:')) {
-                const pairingCode = output.match(/Your WhatsApp pairing code: (\d+)/i)?.[1];
+            if (output.includes('Your WhatsApp pairing code:') || output.includes('phone connected, code:')) {
+                const pairingCode = output.match(/(?:Your WhatsApp pairing code:|phone connected, code:)\s*(\d+)/i)?.[1];
                 if (pairingCode) {
-                    sendLogToClients(`Kode pairing WhatsApp: ${pairingCode}`, 'pairingcode');
+                    sendLogToClients(`Kode Pairing WhatsApp Anda: ${pairingCode}`, 'pairingcode');
                 }
+            }
+
+            // Deteksi status koneksi
+            if (output.includes('Connected to WhatsApp')) {
+                sendLogToClients('✅ Berhasil terhubung ke WhatsApp', 'success');
+            } else if (output.includes('Connection closed')) {
+                sendLogToClients('❌ Koneksi terputus dari WhatsApp', 'error');
             }
         });
 
