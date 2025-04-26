@@ -300,9 +300,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.type === 'qrcode') {
             const qrModal = document.getElementById('qrModal');
             const qrCode = document.getElementById('qrCode');
+            const closeBtn = document.getElementById('closeQrModal');
+
             if (qrModal && qrCode) {
                 qrCode.textContent = data.message;
                 qrModal.classList.add('active');
+
+                closeBtn.onclick = () => {
+                    qrModal.classList.remove('active');
+                };
             }
         }
     });
