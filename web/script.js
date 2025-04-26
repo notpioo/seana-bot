@@ -238,6 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let startTime = null;
     let runtimeInterval = null;
     let botRunning = false;
+    let lastQRCode = null; // Store the last QR code received
 
     function updateRuntime() {
         if (!startTime) return;
@@ -298,18 +299,9 @@ document.addEventListener('DOMContentLoaded', function() {
         addLog(data.message, data.type);
         // Show QR in modal if the log message is a QR code
         if (data.type === 'qrcode') {
-            const qrModal = document.getElementById('qrModal');
-            const qrCode = document.getElementById('qrCode');
-            const closeBtn = document.getElementById('closeQrModal');
-
-            if (qrModal && qrCode) {
-                qrCode.textContent = data.message;
-                qrModal.classList.add('active');
-
-                closeBtn.onclick = () => {
-                    qrModal.classList.remove('active');
-                };
-            }
+            lastQRCode = data.message; // Store the QR code
+            const viewQRBtn = document.getElementById('viewQR');
+            if(viewQRBtn) viewQRBtn.style.display = 'block';
         }
     });
 
@@ -382,6 +374,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const pairingCodeForm = document.getElementById('pairingCodeForm');
     const phoneNumberInput = document.getElementById('phoneNumber');
     const submitPairingBtn = document.getElementById('submitPairing');
+    const viewQRBtn = document.getElementById('viewQR');
 
     if (startWithQRBtn) {
         startWithQRBtn.addEventListener('click', function() {
@@ -595,6 +588,51 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
+    }
+
+    // View QR Code button functionality
+    if (viewQRBtn) {
+        viewQRBtn.addEventListener('click', () => {
+            if (lastQRCode) {
+                const qrModal = document.getElementById('qrModal');
+                const qrCode = document.getElementById('qrCode');
+                const closeBtn = document.getElementById('closeQrModal');
+
+                if (qrModal && qrCode) {
+                    qrCode.textContent = lastQRCode;
+                    qrModal.classList.add('active');
+
+                    closeBtn.onclick = () => {
+                        qrModal.classList.remove('active');
+                    };
+                }
+            } else {
+                alert("No QR code available.");
+            }
+        });
+    }
+
+
+    //Replace buttons div
+    const buttonsDiv = document.querySelector('.buttons');
+    if (buttonsDiv) {
+        buttonsDiv.innerHTML = `
+            <button id="startWithQR" class="start-btn">
+                <i class="fas fa-qrcode"></i> Start with QR
+            </button>
+            <button id="startWithCode" class="start-btn">
+                <i class="fas fa-key"></i> Start with Code
+            </button>
+            <button id="viewQR" class="start-btn" style="display: none;">
+                <i class="fas fa-eye"></i> View QR Code
+            </button>
+            <button id="stopBot" class="stop-btn">
+                <i class="fas fa-stop"></i> Stop Bot
+            </button>
+            <button id="deleteSession" class="delete-btn">
+                <i class="fas fa-trash"></i> Delete Session
+            </button>
+        `;
     }
 });
 
