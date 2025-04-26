@@ -40,7 +40,7 @@ async function connectToWhatsApp() {
         const phoneNumber = process.env.PHONE_NUMBER;
 
         const sock = makeWASocket({
-            printQRInTerminal: startMethod === 'qr',
+            printQRInTerminal: false, // We'll handle QR ourselves
             auth: {
                 creds: state.creds,
                 keys: makeCacheableSignalKeyStore(state.keys, logger)
@@ -54,6 +54,50 @@ async function connectToWhatsApp() {
             retryRequestDelayMs: 5000,
             maxRetries: 3,
             markOnlineOnConnect: true
+        })
+
+        // Handle connection updates
+        sock.ev.on('connection.update', async (update) => {
+            const { connection, lastDisconnect, qr } = update
+
+            if(qr) {
+                // Generate QR in terminal format
+                logger.info('QR Code received, please scan with WhatsApp')
+                const qrString = await QRCode.toString(qr, {type: 'terminal'})
+                console.log(qrString)
+            }
+
+            if(connection === "connecting" && startMethod === 'code') {
+                try {
+                    const code = await sock.requestPairingCode(phoneNumber)
+                    logger.info(`Your WhatsApp pairing code: ${code}`)
+                } catch (error) {
+                    logger.error('Failed to request pairing code:', error)
+                }
+            }
+
+            if(connection === 'close') {
+                const shouldReconnect = (lastDisconnect?.error)?.output?.statusCode !== DisconnectReason.loggedOut
+                logger.info(`Connection closed due to ${lastDisconnect?.error?.message}. Reconnecting: ${shouldReconnect}`)
+                
+                if(shouldReconnect) {
+                    connectToWhatsApp()
+                }
+            }
+
+            if(connection === 'open') {
+                logger.info('Connected to WhatsApp')
+            }
+        })
+
+        // Handle auth state updates
+        sock.ev.on('creds.update', async () => {
+            try {
+                await saveCreds()
+                logger.info('Credentials updated successfully')
+            } catch (error) {
+                logger.error('Failed to save credentials:', error)
+            }
         })
 
         // Setup config checker interval

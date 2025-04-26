@@ -232,11 +232,30 @@ app.post('/api/bot/start', async (req, res) => {
                 sendLogToClients(output, 'qrcode');
             }
             
-            // Deteksi pairing code
-            if (output.includes('Your WhatsApp pairing code:') || output.includes('phone connected, code:')) {
-                const pairingCode = output.match(/(?:Your WhatsApp pairing code:|phone connected, code:)\s*(\d+)/i)?.[1];
+            // Deteksi pairing code dan QR
+            if (output.includes('Your WhatsApp pairing code:')) {
+                const pairingCode = output.match(/Your WhatsApp pairing code:\s*(\d+)/i)?.[1];
                 if (pairingCode) {
                     sendLogToClients(`Kode Pairing WhatsApp Anda: ${pairingCode}`, 'pairingcode');
+                }
+            }
+
+            // Deteksi QR code dalam format terminal
+            if (output.includes('█') && output.includes('▄') && output.includes('▀')) {
+                sendLogToClients(output, 'qrcode');
+            }
+
+            // Deteksi status koneksi
+            if (output.includes('Connected to WhatsApp')) {
+                sendLogToClients('✅ Berhasil terhubung ke WhatsApp', 'success');
+            } else if (output.includes('Connection closed')) {
+                const reconnectMatch = output.match(/Reconnecting:\s*(true|false)/i);
+                const reconnecting = reconnectMatch ? reconnectMatch[1] === 'true' : false;
+                
+                if (reconnecting) {
+                    sendLogToClients('🔄 Koneksi terputus, mencoba menghubungkan kembali...', 'warning');
+                } else {
+                    sendLogToClients('❌ Koneksi terputus dari WhatsApp', 'error');
                 }
             }
 
