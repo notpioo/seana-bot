@@ -20,10 +20,6 @@ const farmSchema = new mongoose.Schema({
         type: Number,
         default: 10
     },
-    greenhouse: {
-        type: Array,
-        default: []
-    },
     landLevel: {
         type: Number,
         default: 0
