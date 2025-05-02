@@ -127,6 +127,8 @@ const {
     cleanupExpiredGames
 } = require("../lib/commands/domino");
 
+const { registerDominoStickerHandler } = require("../lib/commands/register-sticker-command");
+
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
 let config;
