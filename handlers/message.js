@@ -126,15 +126,6 @@ const {
     processPlayedCard,
     cleanupExpiredGames
 } = require("../lib/commands/domino");
-const {
-    dominoHandler,
-    joinDomHandler, 
-    startDomHandler,
-    domPassHandler,
-    domHandler,
-    processPlayedCard,
-    cleanupExpiredGames
-} = require("../lib/commands/domino");
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -486,21 +477,6 @@ async function handleMessages(sock) {
                     case "dom":
                         await domHandler(sock, msg);
                         break;
-                        case "domino":
-                            await dominoHandler(sock, msg);
-                            break;
-                        case "joindom":
-                            await joinDomHandler(sock, msg);
-                            break;
-                        case "startdom":
-                            await startDomHandler(sock, msg);
-                            break;
-                        case "dompass":
-                            await domPassHandler(sock, msg);
-                            break;
-                        case "dom":
-                            await domHandler(sock, msg);
-                            break;
                 }
 
                 // Handle additional commands
