@@ -126,6 +126,15 @@ const {
     processPlayedCard,
     cleanupExpiredGames
 } = require("../lib/commands/domino");
+const {
+    dominoHandler,
+    joinDomHandler, 
+    startDomHandler,
+    domPassHandler,
+    domHandler,
+    processPlayedCard,
+    cleanupExpiredGames
+} = require("../lib/commands/domino");
 
 // Added to load bot configuration.  Error handling is crucial.
 const botSettings = require("../config/settings");
@@ -139,6 +148,10 @@ try {
 }
 
 async function handleMessages(sock) {
+    // Set interval to clean up expired games every 10 minutes
+    setInterval(() => {
+        cleanupExpiredGames(sock);
+    }, 10 * 60 * 1000);
     sock.ev.on("messages.upsert", async (m) => {
         try {
             const msg = m.messages[0];
@@ -458,6 +471,21 @@ async function handleMessages(sock) {
                     case "fgive":
                         await fgiveHandler(sock, msg);
                         break;
+                    case "domino":
+                        await dominoHandler(sock, msg);
+                        break;
+                    case "joindom":
+                        await joinDomHandler(sock, msg);
+                        break;
+                    case "startdom":
+                        await startDomHandler(sock, msg);
+                        break;
+                    case "dompass":
+                        await domPassHandler(sock, msg);
+                        break;
+                    case "dom":
+                        await domHandler(sock, msg);
+                        break;
                         case "domino":
                             await dominoHandler(sock, msg);
                             break;
@@ -558,6 +586,11 @@ async function handleMessages(sock) {
 
             // Check AFK status
             await checkAfkStatus(sock, msg);
+
+            // Process potential domino card stickers
+            if (msg.message?.stickerMessage) {
+                await processPlayedCard(sock, msg);
+            }
         } catch (error) {
             console.error("Error handling message:", error);
             try {
