@@ -124,7 +124,8 @@ const {
     domPassHandler,
     domHandler,
     processPlayedCard,
-    cleanupExpiredGames
+    cleanupExpiredGames,
+    domHelpHandler
 } = require("../lib/commands/domino");
 
 const { registerDominoStickerHandler } = require("../lib/commands/register-sticker-command");
