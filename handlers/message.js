@@ -479,6 +479,9 @@ async function handleMessages(sock) {
                     case "dom":
                         await domHandler(sock, msg);
                         break;
+                    case "domhelp":
+                        await domHelpHandler(sock, msg);
+                        break;
                     case "regdomino":
                         await registerDominoStickerHandler(sock, msg);
                         break;
